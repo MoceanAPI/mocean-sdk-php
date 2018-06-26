@@ -1,9 +1,9 @@
 <?php
 /**
- * Nexmo Client Library for PHP
+ * Mocean Client Library for PHP
  *
- * @copyright Copyright (c) 2016 Nexmo, Inc. (http://nexmo.com)
- * @license   https://github.com/Nexmo/nexmo-php/blob/master/LICENSE.txt MIT License
+ * @copyright Copyright (c) 2018 Micro Ocean, Inc.
+ * @license MIT License
  */
 
 namespace Mocean\Verify;
