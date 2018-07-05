@@ -30,7 +30,7 @@ class Client
 {
     const VERSION = '1.0.0-beta1';
 
-    const BASE_REST = 'https://rest-api.moceansms.com/rest/1';
+    const BASE_REST = 'https://rest.moceanapi.com/rest/1';
 
     /**
      * API Credentials
