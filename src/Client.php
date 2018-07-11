@@ -31,7 +31,7 @@ class Client
     const VERSION = '1.0.0-beta1';
 
     const BASE_REST = 'https://rest.moceanapi.com/rest/1';
-
+    const PL = "PHP";
     /**
      * API Credentials
      * @var CredentialsInterface
@@ -169,6 +169,7 @@ class Client
                 $content = $body->getContents();
                 $params = json_decode($content, true);
                 $params = array_merge($params, $credentials->asArray());
+				$params = array_merge($params, array("mocean-pl" => \Mocean\Client::PL));
                 $body->rewind();
                 $body->write(json_encode($params));
                 break;
@@ -179,6 +180,7 @@ class Client
                 $params = [];
                 parse_str($content, $params);
                 $params = array_merge($params, $credentials->asArray());
+				$params = array_merge($params, array("mocean-pl" => \Mocean\Client::PL));
                 $body->rewind();
                 $body->write(http_build_query($params, null, '&'));
                 break;
@@ -186,6 +188,7 @@ class Client
                 $query = [];
                 parse_str($request->getUri()->getQuery(), $query);
                 $query = array_merge($query, $credentials->asArray());
+				$query = array_merge($query, array("mocean-pl" => \Mocean\Client::PL));
                 $request = $request->withUri($request->getUri()->withQuery(http_build_query($query)));
                 break;
         }
