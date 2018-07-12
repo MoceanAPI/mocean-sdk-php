@@ -48,16 +48,13 @@ The API can be called directly, using a simple array of parameters, the keys mat
 $res = $mocean->message()->send([
     'mocean-to' => '60123456789',
     'mocean-from' => 'MOCEAN',
-    'mocean-text' => 'Hello World'
+    'mocean-text' => 'Hello World',
+    'mocean-resp-format' => 'json'
 ]);
+
+echo $res;
 ```
     
-The API response data can be accessed as array properties of the message. 
-
-```php
-echo "Sent message to " . $res['receiver'] . ". Message ID is " . $res['msgid'] . PHP_EOL;
-```
-
 ## License
 
 This library is released under the [MIT License][license]
