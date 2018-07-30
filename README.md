@@ -31,11 +31,7 @@ require_once "vendor/autoload.php";
 Create a client with your API key and secret:
 
 ```php
-$token = new Mocean\Client\Credentials\Basic(
-    'API_KEY_HERE', 
-    'API_SECRET_HERE'
-);
-$mocean = new Mocean\Client($token);
+$mocean = new Mocean\Client(new Mocean\Client\Credentials\Basic('API_KEY_HERE','API_SECRET_HERE'));
 ```
 
 ## Example
