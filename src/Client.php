@@ -25,6 +25,8 @@ use Zend\Diactoros\Uri;
  *
  * @property \Mocean\Message\Client $message
  * @method \Mocean\Message\Client message()
+ * @method \Mocean\Account\Client account()
+ * @method \Mocean\Verify\Client verify()
  */
 class Client
 {
@@ -195,7 +197,7 @@ class Client
 
         return $request;
     }
-    
+
     /**
      * Wraps the HTTP Client, creates a new PSR-7 request adding authentication, signatures, etc.
      *
@@ -217,7 +219,7 @@ class Client
         } elseif($this->credentials instanceof Basic){
             $request = self::authRequest($request, $this->credentials);
         }
-		
+
         //todo: add oauth support
 
         //allow any part of the URI to be replaced with a simple search
@@ -231,31 +233,9 @@ class Client
                 }
             }
         }
-		
+
         $response = $this->client->sendRequest($request);
         return $response;
-    }
-
-    public function serialize(EntityInterface $entity)
-    {
-        if($entity instanceof Verification){
-            return $this->verify()->serialize($entity);
-        }
-
-        throw new \RuntimeException('unknown class `' . get_class($entity) . '``');
-    }
-
-    public function unserialize($entity)
-    {
-        if(is_string($entity)){
-            $entity = unserialize($entity);
-        }
-
-        if($entity instanceof Verification){
-            return $this->verify()->unserialize($entity);
-        }
-
-        throw new \RuntimeException('unknown class `' . get_class($entity) . '``');
     }
 
     public function __call($name, $args)
