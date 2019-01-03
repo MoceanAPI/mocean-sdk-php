@@ -47,7 +47,6 @@ class Client implements ClientAwareInterface
 
         $request->getBody()->write(http_build_query($params));
         $response = $this->client->send($request);
-        $this->createResponseHeader($response->getHeaders()['Content-type'][0]);
         $response->getBody()->rewind();
         $data = $response->getBody()->getContents();
 
@@ -86,15 +85,10 @@ class Client implements ClientAwareInterface
         $response->getBody()->rewind();
         $data = $response->getBody()->getContents();
 
-        if (!$data) {
-            throw new Exception\Request('no message found for `' . $params['mocean-msgid'] . '`');
+        if (!isset($data)) {
+            throw new Exception\Exception('unexpected response from API');
         }
 
-        if ($response->getStatusCode() > 203) {
-            throw new Exception\Request('error status from API', $response->getStatusCode());
-        }
-
-        $this->createResponseHeader($response->getHeaders()['Content-type'][0]);
         return MessageStatus::createFromResponse($data);
     }
 
@@ -129,12 +123,6 @@ class Client implements ClientAwareInterface
         unset($message['mocean-to'], $message['mocean-from'], $message['mocean-text']);
 
         return new Message($from, $to, $text, $message);
-    }
-
-    protected function createResponseHeader($header)
-    {
-        Header('Content-type: ' . $header);
-        return true;
     }
 
     public function count()

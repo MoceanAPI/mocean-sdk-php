@@ -38,7 +38,6 @@ class Client implements ClientAwareInterface
         if ($data === '') {
             throw new Exception\Server('No results found');
         }
-        $this->createResponseHeader($response->getHeaders()['Content-type'][0]);
 
         return Price::createFromResponse($data);
     }
@@ -67,14 +66,7 @@ class Client implements ClientAwareInterface
             throw new Exception\Server('No results found');
         }
 
-        $this->createResponseHeader($response->getHeaders()['Content-type'][0]);
         return Balance::createFromResponse($data);
-    }
-
-    protected function createResponseHeader($header)
-    {
-        Header('Content-type: ' . $header);
-        return true;
     }
 
     protected function getException(ResponseInterface $response, $application = null)

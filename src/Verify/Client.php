@@ -50,7 +50,6 @@ class Client implements ClientAwareInterface
 
         $request->getBody()->write(http_build_query($params));
         $response = $this->client->send($request);
-        $this->createResponseHeader($response->getHeaders()['Content-type'][0]);
         $response->getBody()->rewind();
         $data = $response->getBody()->getContents();
         if (!isset($data)) {
@@ -90,7 +89,6 @@ class Client implements ClientAwareInterface
 
         $request->getBody()->write(http_build_query($params));
         $response = $this->client->send($request);
-        $this->createResponseHeader($response->getHeaders()['Content-type'][0]);
         $response->getBody()->rewind();
         $data = $response->getBody()->getContents();
 
@@ -99,11 +97,5 @@ class Client implements ClientAwareInterface
         }
 
         return VerifyCode::createFromResponse($data);
-    }
-
-    protected function createResponseHeader($header)
-    {
-        Header('Content-type: ' . $header);
-        return true;
     }
 }
