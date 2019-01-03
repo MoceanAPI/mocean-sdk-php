@@ -50,7 +50,7 @@ class MessageStatus implements ModelInterface
         $messageStatus->setRawResponseData($responseData)
             ->processResponse();
 
-        if ($messageStatus['status'] !== 0) {
+        if ($messageStatus['status'] !== 0 && $messageStatus['status'] !== '0') {
             throw new Exception($messageStatus['err_msg']);
         }
 

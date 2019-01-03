@@ -47,7 +47,7 @@ class Message implements ModelInterface
         $message->setRawResponseData($responseData)
             ->processResponse();
 
-        if (isset($message['status']) && $message['status'] !== 0) {
+        if (isset($message['status']) && $message['status'] !== 0 && $message['status'] !== '0') {
             throw new Exception($message['err_msg']);
         }
 

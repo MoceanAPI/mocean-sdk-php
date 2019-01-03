@@ -40,7 +40,7 @@ class Balance implements ModelInterface
         $balance->setRawResponseData($responseData)
             ->processResponse();
 
-        if ($balance['status'] !== 0) {
+        if ($balance['status'] !== 0 && $balance['status'] !== '0') {
             throw new Exception($balance['err_msg']);
         }
 

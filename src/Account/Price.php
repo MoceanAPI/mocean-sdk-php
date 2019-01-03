@@ -41,7 +41,7 @@ class Price implements ModelInterface
         $price->setRawResponseData($responseData)
             ->processResponse();
 
-        if ($price['status'] !== 0) {
+        if ($price['status'] !== 0 && $price['status'] !== '0') {
             throw new Exception($price['err_msg']);
         }
 
