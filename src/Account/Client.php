@@ -4,22 +4,20 @@ namespace Mocean\Account;
 
 use Mocean\Client\ClientAwareInterface;
 use Mocean\Client\ClientAwareTrait;
+use Mocean\Client\Exception;
 use Mocean\Model\ModelInterface;
-use Mocean\Network;
 use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\Request;
-use Mocean\Client\Exception;
-
 
 class Client implements ClientAwareInterface
 {
     use ClientAwareTrait;
 
-    public function getPricing($price = array())
+    public function getPricing($price = [])
     {
         if (!($price instanceof ModelInterface)) {
             if (!\is_array($price)) {
-                throw new \RuntimeException('price must implement `' . ModelInterface::class . '` or be an array`');
+                throw new \RuntimeException('price must implement `'.ModelInterface::class.'` or be an array`');
             }
             $price = new Price($price);
         }
@@ -27,7 +25,7 @@ class Client implements ClientAwareInterface
         $params = $price->getRequestData();
 
         $request = new Request(
-            \Mocean\Client::BASE_REST . '/account/pricing?' . http_build_query($params),
+            \Mocean\Client::BASE_REST.'/account/pricing?'.http_build_query($params),
             'GET',
             'php://temp'
         );
@@ -42,11 +40,11 @@ class Client implements ClientAwareInterface
         return Price::createFromResponse($data);
     }
 
-    public function getBalance($balance = array())
+    public function getBalance($balance = [])
     {
         if (!($balance instanceof ModelInterface)) {
             if (!\is_array($balance)) {
-                throw new \RuntimeException('balance must implement `' . ModelInterface::class . '` or be an array`');
+                throw new \RuntimeException('balance must implement `'.ModelInterface::class.'` or be an array`');
             }
             $balance = new Balance($balance);
         }
@@ -54,7 +52,7 @@ class Client implements ClientAwareInterface
         $params = $balance->getRequestData();
 
         $request = new Request(
-            \Mocean\Client::BASE_REST . '/account/balance?' . http_build_query($params),
+            \Mocean\Client::BASE_REST.'/account/balance?'.http_build_query($params),
             'GET',
             'php://temp'
         );
@@ -74,9 +72,9 @@ class Client implements ClientAwareInterface
         $body = json_decode($response->getBody()->getContents(), true);
         $status = $response->getStatusCode();
 
-        if ($status >= 400 AND $status < 500) {
+        if ($status >= 400 and $status < 500) {
             $e = new Exception\Request($body['error_title'], $status);
-        } elseif ($status >= 500 AND $status < 600) {
+        } elseif ($status >= 500 and $status < 600) {
             $e = new Exception\Server($body['error_title'], $status);
         } else {
             $e = new Exception\Exception('Unexpected HTTP Status Code');
@@ -84,5 +82,4 @@ class Client implements ClientAwareInterface
 
         return $e;
     }
-
 }

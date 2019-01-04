@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: Neoson Lam
  * Date: 12/17/2018
- * Time: 5:14 PM
+ * Time: 5:14 PM.
  */
 
 namespace Mocean\Verify;
@@ -18,13 +18,14 @@ class VerifyCode implements ModelInterface
 {
     use ObjectAccessTrait, ResponseTrait, ArrayAccessTrait;
 
-    protected $requestData = array();
+    protected $requestData = [];
 
     /**
      * Balance constructor.
+     *
      * @param array $extra
      */
-    public function __construct($reqId, $code, $extra = array())
+    public function __construct($reqId, $code, $extra = [])
     {
         $this->requestData['mocean-reqid'] = $reqId;
         $this->requestData['mocean-code'] = $code;
@@ -33,8 +34,10 @@ class VerifyCode implements ModelInterface
 
     /**
      * @param $responseData
-     * @return VerifyCode
+     *
      * @throws Exception
+     *
+     * @return VerifyCode
      */
     public static function createFromResponse($responseData)
     {
@@ -52,18 +55,21 @@ class VerifyCode implements ModelInterface
     public function setReqId($reqId)
     {
         $this->requestData['mocean-reqid'] = $reqId;
+
         return $this;
     }
 
     public function setCode($code)
     {
         $this->requestData['mocean-code'] = $code;
+
         return $this;
     }
 
     public function setResponseFormat($responseFormat)
     {
         $this->requestData['mocean-resp-format'] = $responseFormat;
+
         return $this;
     }
 

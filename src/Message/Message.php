@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: Neoson Lam
  * Date: 12/17/2018
- * Time: 4:38 PM
+ * Time: 4:38 PM.
  */
 
 namespace Mocean\Message;
-
 
 use Mocean\Client\Exception\Exception;
 use Mocean\Model\ArrayAccessTrait;
@@ -19,16 +18,17 @@ class Message implements ModelInterface
 {
     use ObjectAccessTrait, ResponseTrait, ArrayAccessTrait;
 
-    protected $requestData = array();
+    protected $requestData = [];
 
     /**
      * Message constructor.
+     *
      * @param $from
      * @param $to
      * @param $text
      * @param array $extra
      */
-    public function __construct($from, $to, $text, $extra = array())
+    public function __construct($from, $to, $text, $extra = [])
     {
         $this->requestData['mocean-from'] = $from;
         $this->requestData['mocean-to'] = $to;
@@ -38,8 +38,10 @@ class Message implements ModelInterface
 
     /**
      * @param $responseData
-     * @return Message
+     *
      * @throws Exception
+     *
+     * @return Message
      */
     public static function createFromResponse($responseData)
     {
@@ -57,78 +59,91 @@ class Message implements ModelInterface
     public function setFrom($from)
     {
         $this->requestData['mocean-from'] = $from;
+
         return $this;
     }
 
     public function setTo($to)
     {
         $this->requestData['mocean-to'] = $to;
+
         return $this;
     }
 
     public function setText($text)
     {
         $this->requestData['mocean-text'] = $text;
+
         return $this;
     }
 
     public function setUdh($udh)
     {
         $this->requestData['mocean-udh'] = $udh;
+
         return $this;
     }
 
     public function setCoding($coding)
     {
         $this->requestData['mocean-coding'] = $coding;
+
         return $this;
     }
 
     public function setDlrMask($dlrMask)
     {
         $this->requestData['mocean-dlr-mask'] = $dlrMask;
+
         return $this;
     }
 
     public function setDlrUrl($dlrUrl)
     {
         $this->requestData['mocean-dlr-url'] = $dlrUrl;
+
         return $this;
     }
 
     public function setSchedule($schedule)
     {
         $this->requestData['mocean-schedule'] = $schedule;
+
         return $this;
     }
 
     public function setMclass($mclass)
     {
         $this->requestData['mocean-mclass'] = $mclass;
+
         return $this;
     }
 
     public function setAltDcs($altDcs)
     {
         $this->requestData['mocean-alt-dcs'] = $altDcs;
+
         return $this;
     }
 
     public function setCharset($charset)
     {
         $this->requestData['mocean-charset'] = $charset;
+
         return $this;
     }
 
     public function setValidity($validity)
     {
         $this->requestData['mocean-validity'] = $validity;
+
         return $this;
     }
 
     public function setResponseFormat($responseFormat)
     {
         $this->requestData['mocean-resp-format'] = $responseFormat;
+
         return $this;
     }
 

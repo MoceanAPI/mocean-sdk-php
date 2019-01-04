@@ -1,6 +1,6 @@
 <?php
 /**
- * Mocean Client Library for PHP
+ * Mocean Client Library for PHP.
  *
  * @copyright Copyright (c) 2018 Micro Ocean, Inc.
  * @license MIT License
@@ -11,13 +11,15 @@ namespace Mocean\Client;
 class Signature
 {
     /**
-     * Params to Sign
+     * Params to Sign.
+     *
      * @var array
      */
     protected $params;
 
     /**
-     * Params with Signature (and timestamp if not present)
+     * Params with Signature (and timestamp if not present).
+     *
      * @var array
      */
     protected $signed;
@@ -33,7 +35,7 @@ class Signature
         $this->params = $params;
         $this->signed = $params;
 
-        if(!isset($this->signed['timestamp'])){
+        if (!isset($this->signed['timestamp'])) {
             $this->signed['timestamp'] = time();
         }
 
@@ -45,7 +47,7 @@ class Signature
 
         $signed = [];
         foreach ($this->signed as $key => $value) {
-            $signed[$key] = str_replace(array("&", "="), "_", $value);
+            $signed[$key] = str_replace(['&', '='], '_', $value);
         }
 
         //create base string
@@ -92,16 +94,18 @@ class Signature
      * Check that a signature (or set of parameters) is valid.
      *
      * @param array| string $signature
-     * @return bool
+     *
      * @throws \InvalidArgumentException
+     *
+     * @return bool
      */
     public function check($signature)
     {
-        if(is_array($signature) AND isset($signature['sig'])){
+        if (is_array($signature) and isset($signature['sig'])) {
             $signature = $signature['sig'];
         }
 
-        if(!is_string($signature)){
+        if (!is_string($signature)) {
             throw new \InvalidArgumentException('signature must be string, or present in array or parameters');
         }
 
@@ -110,7 +114,7 @@ class Signature
 
     /**
      * Allow easy comparison.
-     * 
+     *
      * @return string
      */
     public function __toString()

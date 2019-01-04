@@ -1,6 +1,6 @@
 <?php
 /**
- * Mocean Client Library for PHP
+ * Mocean Client Library for PHP.
  *
  * @copyright Copyright (c) 2018  Micro Ocean, Inc.
  * @license  MIT License
@@ -10,7 +10,7 @@ namespace Mocean\Client\Credentials;
 
 abstract class AbstractCredentials implements CredentialsInterface
 {
-    protected $credentials = array();
+    protected $credentials = [];
 
     public function offsetExists($offset)
     {
@@ -49,5 +49,4 @@ abstract class AbstractCredentials implements CredentialsInterface
                 get_class($this)
             ));
     }
-
 }

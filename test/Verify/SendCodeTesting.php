@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: Neoson Lam
  * Date: 1/3/2019
- * Time: 5:36 PM
+ * Time: 5:36 PM.
  */
 
 namespace MoceanTest\Verify;
-
 
 use MoceanTest\AbstractTesting;
 use MoceanTest\ResponseTrait;
@@ -24,21 +23,20 @@ class SendCodeTesting extends AbstractTesting
 
     protected function setUp()
     {
-        $this->mockJsonResponseStr = $this->getResponseString(__DIR__ . '/responses/send_code.json');
-        $this->mockXmlResponseStr = $this->getResponseString(__DIR__ . '/responses/send_code.xml');;
+        $this->mockJsonResponseStr = $this->getResponseString(__DIR__.'/responses/send_code.json');
+        $this->mockXmlResponseStr = $this->getResponseString(__DIR__.'/responses/send_code.xml');
 
         $this->jsonResponse = \Mocean\Verify\SendCode::createFromResponse($this->mockJsonResponseStr);
         $this->xmlResponse = \Mocean\Verify\SendCode::createFromResponse($this->mockXmlResponseStr);
     }
 
-
     public function testRequestDataParams()
     {
-        $params = array(
+        $params = [
             'mocean-resp-format' => 'json',
-            'mocean-to' => 'testing to',
-            'mocean-brand' => 'testing brand'
-        );
+            'mocean-to'          => 'testing to',
+            'mocean-brand'       => 'testing brand',
+        ];
         $req = new \Mocean\Verify\SendCode('testing to', 'testing brand', $params);
 
         $this->assertEquals($params, $req->getRequestData());

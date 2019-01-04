@@ -3,13 +3,13 @@
  * Created by PhpStorm.
  * User: Neoson Lam
  * Date: 1/3/2019
- * Time: 3:24 PM
+ * Time: 3:24 PM.
  */
 
 namespace MoceanTest\Account;
 
-use MoceanTest\ResponseTrait;
 use MoceanTest\AbstractTesting;
+use MoceanTest\ResponseTrait;
 use Prophecy\Argument;
 use Psr\Http\Message\RequestInterface;
 
@@ -41,7 +41,7 @@ class ClientTesting extends AbstractTesting
             $this->assertEquals('/rest/1/account/balance', $request->getUri()->getPath());
 
             return true;
-        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse(__DIR__ . '/responses/balance.xml'));
+        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse(__DIR__.'/responses/balance.xml'));
 
         $balanceRes = $this->mockAccountClient->getBalance();
         $this->assertInstanceOf(\Mocean\Account\Balance::class, $balanceRes);
@@ -49,13 +49,13 @@ class ClientTesting extends AbstractTesting
 
     public function testGetPrice()
     {
-        $this->mockMoceanClient->send(Argument::that(function (RequestInterface $request){
+        $this->mockMoceanClient->send(Argument::that(function (RequestInterface $request) {
             $this->assertEquals('GET', $request->getMethod());
             $this->assertEquals('rest.moceanapi.com', $request->getUri()->getHost());
             $this->assertEquals('/rest/1/account/pricing', $request->getUri()->getPath());
 
             return true;
-        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse(__DIR__ . '/responses/price.xml'));
+        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse(__DIR__.'/responses/price.xml'));
 
         $priceRes = $this->mockAccountClient->getPricing();
         $this->assertInstanceOf(\Mocean\Account\Price::class, $priceRes);

@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: Neoson Lam
  * Date: 12/17/2018
- * Time: 4:29 PM
+ * Time: 4:29 PM.
  */
 
 namespace Mocean\Message;
-
 
 use Mocean\Client\Exception\Exception;
 use Mocean\Model\ArrayAccessTrait;
@@ -19,21 +18,22 @@ class MessageStatus implements ModelInterface
 {
     use ObjectAccessTrait, ResponseTrait, ArrayAccessTrait;
 
-    protected static $messageStatusType = array(
+    protected static $messageStatusType = [
         1 => 'Transaction success',
         2 => 'Transaction failed',
         3 => 'Transaction failed due to message expired',
         4 => 'Transaction pending for final status',
-        5 => 'Transaction not found'
-    );
+        5 => 'Transaction not found',
+    ];
 
-    protected $requestData = array();
+    protected $requestData = [];
 
     /**
      * Balance constructor.
+     *
      * @param array $extra
      */
-    public function __construct($msgId, $extra = array())
+    public function __construct($msgId, $extra = [])
     {
         $this->requestData['mocean-msgid'] = $msgId;
         $this->requestData = array_merge($this->requestData, $extra);
@@ -41,8 +41,10 @@ class MessageStatus implements ModelInterface
 
     /**
      * @param $responseData
-     * @return MessageStatus
+     *
      * @throws Exception
+     *
+     * @return MessageStatus
      */
     public static function createFromResponse($responseData)
     {
@@ -63,12 +65,14 @@ class MessageStatus implements ModelInterface
     public function setResponseFormat($responseFormat)
     {
         $this->requestData['mocean-resp-format'] = $responseFormat;
+
         return $this;
     }
 
     public function setMsgId($msgId)
     {
         $this->requestData['mocean-msgid'] = $msgId;
+
         return $this;
     }
 

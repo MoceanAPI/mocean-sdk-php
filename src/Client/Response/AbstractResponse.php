@@ -1,13 +1,12 @@
 <?php
 /**
- * Mocean Client Library for PHP
+ * Mocean Client Library for PHP.
  *
  * @copyright Copyright (c) 2018 Micro Ocean, Inc.
  * @license MIT License
  */
 
 namespace Mocean\Client\Response;
-
 
 abstract class AbstractResponse implements ResponseInterface
 {
@@ -20,7 +19,7 @@ abstract class AbstractResponse implements ResponseInterface
 
     public function isSuccess()
     {
-        return isset($this->data['status']) AND $this->data['status'] == 0;
+        return isset($this->data['status']) and $this->data['status'] == 0;
     }
 
     public function isError()

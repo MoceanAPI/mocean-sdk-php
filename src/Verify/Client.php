@@ -1,6 +1,6 @@
 <?php
 /**
- * Mocean Client Library for PHP
+ * Mocean Client Library for PHP.
  *
  * @copyright Copyright (c) 2018 Micro Ocean, Inc.
  * @license MIT License
@@ -12,8 +12,6 @@ use Mocean\Client\ClientAwareInterface;
 use Mocean\Client\ClientAwareTrait;
 use Mocean\Client\Exception;
 use Mocean\Model\ModelInterface;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\Request;
 
 class Client implements ClientAwareInterface
@@ -24,12 +22,12 @@ class Client implements ClientAwareInterface
     {
         if (!($verification instanceof ModelInterface)) {
             if (!\is_array($verification)) {
-                throw new \RuntimeException('send code must implement `' . ModelInterface::class . '` or be an array`');
+                throw new \RuntimeException('send code must implement `'.ModelInterface::class.'` or be an array`');
             }
 
             foreach (['mocean-to', 'mocean-brand'] as $param) {
                 if (!isset($verification[$param])) {
-                    throw new \InvalidArgumentException('missing expected key `' . $param . '`');
+                    throw new \InvalidArgumentException('missing expected key `'.$param.'`');
                 }
             }
 
@@ -42,7 +40,7 @@ class Client implements ClientAwareInterface
         $params = $verification->getRequestData();
 
         $request = new Request(
-            \Mocean\Client::BASE_REST . '/verify/req',
+            \Mocean\Client::BASE_REST.'/verify/req',
             'POST',
             'php://temp',
             ['content-type' => 'application/x-www-form-urlencoded']
@@ -63,12 +61,12 @@ class Client implements ClientAwareInterface
     {
         if (!($verification instanceof ModelInterface)) {
             if (!\is_array($verification)) {
-                throw new \RuntimeException('verify code must implement `' . ModelInterface::class . '` or be an array`');
+                throw new \RuntimeException('verify code must implement `'.ModelInterface::class.'` or be an array`');
             }
 
             foreach (['mocean-reqid', 'mocean-code'] as $param) {
                 if (!isset($verification[$param])) {
-                    throw new \InvalidArgumentException('missing expected key `' . $param . '`');
+                    throw new \InvalidArgumentException('missing expected key `'.$param.'`');
                 }
             }
 
@@ -81,7 +79,7 @@ class Client implements ClientAwareInterface
         $params = $verification->getRequestData();
 
         $request = new Request(
-            \Mocean\Client::BASE_REST . '/verify/check',
+            \Mocean\Client::BASE_REST.'/verify/check',
             'POST',
             'php://temp',
             ['content-type' => 'application/x-www-form-urlencoded']

@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: Neoson Lam
  * Date: 12/17/2018
- * Time: 2:36 PM
+ * Time: 2:36 PM.
  */
 
 namespace Mocean\Model;
-
 
 trait ArrayAccessTrait
 {

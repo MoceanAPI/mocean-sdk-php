@@ -1,6 +1,6 @@
 <?php
 /**
- * Mocean Client Library for PHP
+ * Mocean Client Library for PHP.
  *
  * @copyright Copyright (c) 2018 Micro Ocean, Inc.
  * @license MIT License
@@ -14,6 +14,7 @@ interface WrapResponseInterface
 {
     /**
      * @param ResponseInterface $response
+     *
      * @return ResponseInterface
      */
     public function wrapResponse(ResponseInterface $response);

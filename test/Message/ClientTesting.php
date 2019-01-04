@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: Neoson Lam
  * Date: 1/3/2019
- * Time: 4:53 PM
+ * Time: 4:53 PM.
  */
 
 namespace MoceanTest\Message;
-
 
 use MoceanTest\AbstractTesting;
 use MoceanTest\ResponseTrait;
@@ -36,11 +35,11 @@ class ClientTesting extends AbstractTesting
 
     public function testSendMessage()
     {
-        $inputParams = array(
-            'mocean-to' => 'testing to',
+        $inputParams = [
+            'mocean-to'   => 'testing to',
             'mocean-from' => 'testing from',
             'mocean-text' => 'testing text',
-        );
+        ];
 
         $this->mockMoceanClient->send(Argument::that(function (RequestInterface $request) use ($inputParams) {
             $this->assertEquals('POST', $request->getMethod());
@@ -54,7 +53,7 @@ class ClientTesting extends AbstractTesting
             $this->assertEquals($inputParams['mocean-text'], $queryArr['mocean-text']);
 
             return true;
-        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse(__DIR__ . '/responses/message.xml'));
+        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse(__DIR__.'/responses/message.xml'));
 
         $messageRes = $this->mockMessageClient->send($inputParams);
         $this->assertInstanceOf(\Mocean\Message\Message::class, $messageRes);
@@ -62,9 +61,9 @@ class ClientTesting extends AbstractTesting
 
     public function testGetMessageStatus()
     {
-        $inputParams = array(
+        $inputParams = [
             'mocean-msgid' => 'testing msgid',
-        );
+        ];
 
         $this->mockMoceanClient->send(Argument::that(function (RequestInterface $request) use ($inputParams) {
             $this->assertEquals('GET', $request->getMethod());
@@ -75,7 +74,7 @@ class ClientTesting extends AbstractTesting
             $this->assertEquals($inputParams['mocean-msgid'], $queryArr['mocean-msgid']);
 
             return true;
-        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse(__DIR__ . '/responses/message_status.xml'));
+        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse(__DIR__.'/responses/message_status.xml'));
 
         $messageStatusRes = $this->mockMessageClient->search($inputParams);
         $this->assertInstanceOf(\Mocean\Message\MessageStatus::class, $messageStatusRes);
@@ -103,7 +102,7 @@ class ClientTesting extends AbstractTesting
      */
     public function testSendRequiredRequestParamNotPresent()
     {
-        $this->moceanClient->message()->send(array());
+        $this->moceanClient->message()->send([]);
     }
 
     /**
@@ -112,7 +111,7 @@ class ClientTesting extends AbstractTesting
      */
     public function testSearchRequiredRequestParamNotPresent()
     {
-        $this->moceanClient->message()->search(array());
+        $this->moceanClient->message()->search([]);
     }
 
     /**
@@ -120,11 +119,11 @@ class ClientTesting extends AbstractTesting
      */
     public function testSendIfTheresErrorResponse()
     {
-        $this->moceanClient->message()->send(array(
-            'mocean-to' => 'testing to',
+        $this->moceanClient->message()->send([
+            'mocean-to'   => 'testing to',
             'mocean-from' => 'testing from',
-            'mocean-text' => 'testing text'
-        ));
+            'mocean-text' => 'testing text',
+        ]);
     }
 
     /**
@@ -132,8 +131,8 @@ class ClientTesting extends AbstractTesting
      */
     public function testSearchIfTheresErrorResponse()
     {
-        $this->moceanClient->message()->search(array(
-            'mocean-msgid' => 'testing msg id'
-        ));
+        $this->moceanClient->message()->search([
+            'mocean-msgid' => 'testing msg id',
+        ]);
     }
 }

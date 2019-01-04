@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: Neoson Lam
  * Date: 1/3/2019
- * Time: 3:14 PM
+ * Time: 3:14 PM.
  */
 
 namespace MoceanTest;
-
 
 class BasicCredentialsTesting extends AbstractTesting
 {

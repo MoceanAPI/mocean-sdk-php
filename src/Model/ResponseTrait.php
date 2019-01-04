@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: Neoson Lam
  * Date: 12/17/2018
- * Time: 12:31 PM
+ * Time: 12:31 PM.
  */
 
 namespace Mocean\Model;
-
 
 trait ResponseTrait
 {
@@ -20,7 +19,7 @@ trait ResponseTrait
         $obj = json_decode($this->rawResponseData);
         if ($obj === null) {
             //assume json decode failed, it might be in xml format
-            $responseData = str_replace(array('<verify_request>', '</verify_request>', '<verify_check>', '</verify_check>'), '', $this->rawResponseData);
+            $responseData = str_replace(['<verify_request>', '</verify_request>', '<verify_check>', '</verify_check>'], '', $this->rawResponseData);
             $obj = simplexml_load_string($responseData);
         }
 
@@ -35,6 +34,7 @@ trait ResponseTrait
     protected function setRawResponseData($rawResponseData)
     {
         $this->rawResponseData = $rawResponseData;
+
         return $this;
     }
 

@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: Neoson Lam
  * Date: 12/17/2018
- * Time: 11:43 AM
+ * Time: 11:43 AM.
  */
 
 namespace Mocean\Account;
-
 
 use Mocean\Client\Exception\Exception;
 use Mocean\Model\ArrayAccessTrait;
@@ -19,21 +18,24 @@ class Price implements ModelInterface
 {
     use ObjectAccessTrait, ResponseTrait, ArrayAccessTrait;
 
-    protected $requestData = array();
+    protected $requestData = [];
 
     /**
      * Price constructor.
+     *
      * @param array $extra
      */
-    public function __construct($extra = array())
+    public function __construct($extra = [])
     {
         $this->requestData = array_merge($this->requestData, $extra);
     }
 
     /**
      * @param $responseData
-     * @return Price
+     *
      * @throws Exception
+     *
+     * @return Price
      */
     public static function createFromResponse($responseData)
     {
@@ -51,24 +53,28 @@ class Price implements ModelInterface
     public function setResponseFormat($responseFormat)
     {
         $this->requestData['mocean-resp-format'] = $responseFormat;
+
         return $this;
     }
 
     public function setMcc($mcc)
     {
         $this->requestData['mocean-mcc'] = $mcc;
+
         return $this;
     }
 
     public function setMnc($mnc)
     {
         $this->requestData['mocean-mnc'] = $mnc;
+
         return $this;
     }
 
     public function setDelimiter($delimiter)
     {
         $this->requestData['mocean-delimiter'] = $delimiter;
+
         return $this;
     }
 

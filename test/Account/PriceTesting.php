@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: Neoson Lam
  * Date: 1/3/2019
- * Time: 3:22 PM
+ * Time: 3:22 PM.
  */
 
 namespace MoceanTest\Account;
-
 
 use MoceanTest\AbstractTesting;
 use MoceanTest\ResponseTrait;
@@ -24,17 +23,16 @@ class PriceTesting extends AbstractTesting
 
     protected function setUp()
     {
-        $this->mockJsonResponseStr = $this->getResponseString(__DIR__ . '/responses/price.json');
-        $this->mockXmlResponseStr = $this->getResponseString(__DIR__ . '/responses/price.xml');
+        $this->mockJsonResponseStr = $this->getResponseString(__DIR__.'/responses/price.json');
+        $this->mockXmlResponseStr = $this->getResponseString(__DIR__.'/responses/price.xml');
 
         $this->jsonResponse = \Mocean\Account\Price::createFromResponse($this->mockJsonResponseStr);
         $this->xmlResponse = \Mocean\Account\Price::createFromResponse($this->mockXmlResponseStr);
     }
 
-
     public function testRequestDataParams()
     {
-        $params = array('mocean-resp-format' => 'json');
+        $params = ['mocean-resp-format' => 'json'];
         $req = new \Mocean\Account\Price($params);
 
         $this->assertEquals($params, $req->getRequestData());

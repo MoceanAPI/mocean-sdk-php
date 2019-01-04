@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: Neoson Lam
  * Date: 1/3/2019
- * Time: 5:21 PM
+ * Time: 5:21 PM.
  */
 
 namespace MoceanTest\Message;
-
 
 use MoceanTest\AbstractTesting;
 use MoceanTest\ResponseTrait;
@@ -24,20 +23,19 @@ class MessageStatusTesting extends AbstractTesting
 
     protected function setUp()
     {
-        $this->mockJsonResponseStr = $this->getResponseString(__DIR__ . '/responses/message_status.json');
-        $this->mockXmlResponseStr = $this->getResponseString(__DIR__ . '/responses/message_status.xml');
+        $this->mockJsonResponseStr = $this->getResponseString(__DIR__.'/responses/message_status.json');
+        $this->mockXmlResponseStr = $this->getResponseString(__DIR__.'/responses/message_status.xml');
 
         $this->jsonResponse = \Mocean\Message\MessageStatus::createFromResponse($this->mockJsonResponseStr);
         $this->xmlResponse = \Mocean\Message\MessageStatus::createFromResponse($this->mockXmlResponseStr);
     }
 
-
     public function testRequestDataParams()
     {
-        $params = array(
+        $params = [
             'mocean-resp-format' => 'json',
-            'mocean-msgid' => 'CPASS_restapi_C0000002737000000.0001'
-        );
+            'mocean-msgid'       => 'CPASS_restapi_C0000002737000000.0001',
+        ];
         $req = new \Mocean\Message\MessageStatus('CPASS_restapi_C0000002737000000.0001', $params);
 
         $this->assertEquals($params, $req->getRequestData());

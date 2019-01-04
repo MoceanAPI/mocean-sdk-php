@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: Neoson Lam
  * Date: 12/17/2018
- * Time: 10:27 AM
+ * Time: 10:27 AM.
  */
 
 namespace Mocean\Account;
@@ -18,21 +18,24 @@ class Balance implements ModelInterface
 {
     use ObjectAccessTrait, ResponseTrait, ArrayAccessTrait;
 
-    protected $requestData = array();
+    protected $requestData = [];
 
     /**
      * Balance constructor.
+     *
      * @param array $extra
      */
-    public function __construct($extra = array())
+    public function __construct($extra = [])
     {
         $this->requestData = array_merge($this->requestData, $extra);
     }
 
     /**
      * @param $responseData
-     * @return Balance
+     *
      * @throws Exception
+     *
+     * @return Balance
      */
     public static function createFromResponse($responseData)
     {
@@ -50,6 +53,7 @@ class Balance implements ModelInterface
     public function setResponseFormat($responseFormat)
     {
         $this->requestData['mocean-resp-format'] = $responseFormat;
+
         return $this;
     }
 
