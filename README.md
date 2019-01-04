@@ -1,5 +1,9 @@
 MoceanAPI Client Library for PHP 
 ============================
+[![Latest Stable Version](https://poser.pugx.org/mocean/client/v/stable)](https://packagist.org/packages/mocean/client)
+[![Build Status](https://travis-ci.org/MoceanAPI/mocean-sdk-php.svg?branch=master)](https://travis-ci.org/MoceanAPI/mocean-sdk-php)
+[![License](https://poser.pugx.org/mocean/client/license)](https://packagist.org/packages/mocean/client)
+[![Total Downloads](https://poser.pugx.org/mocean/client/downloads)](https://packagist.org/packages/mocean/client)
 
 *This library requires a minimum PHP version of 5.5*
 
@@ -56,7 +60,7 @@ echo $res;
 This library is released under the [MIT License][license]
 
 [signup]: https://dashboard.moceanapi.com/register?medium=github&campaign=sdk-php
-[doc_sms]: https://docs.moceanapi.com/?php#send-sms
-[doc_inbound]: https://docs.moceanapi.com/?php#receive-sms
-[doc_verify]: https://docs.moceanapi.com/?php#overview-3
-[license]: LICENSE.txt
+[doc_sms]: https://moceanapi.com/docs/?php#send-sms
+[doc_inbound]: https://moceanapi.com/docs/?php#receive-sms
+[doc_verify]: https://moceanapi.com/docs/?php#overview-2
+[license]: LICENSE
