@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: Neoson Lam
  * Date: 12/17/2018
- * Time: 3:39 PM
+ * Time: 3:39 PM.
  */
 
 namespace Mocean\Model;
-
 
 trait ObjectAccessTrait
 {
@@ -17,8 +16,6 @@ trait ObjectAccessTrait
         if (isset($tmp->$name)) {
             return $tmp->$name;
         }
-
-        return null;
     }
 
     public function __toString()

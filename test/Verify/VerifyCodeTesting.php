@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: Neoson Lam
  * Date: 1/3/2019
- * Time: 5:54 PM
+ * Time: 5:54 PM.
  */
 
 namespace MoceanTest\Verify;
-
 
 use MoceanTest\AbstractTesting;
 use MoceanTest\ResponseTrait;
@@ -24,21 +23,20 @@ class VerifyCodeTesting extends AbstractTesting
 
     protected function setUp()
     {
-        $this->mockJsonResponseStr = $this->getResponseString(__DIR__ . '/responses/verify_code.json');
-        $this->mockXmlResponseStr = $this->getResponseString(__DIR__ . '/responses/verify_code.xml');
+        $this->mockJsonResponseStr = $this->getResponseString(__DIR__.'/responses/verify_code.json');
+        $this->mockXmlResponseStr = $this->getResponseString(__DIR__.'/responses/verify_code.xml');
 
         $this->jsonResponse = \Mocean\Verify\VerifyCode::createFromResponse($this->mockJsonResponseStr);
         $this->xmlResponse = \Mocean\Verify\VerifyCode::createFromResponse($this->mockXmlResponseStr);
     }
 
-
     public function testRequestDataParams()
     {
-        $params = array(
+        $params = [
             'mocean-resp-format' => 'json',
-            'mocean-reqid' => 'testing reqid',
-            'mocean-code' => 'testing code'
-        );
+            'mocean-reqid'       => 'testing reqid',
+            'mocean-code'        => 'testing code',
+        ];
         $req = new \Mocean\Verify\VerifyCode('testing reqid', 'testing code', $params);
 
         $this->assertEquals($params, $req->getRequestData());

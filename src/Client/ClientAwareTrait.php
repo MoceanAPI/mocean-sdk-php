@@ -1,8 +1,8 @@
 <?php
 /**
- * Mocean Client Library for PHP
+ * Mocean Client Library for PHP.
  *
- * @copyright Copyright (c) 2018 Micro Ocean, Inc. 
+ * @copyright Copyright (c) 2018 Micro Ocean, Inc.
  * @license MIT License
  */
 
@@ -24,7 +24,7 @@ trait ClientAwareTrait
 
     protected function getClient()
     {
-        if(isset($this->client)){
+        if (isset($this->client)) {
             return $this->client;
         }
 

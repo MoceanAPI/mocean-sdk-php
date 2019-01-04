@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: Neoson Lam
  * Date: 1/3/2019
- * Time: 3:22 PM
+ * Time: 3:22 PM.
  */
 
 namespace MoceanTest\Account;
@@ -23,17 +23,16 @@ class BalanceTesting extends AbstractTesting
 
     protected function setUp()
     {
-        $this->mockJsonResponseStr = $this->getResponseString(__DIR__ . '/responses/balance.json');
-        $this->mockXmlResponseStr = $this->getResponseString(__DIR__ . '/responses/balance.xml');
+        $this->mockJsonResponseStr = $this->getResponseString(__DIR__.'/responses/balance.json');
+        $this->mockXmlResponseStr = $this->getResponseString(__DIR__.'/responses/balance.xml');
 
         $this->jsonResponse = \Mocean\Account\Balance::createFromResponse($this->mockJsonResponseStr);
         $this->xmlResponse = \Mocean\Account\Balance::createFromResponse($this->mockXmlResponseStr);
     }
 
-
     public function testRequestDataParams()
     {
-        $params = array('mocean-resp-format' => 'json');
+        $params = ['mocean-resp-format' => 'json'];
         $req = new \Mocean\Account\Balance($params);
 
         $this->assertEquals($params, $req->getRequestData());

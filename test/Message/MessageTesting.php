@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: Neoson Lam
  * Date: 1/3/2019
- * Time: 5:02 PM
+ * Time: 5:02 PM.
  */
 
 namespace MoceanTest\Message;
@@ -23,22 +23,21 @@ class MessageTesting extends AbstractTesting
 
     protected function setUp()
     {
-        $this->mockJsonResponseStr = $this->getResponseString(__DIR__ . '/responses/message.json');
-        $this->mockXmlResponseStr = $this->getResponseString(__DIR__ . '/responses/message.xml');
+        $this->mockJsonResponseStr = $this->getResponseString(__DIR__.'/responses/message.json');
+        $this->mockXmlResponseStr = $this->getResponseString(__DIR__.'/responses/message.xml');
 
         $this->jsonResponse = \Mocean\Message\Message::createFromResponse($this->mockJsonResponseStr);
         $this->xmlResponse = \Mocean\Message\Message::createFromResponse($this->mockXmlResponseStr);
     }
 
-
     public function testRequestDataParams()
     {
-        $params = array(
+        $params = [
             'mocean-resp-format' => 'json',
-            'mocean-from' => 'testing from',
-            'mocean-to' => 'testing to',
-            'mocean-text' => 'testing text'
-        );
+            'mocean-from'        => 'testing from',
+            'mocean-to'          => 'testing to',
+            'mocean-text'        => 'testing text',
+        ];
         $req = new \Mocean\Message\Message('testing from', 'testing to', 'testing-text', $params);
 
         $this->assertEquals($params, $req->getRequestData());

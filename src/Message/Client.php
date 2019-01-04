@@ -1,6 +1,6 @@
 <?php
 /**
- * Mocean Client Library for PHP
+ * Mocean Client Library for PHP.
  *
  * @copyright Copyright (c) 2018 Micro Ocean, Inc.
  * @license MIT License
@@ -15,7 +15,7 @@ use Mocean\Model\ModelInterface;
 use Zend\Diactoros\Request;
 
 /**
- * Class Client
+ * Class Client.
  */
 class Client implements ClientAwareInterface
 {
@@ -23,10 +23,12 @@ class Client implements ClientAwareInterface
 
     /**
      * @param Message|array $message
-     * @return Message
+     *
      * @throws Exception\Exception
      * @throws Exception\Request
      * @throws Exception\Server
+     *
+     * @return Message
      */
     protected $delivery_status = [1 => 'Success', 2 => 'Failed', 3 => 'Expired'];
 
@@ -39,7 +41,7 @@ class Client implements ClientAwareInterface
         $params = $message->getRequestData();
 
         $request = new Request(
-            \Mocean\Client::BASE_REST . '/sms',
+            \Mocean\Client::BASE_REST.'/sms',
             'POST',
             'php://temp',
             ['content-type' => 'application/x-www-form-urlencoded']
@@ -61,7 +63,7 @@ class Client implements ClientAwareInterface
     {
         if (!($messageStatus instanceof ModelInterface)) {
             if (!\is_array($messageStatus)) {
-                throw new \RuntimeException('message status must implement `' . ModelInterface::class . '` or be an array`');
+                throw new \RuntimeException('message status must implement `'.ModelInterface::class.'` or be an array`');
             }
 
             if (!isset($messageStatus['mocean-msgid'])) {
@@ -75,7 +77,7 @@ class Client implements ClientAwareInterface
         $params = $messageStatus->getRequestData();
 
         $request = new Request(
-            \Mocean\Client::BASE_REST . '/report/message?' . http_build_query($params),
+            \Mocean\Client::BASE_REST.'/report/message?'.http_build_query($params),
             'GET',
             'php://temp'
         );
@@ -94,7 +96,7 @@ class Client implements ClientAwareInterface
 
     public function receiveDLR()
     {
-        parse_str(file_get_contents("php://input"), $data);
+        parse_str(file_get_contents('php://input'), $data);
 
         if (isset($data['mocean-dlr-status'])) {
             $data['mocean-dlr-status'] = $this->delivery_status[$data['mocean-dlr-status']];
@@ -107,12 +109,12 @@ class Client implements ClientAwareInterface
     protected function createMessageFromArray($message)
     {
         if (!is_array($message)) {
-            throw new \RuntimeException('message must implement `' . ModelInterface::class . '` or be an array`');
+            throw new \RuntimeException('message must implement `'.ModelInterface::class.'` or be an array`');
         }
 
         foreach (['mocean-to', 'mocean-from', 'mocean-text'] as $param) {
             if (!isset($message[$param])) {
-                throw new \InvalidArgumentException('missing expected key `' . $param . '`');
+                throw new \InvalidArgumentException('missing expected key `'.$param.'`');
             }
         }
 
@@ -140,6 +142,7 @@ class Client implements ClientAwareInterface
      *
      * @param $name
      * @param $arguments
+     *
      * @return MessageInterface
      */
     public function __call($name, $arguments)
@@ -153,7 +156,7 @@ class Client implements ClientAwareInterface
         }
 
         $class = substr($name, 4);
-        $class = 'Mocean\\Message\\' . ucfirst(strtolower($class));
+        $class = 'Mocean\\Message\\'.ucfirst(strtolower($class));
 
         if (!class_exists($class)) {
             throw new \RuntimeException(sprintf(
@@ -168,6 +171,4 @@ class Client implements ClientAwareInterface
 
         return $this->send($message);
     }
-
-
 }

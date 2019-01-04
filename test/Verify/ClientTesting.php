@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: Neoson Lam
  * Date: 1/3/2019
- * Time: 5:31 PM
+ * Time: 5:31 PM.
  */
 
 namespace MoceanTest\Verify;
-
 
 use MoceanTest\AbstractTesting;
 use MoceanTest\ResponseTrait;
@@ -36,10 +35,10 @@ class ClientTesting extends AbstractTesting
 
     public function testSendCode()
     {
-        $inputParams = array(
-            'mocean-to' => 'testing to',
+        $inputParams = [
+            'mocean-to'    => 'testing to',
             'mocean-brand' => 'testing brand',
-        );
+        ];
 
         $this->mockMoceanClient->send(Argument::that(function (RequestInterface $request) use ($inputParams) {
             $this->assertEquals('POST', $request->getMethod());
@@ -52,7 +51,7 @@ class ClientTesting extends AbstractTesting
             $this->assertEquals($inputParams['mocean-brand'], $queryArr['mocean-brand']);
 
             return true;
-        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse(__DIR__ . '/responses/send_code.xml'));
+        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse(__DIR__.'/responses/send_code.xml'));
 
         $sendCodeRes = $this->mockVerifyClient->start($inputParams);
         $this->assertInstanceOf(\Mocean\Verify\SendCode::class, $sendCodeRes);
@@ -60,10 +59,10 @@ class ClientTesting extends AbstractTesting
 
     public function testVerifyCode()
     {
-        $inputParams = array(
+        $inputParams = [
             'mocean-reqid' => 'testing reqid',
-            'mocean-code' => 'testing code',
-        );
+            'mocean-code'  => 'testing code',
+        ];
 
         $this->mockMoceanClient->send(Argument::that(function (RequestInterface $request) use ($inputParams) {
             $this->assertEquals('POST', $request->getMethod());
@@ -76,7 +75,7 @@ class ClientTesting extends AbstractTesting
             $this->assertEquals($inputParams['mocean-code'], $queryArr['mocean-code']);
 
             return true;
-        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse(__DIR__ . '/responses/verify_code.xml'));
+        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse(__DIR__.'/responses/verify_code.xml'));
 
         $verifyCodeRes = $this->mockVerifyClient->check($inputParams);
         $this->assertInstanceOf(\Mocean\Verify\VerifyCode::class, $verifyCodeRes);
@@ -104,7 +103,7 @@ class ClientTesting extends AbstractTesting
      */
     public function testStartRequiredRequestParamNotPresent()
     {
-        $this->moceanClient->verify()->start(array());
+        $this->moceanClient->verify()->start([]);
     }
 
     /**
@@ -113,7 +112,7 @@ class ClientTesting extends AbstractTesting
      */
     public function testCheckRequiredRequestParamNotPresent()
     {
-        $this->moceanClient->verify()->check(array());
+        $this->moceanClient->verify()->check([]);
     }
 
     /**
@@ -121,10 +120,10 @@ class ClientTesting extends AbstractTesting
      */
     public function testStartIfTheresErrorResponse()
     {
-        $this->moceanClient->verify()->start(array(
-            'mocean-to' => 'testing to',
-            'mocean-brand' => 'testing brand'
-        ));
+        $this->moceanClient->verify()->start([
+            'mocean-to'    => 'testing to',
+            'mocean-brand' => 'testing brand',
+        ]);
     }
 
     /**
@@ -132,9 +131,9 @@ class ClientTesting extends AbstractTesting
      */
     public function testCheckIfTheresErrorResponse()
     {
-        $this->moceanClient->verify()->check(array(
+        $this->moceanClient->verify()->check([
             'mocean-reqid' => 'testing req id',
-            'mocean-code' => 'testing code'
-        ));
+            'mocean-code'  => 'testing code',
+        ]);
     }
 }

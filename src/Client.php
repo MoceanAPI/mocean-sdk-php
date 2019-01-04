@@ -1,12 +1,13 @@
 <?php
 /**
- * Mocean Client Library for PHP
+ * Mocean Client Library for PHP.
  *
  * @copyright Copyright (c) 2018 Micro Ocean, Inc.
  * @license MIT License
  */
 
 namespace Mocean;
+
 use Http\Client\HttpClient;
 use Mocean\Client\Credentials\Basic;
 use Mocean\Client\Credentials\Container;
@@ -16,7 +17,6 @@ use Mocean\Client\Credentials\OAuth;
 use Mocean\Client\Credentials\SharedSecret;
 use Mocean\Client\Factory\FactoryInterface;
 use Mocean\Client\Factory\MapFactory;
-use Mocean\Client\Response\Response;
 use Psr\Http\Message\RequestInterface;
 use Zend\Diactoros\Uri;
 
@@ -24,6 +24,7 @@ use Zend\Diactoros\Uri;
  * Mocean API Client, allows access to the API from PHP.
  *
  * @property \Mocean\Message\Client $message
+ *
  * @method \Mocean\Message\Client message()
  * @method \Mocean\Account\Client account()
  * @method \Mocean\Verify\Client verify()
@@ -33,15 +34,17 @@ class Client
     const VERSION = '1.0.0-beta1';
 
     const BASE_REST = 'https://rest.moceanapi.com/rest/1';
-    const PL = "PHP-SDK";
+    const PL = 'PHP-SDK';
     /**
-     * API Credentials
+     * API Credentials.
+     *
      * @var CredentialsInterface
      */
     protected $credentials;
 
     /**
-     * Http Client
+     * Http Client.
+     *
      * @var HttpClient
      */
     protected $client;
@@ -59,17 +62,17 @@ class Client
     /**
      * Create a new API client using the provided credentials.
      */
-    public function __construct(CredentialsInterface $credentials, $options = array(), HttpClient $client = null)
+    public function __construct(CredentialsInterface $credentials, $options = [], HttpClient $client = null)
     {
-        if(is_null($client)){
+        if (is_null($client)) {
             $client = new \Http\Adapter\Guzzle6\Client();
         }
 
         $this->setHttpClient($client);
 
         //make sure we know how to use the credentials
-        if(!($credentials instanceof Container) && !($credentials instanceof Basic) && !($credentials instanceof SharedSecret) && !($credentials instanceof OAuth)){
-            throw new \RuntimeException('unknown credentials type: ' . get_class($credentials));
+        if (!($credentials instanceof Container) && !($credentials instanceof Basic) && !($credentials instanceof SharedSecret) && !($credentials instanceof OAuth)) {
+            throw new \RuntimeException('unknown credentials type: '.get_class($credentials));
         }
 
         $this->credentials = $credentials;
@@ -77,9 +80,9 @@ class Client
         $this->options = $options;
 
         $this->setFactory(new MapFactory([
-			'account' => 'Mocean\Account\Client',
+            'account' => 'Mocean\Account\Client',
             'message' => 'Mocean\Message\Client',
-            'verify' => 'Mocean\Verify\Client'
+            'verify'  => 'Mocean\Verify\Client',
         ], $this));
     }
 
@@ -90,11 +93,13 @@ class Client
      * replacement.
      *
      * @param HttpClient $client
+     *
      * @return $this
      */
     public function setHttpClient(HttpClient $client)
     {
         $this->client = $client;
+
         return $this;
     }
 
@@ -112,22 +117,25 @@ class Client
      * Set the factory used to create API specific clients.
      *
      * @param FactoryInterface $factory
+     *
      * @return $this
      */
     public function setFactory(FactoryInterface $factory)
     {
         $this->factory = $factory;
+
         return $this;
     }
 
     /**
      * @param RequestInterface $request
-     * @param Signature $signature
+     * @param Signature        $signature
+     *
      * @return RequestInterface
      */
     public static function signRequest(RequestInterface $request, SharedSecret $credentials)
     {
-        switch($request->getHeaderLine('content-type')){
+        switch ($request->getHeaderLine('content-type')) {
             case 'application/json':
                 $body = $request->getBody();
                 $body->rewind();
@@ -164,14 +172,14 @@ class Client
 
     public static function authRequest(RequestInterface $request, Basic $credentials)
     {
-        switch($request->getHeaderLine('content-type')){
+        switch ($request->getHeaderLine('content-type')) {
             case 'application/json':
                 $body = $request->getBody();
                 $body->rewind();
                 $content = $body->getContents();
                 $params = json_decode($content, true);
                 $params = array_merge($params, $credentials->asArray());
-		$params = array_merge($params, array("mocean-medium" => \Mocean\Client::PL));
+        $params = array_merge($params, ['mocean-medium' => \Mocean\Client::PL]);
                 $body->rewind();
                 $body->write(json_encode($params));
                 break;
@@ -182,7 +190,7 @@ class Client
                 $params = [];
                 parse_str($content, $params);
                 $params = array_merge($params, $credentials->asArray());
-		$params = array_merge($params, array("mocean-medium" => \Mocean\Client::PL));
+        $params = array_merge($params, ['mocean-medium' => \Mocean\Client::PL]);
                 $body->rewind();
                 $body->write(http_build_query($params, null, '&'));
                 break;
@@ -190,7 +198,7 @@ class Client
                 $query = [];
                 parse_str($request->getUri()->getQuery(), $query);
                 $query = array_merge($query, $credentials->asArray());
-		$query = array_merge($query, array("mocean-medium" => \Mocean\Client::PL));
+        $query = array_merge($query, ['mocean-medium' => \Mocean\Client::PL]);
                 $request = $request->withUri($request->getUri()->withQuery(http_build_query($query)));
                 break;
         }
@@ -202,51 +210,53 @@ class Client
      * Wraps the HTTP Client, creates a new PSR-7 request adding authentication, signatures, etc.
      *
      * @param \Psr\Http\Message\RequestInterface $request
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function send(\Psr\Http\Message\RequestInterface $request)
     {
-        if($this->credentials instanceof Container) {
+        if ($this->credentials instanceof Container) {
             if (strpos($request->getUri()->getPath(), '/v1/calls') === 0) {
-                $request = $request->withHeader('Authorization', 'Bearer ' . $this->credentials->get(Keypair::class)->generateJwt());
+                $request = $request->withHeader('Authorization', 'Bearer '.$this->credentials->get(Keypair::class)->generateJwt());
             } else {
                 $request = self::authRequest($request, $this->credentials->get(Basic::class));
             }
-        } elseif($this->credentials instanceof Keypair){
-            $request = $request->withHeader('Authorization', 'Bearer ' . $this->credentials->get(Keypair::class)->generateJwt());
-        } elseif($this->credentials instanceof SharedSecret){
+        } elseif ($this->credentials instanceof Keypair) {
+            $request = $request->withHeader('Authorization', 'Bearer '.$this->credentials->get(Keypair::class)->generateJwt());
+        } elseif ($this->credentials instanceof SharedSecret) {
             $request = self::signRequest($request, $this->credentials);
-        } elseif($this->credentials instanceof Basic){
+        } elseif ($this->credentials instanceof Basic) {
             $request = self::authRequest($request, $this->credentials);
         }
 
         //todo: add oauth support
 
         //allow any part of the URI to be replaced with a simple search
-        if(isset($this->options['url'])){
-            foreach($this->options['url'] as $search => $replace){
+        if (isset($this->options['url'])) {
+            foreach ($this->options['url'] as $search => $replace) {
                 $uri = (string) $request->getUri();
 
                 $new = str_replace($search, $replace, $uri);
-                if($uri !== $new){
+                if ($uri !== $new) {
                     $request = $request->withUri(new Uri($new));
                 }
             }
         }
 
         $response = $this->client->sendRequest($request);
+
         return $response;
     }
 
     public function __call($name, $args)
     {
-        if(!$this->factory->hasApi($name)){
-            throw new \RuntimeException('no api namespace found: ' . $name);
+        if (!$this->factory->hasApi($name)) {
+            throw new \RuntimeException('no api namespace found: '.$name);
         }
 
         $collection = $this->factory->getApi($name);
 
-        if(empty($args)){
+        if (empty($args)) {
             return $collection;
         }
 
@@ -255,8 +265,8 @@ class Client
 
     public function __get($name)
     {
-        if(!$this->factory->hasApi($name)){
-            throw new \RuntimeException('no api namespace found: ' . $name);
+        if (!$this->factory->hasApi($name)) {
+            throw new \RuntimeException('no api namespace found: '.$name);
         }
 
         return $this->factory->getApi($name);
