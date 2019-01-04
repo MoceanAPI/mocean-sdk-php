@@ -20,7 +20,8 @@ trait ResponseTrait
         $obj = json_decode($this->rawResponseData);
         if ($obj === null) {
             //assume json decode failed, it might be in xml format
-            $obj = simplexml_load_string($this->rawResponseData);
+            $responseData = str_replace(array('<verify_request>', '</verify_request>', '<verify_check>', '</verify_check>'), '', $this->rawResponseData);
+            $obj = simplexml_load_string($responseData);
         }
 
         if ($obj === false) {
