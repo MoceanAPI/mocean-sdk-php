@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<result>
+    <status>0</status>
+    <msgid>CPASS_restapi_C0000002737000.0002</msgid>
+    <to>60177131203</to>
+    <imsi>502180000000000</imsi>
+    <current_carrier>
+        <country>MY</country>
+        <name>U Mobile</name>
+    </current_carrier>
+    <original_carrier>
+        <country>MY</country>
+        <name>Maxis Mobile</name>
+    </original_carrier>
+    <ported>ported</ported>
+    <reachable>reachable</reachable>
+</result>
