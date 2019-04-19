@@ -23,12 +23,12 @@ class Client implements ClientAwareInterface
     {
         if (!($numberLookup instanceof ModelInterface)) {
             if (!\is_array($numberLookup)) {
-                throw new \RuntimeException('number lookup must implement `'.ModelInterface::class.'` or be an array`');
+                throw new \RuntimeException('number lookup must implement `' . ModelInterface::class . '` or be an array`');
             }
 
             foreach (['mocean-to'] as $param) {
                 if (!isset($numberLookup[$param])) {
-                    throw new \InvalidArgumentException('missing expected key `'.$param.'`');
+                    throw new \InvalidArgumentException('missing expected key `' . $param . '`');
                 }
             }
 
@@ -40,15 +40,14 @@ class Client implements ClientAwareInterface
         $params = $numberLookup->getRequestData();
 
         $request = new Request(
-            \Mocean\Client::BASE_REST.'/nl',
+            \Mocean\Client::BASE_REST . '/nl?' . http_build_query($params),
             'GET',
             'php://temp'
         );
 
-        $request->getBody()->write(http_build_query($params));
         $response = $this->client->send($request);
-        $response->getBody()->rewind();
         $data = $response->getBody()->getContents();
+
         if (!isset($data)) {
             throw new Exception\Exception('unexpected response from API');
         }
