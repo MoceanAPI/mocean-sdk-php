@@ -8,7 +8,6 @@
 
 namespace Mocean\NumberLookup;
 
-
 use Mocean\Client\Exception\Exception;
 use Mocean\Model\ArrayAccessTrait;
 use Mocean\Model\ModelInterface;
@@ -23,8 +22,9 @@ class NumberLookup implements ModelInterface
 
     /**
      * NumberLookup constructor.
+     *
      * @param string $to
-     * @param array $extra
+     * @param array  $extra
      */
     public function __construct($to, $extra = [])
     {
