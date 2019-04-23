@@ -28,6 +28,7 @@ use Zend\Diactoros\Uri;
  * @method \Mocean\Message\Client message()
  * @method \Mocean\Account\Client account()
  * @method \Mocean\Verify\Client verify()
+ * @method \Mocean\NumberLookup\Client numberLookup()
  */
 class Client
 {
@@ -83,6 +84,7 @@ class Client
             'account' => 'Mocean\Account\Client',
             'message' => 'Mocean\Message\Client',
             'verify'  => 'Mocean\Verify\Client',
+            'numberLookup' => 'Mocean\NumberLookup\Client'
         ], $this));
     }
 

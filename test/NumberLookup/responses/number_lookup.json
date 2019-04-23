@@ -1,0 +1,16 @@
+{
+  "status": 0,
+  "msgid": "CPASS_restapi_C00000000000000.0002",
+  "to": "60123456789",
+  "imsi": "502180000000000",
+  "current_carrier": {
+    "country": "MY",
+    "name": "U Mobile"
+  },
+  "original_carrier": {
+    "country": "MY",
+    "name": "Maxis Mobile"
+  },
+  "ported": "ported",
+  "reachable": "reachable"
+}
