@@ -64,18 +64,18 @@ class NumberLookupTesting extends AbstractTesting
     public function testDirectAccessResponseDataUsingArray()
     {
         $this->assertEquals($this->jsonResponse['status'], '0');
-        $this->assertEquals($this->jsonResponse['msgid'], 'CPASS_restapi_C0000002737000.0002');
+        $this->assertEquals($this->jsonResponse['msgid'], 'CPASS_restapi_C00000000000000.0002');
 
         $this->assertEquals($this->xmlResponse['status'], '0');
-        $this->assertEquals($this->xmlResponse['msgid'], 'CPASS_restapi_C0000002737000.0002');
+        $this->assertEquals($this->xmlResponse['msgid'], 'CPASS_restapi_C00000000000000.0002');
     }
 
     public function testDirectAccessResponseDataUsingMagicProperties()
     {
         $this->assertEquals($this->jsonResponse->status, '0');
-        $this->assertEquals($this->jsonResponse->msgid, 'CPASS_restapi_C0000002737000.0002');
+        $this->assertEquals($this->jsonResponse->msgid, 'CPASS_restapi_C00000000000000.0002');
 
         $this->assertEquals($this->xmlResponse->status, '0');
-        $this->assertEquals($this->xmlResponse->msgid, 'CPASS_restapi_C0000002737000.0002');
+        $this->assertEquals($this->xmlResponse->msgid, 'CPASS_restapi_C00000000000000.0002');
     }
 }
