@@ -8,12 +8,11 @@
 
 namespace Mocean\NumberLookup;
 
-
 use Mocean\Client\ClientAwareInterface;
 use Mocean\Client\ClientAwareTrait;
+use Mocean\Client\Exception;
 use Mocean\Model\ModelInterface;
 use Zend\Diactoros\Request;
-use Mocean\Client\Exception;
 
 class Client implements ClientAwareInterface
 {
@@ -23,12 +22,12 @@ class Client implements ClientAwareInterface
     {
         if (!($numberLookup instanceof ModelInterface)) {
             if (!\is_array($numberLookup)) {
-                throw new \RuntimeException('number lookup must implement `' . ModelInterface::class . '` or be an array`');
+                throw new \RuntimeException('number lookup must implement `'.ModelInterface::class.'` or be an array`');
             }
 
             foreach (['mocean-to'] as $param) {
                 if (!isset($numberLookup[$param])) {
-                    throw new \InvalidArgumentException('missing expected key `' . $param . '`');
+                    throw new \InvalidArgumentException('missing expected key `'.$param.'`');
                 }
             }
 
@@ -40,7 +39,7 @@ class Client implements ClientAwareInterface
         $params = $numberLookup->getRequestData();
 
         $request = new Request(
-            \Mocean\Client::BASE_REST . '/nl?' . http_build_query($params),
+            \Mocean\Client::BASE_REST.'/nl?'.http_build_query($params),
             'GET',
             'php://temp'
         );

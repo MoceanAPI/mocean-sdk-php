@@ -8,7 +8,6 @@
 
 namespace MoceanTest\NumberLookup;
 
-
 use MoceanTest\AbstractTesting;
 use MoceanTest\ResponseTrait;
 
@@ -24,8 +23,8 @@ class NumberLookupTesting extends AbstractTesting
 
     protected function setUp()
     {
-        $this->mockJsonResponseStr = $this->getResponseString(__DIR__ . '/responses/number_lookup.json');
-        $this->mockXmlResponseStr = $this->getResponseString(__DIR__ . '/responses/number_lookup.xml');
+        $this->mockJsonResponseStr = $this->getResponseString(__DIR__.'/responses/number_lookup.json');
+        $this->mockXmlResponseStr = $this->getResponseString(__DIR__.'/responses/number_lookup.xml');
 
         $this->jsonResponse = \Mocean\NumberLookup\NumberLookup::createFromResponse($this->mockJsonResponseStr);
         $this->xmlResponse = \Mocean\NumberLookup\NumberLookup::createFromResponse($this->mockXmlResponseStr);
@@ -35,7 +34,7 @@ class NumberLookupTesting extends AbstractTesting
     {
         $params = [
             'mocean-resp-format' => 'json',
-            'mocean-to' => 'testing to',
+            'mocean-to'          => 'testing to',
         ];
 
         $req = new \Mocean\NumberLookup\NumberLookup('testing to', $params);

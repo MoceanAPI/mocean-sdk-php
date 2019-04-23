@@ -81,10 +81,10 @@ class Client
         $this->options = $options;
 
         $this->setFactory(new MapFactory([
-            'account' => 'Mocean\Account\Client',
-            'message' => 'Mocean\Message\Client',
-            'verify'  => 'Mocean\Verify\Client',
-            'numberLookup' => 'Mocean\NumberLookup\Client'
+            'account'      => 'Mocean\Account\Client',
+            'message'      => 'Mocean\Message\Client',
+            'verify'       => 'Mocean\Verify\Client',
+            'numberLookup' => 'Mocean\NumberLookup\Client',
         ], $this));
     }
 
