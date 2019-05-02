@@ -8,6 +8,7 @@
 
 namespace MoceanTest\Verify;
 
+use Mocean\Verify\ChargeType;
 use MoceanTest\AbstractTesting;
 use MoceanTest\ResponseTrait;
 use Prophecy\Argument;
@@ -54,6 +55,30 @@ class ClientTesting extends AbstractTesting
         }))->shouldBeCalledTimes(1)->willReturn($this->getResponse(__DIR__.'/responses/send_code.xml'));
 
         $sendCodeRes = $this->mockVerifyClient->start($inputParams);
+        $this->assertInstanceOf(\Mocean\Verify\SendCode::class, $sendCodeRes);
+    }
+
+    public function testSendCodeAsCPA()
+    {
+        $inputParams = [
+            'mocean-to' => 'testing to',
+            'mocean-brand' => 'testing brand',
+        ];
+
+        $this->mockMoceanClient->send(Argument::that(function (RequestInterface $request) use ($inputParams) {
+            $this->assertEquals('POST', $request->getMethod());
+            $this->assertEquals('rest.moceanapi.com', $request->getUri()->getHost());
+            $this->assertEquals('/rest/1/verify/req/sms', $request->getUri()->getPath());
+
+            $request->getBody()->rewind();
+            $queryArr = $this->convertArrayFromQueryString($request->getBody()->getContents());
+            $this->assertEquals($inputParams['mocean-to'], $queryArr['mocean-to']);
+            $this->assertEquals($inputParams['mocean-brand'], $queryArr['mocean-brand']);
+
+            return true;
+        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse(__DIR__ . '/responses/send_code.xml'));
+
+        $sendCodeRes = $this->mockVerifyClient->sendAs(ChargeType::CHARGE_PER_ATTEMPT)->start($inputParams);
         $this->assertInstanceOf(\Mocean\Verify\SendCode::class, $sendCodeRes);
     }
 

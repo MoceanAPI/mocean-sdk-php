@@ -18,6 +18,14 @@ class Client implements ClientAwareInterface
 {
     use ClientAwareTrait;
 
+    protected $verifyChargeType = ChargeType::CHARGE_PER_CONVERSION;
+
+    public function sendAs($chargeType = ChargeType::CHARGE_PER_CONVERSION)
+    {
+        $this->verifyChargeType = $chargeType;
+        return $this;
+    }
+
     public function start($verification)
     {
         if (!($verification instanceof ModelInterface)) {
@@ -39,8 +47,13 @@ class Client implements ClientAwareInterface
 
         $params = $verification->getRequestData();
 
+        $verifyRequestUrl = \Mocean\Client::BASE_REST . '/verify/req';
+        if ($this->verifyChargeType === ChargeType::CHARGE_PER_ATTEMPT) {
+            $verifyRequestUrl .= '/sms';
+        }
+
         $request = new Request(
-            \Mocean\Client::BASE_REST.'/verify/req',
+            $verifyRequestUrl,
             'POST',
             'php://temp',
             ['content-type' => 'application/x-www-form-urlencoded']
