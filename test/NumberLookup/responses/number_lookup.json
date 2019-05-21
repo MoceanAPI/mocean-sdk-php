@@ -2,14 +2,19 @@
   "status": 0,
   "msgid": "CPASS_restapi_C00000000000000.0002",
   "to": "60123456789",
-  "imsi": "502180000000000",
   "current_carrier": {
     "country": "MY",
-    "name": "U Mobile"
+    "name": "U Mobile",
+    "network_code": 50218,
+    "mcc": "502",
+    "mnc": "18"
   },
   "original_carrier": {
     "country": "MY",
-    "name": "Maxis Mobile"
+    "name": "Maxis Mobile",
+    "network_code": 50212,
+    "mcc": "502",
+    "mnc": "12"
   },
   "ported": "ported",
   "reachable": "reachable"

@@ -39,7 +39,7 @@ class Client implements ClientAwareInterface
         $params = $numberLookup->getRequestData();
 
         $request = new Request(
-            \Mocean\Client::BASE_REST.'/nl?'.http_build_query($params),
+            '/nl?'.http_build_query($params),
             'GET',
             'php://temp'
         );

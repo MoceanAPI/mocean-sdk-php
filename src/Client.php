@@ -32,9 +32,8 @@ use Zend\Diactoros\Uri;
  */
 class Client
 {
-    const VERSION = '1.0.0-beta1';
-
-    const BASE_REST = 'https://rest.moceanapi.com/rest/1';
+    public $version = '1';
+    public $baseUrl = 'https://rest.moceanapi.com';
     const PL = 'PHP-SDK';
     /**
      * API Credentials.
@@ -79,6 +78,14 @@ class Client
         $this->credentials = $credentials;
 
         $this->options = $options;
+
+        if(isset($this->options['baseUrl'])){
+            $this->baseUrl = rtrim($this->options['baseUrl'], '/');
+        }
+
+        if(isset($this->options['version'])) {
+            $this->version = $this->options['version'];
+        }
 
         $this->setFactory(new MapFactory([
             'account'      => 'Mocean\Account\Client',
@@ -233,21 +240,11 @@ class Client
 
         //todo: add oauth support
 
-        //allow any part of the URI to be replaced with a simple search
-        if (isset($this->options['url'])) {
-            foreach ($this->options['url'] as $search => $replace) {
-                $uri = (string) $request->getUri();
+        $uri = (string) $request->getUri();
 
-                $new = str_replace($search, $replace, $uri);
-                if ($uri !== $new) {
-                    $request = $request->withUri(new Uri($new));
-                }
-            }
-        }
-
-        $response = $this->client->sendRequest($request);
-
-        return $response;
+        return $this->client->sendRequest(
+            $request->withUri(new Uri($this->baseUrl . '/rest/' . $this->version . $uri))
+        );
     }
 
     public function __call($name, $args)

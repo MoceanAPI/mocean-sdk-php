@@ -37,8 +37,7 @@ class ClientTesting extends AbstractTesting
     {
         $this->mockMoceanClient->send(Argument::that(function (RequestInterface $request) {
             $this->assertEquals('GET', $request->getMethod());
-            $this->assertEquals('rest.moceanapi.com', $request->getUri()->getHost());
-            $this->assertEquals('/rest/1/account/balance', $request->getUri()->getPath());
+            $this->assertEquals('/account/balance', $request->getUri()->getPath());
 
             return true;
         }))->shouldBeCalledTimes(1)->willReturn($this->getResponse(__DIR__.'/responses/balance.xml'));
@@ -51,8 +50,7 @@ class ClientTesting extends AbstractTesting
     {
         $this->mockMoceanClient->send(Argument::that(function (RequestInterface $request) {
             $this->assertEquals('GET', $request->getMethod());
-            $this->assertEquals('rest.moceanapi.com', $request->getUri()->getHost());
-            $this->assertEquals('/rest/1/account/pricing', $request->getUri()->getPath());
+            $this->assertEquals('/account/pricing', $request->getUri()->getPath());
 
             return true;
         }))->shouldBeCalledTimes(1)->willReturn($this->getResponse(__DIR__.'/responses/price.xml'));

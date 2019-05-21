@@ -8,9 +8,6 @@
 
 namespace Mocean\Client\Exception;
 
-use Mocean\Entity\HasEntityTrait;
-
 class Request extends Exception
 {
-    use HasEntityTrait;
 }

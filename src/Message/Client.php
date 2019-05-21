@@ -41,7 +41,7 @@ class Client implements ClientAwareInterface
         $params = $message->getRequestData();
 
         $request = new Request(
-            \Mocean\Client::BASE_REST.'/sms',
+            '/sms',
             'POST',
             'php://temp',
             ['content-type' => 'application/x-www-form-urlencoded']
@@ -77,7 +77,7 @@ class Client implements ClientAwareInterface
         $params = $messageStatus->getRequestData();
 
         $request = new Request(
-            \Mocean\Client::BASE_REST.'/report/message?'.http_build_query($params),
+            '/report/message?'.http_build_query($params),
             'GET',
             'php://temp'
         );

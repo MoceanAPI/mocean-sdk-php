@@ -25,7 +25,7 @@ class Client implements ClientAwareInterface
         $params = $price->getRequestData();
 
         $request = new Request(
-            \Mocean\Client::BASE_REST.'/account/pricing?'.http_build_query($params),
+            '/account/pricing?'.http_build_query($params),
             'GET',
             'php://temp'
         );
@@ -52,7 +52,7 @@ class Client implements ClientAwareInterface
         $params = $balance->getRequestData();
 
         $request = new Request(
-            \Mocean\Client::BASE_REST.'/account/balance?'.http_build_query($params),
+            '/account/balance?'.http_build_query($params),
             'GET',
             'php://temp'
         );

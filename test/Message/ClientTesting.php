@@ -43,8 +43,7 @@ class ClientTesting extends AbstractTesting
 
         $this->mockMoceanClient->send(Argument::that(function (RequestInterface $request) use ($inputParams) {
             $this->assertEquals('POST', $request->getMethod());
-            $this->assertEquals('rest.moceanapi.com', $request->getUri()->getHost());
-            $this->assertEquals('/rest/1/sms', $request->getUri()->getPath());
+            $this->assertEquals('/sms', $request->getUri()->getPath());
 
             $request->getBody()->rewind();
             $queryArr = $this->convertArrayFromQueryString($request->getBody()->getContents());
@@ -67,8 +66,7 @@ class ClientTesting extends AbstractTesting
 
         $this->mockMoceanClient->send(Argument::that(function (RequestInterface $request) use ($inputParams) {
             $this->assertEquals('GET', $request->getMethod());
-            $this->assertEquals('rest.moceanapi.com', $request->getUri()->getHost());
-            $this->assertEquals('/rest/1/report/message', $request->getUri()->getPath());
+            $this->assertEquals('/report/message', $request->getUri()->getPath());
 
             $queryArr = $this->convertArrayFromQueryString($request->getUri()->getQuery());
             $this->assertEquals($inputParams['mocean-msgid'], $queryArr['mocean-msgid']);
