@@ -8,15 +8,17 @@
 
 namespace Mocean\Verify;
 
+use Mocean\Client\ClientAwareInterface;
+use Mocean\Client\ClientAwareTrait;
 use Mocean\Client\Exception\Exception;
 use Mocean\Model\ArrayAccessTrait;
 use Mocean\Model\ModelInterface;
 use Mocean\Model\ObjectAccessTrait;
 use Mocean\Model\ResponseTrait;
 
-class SendCode implements ModelInterface
+class SendCode implements ModelInterface, ClientAwareInterface
 {
-    use ObjectAccessTrait, ResponseTrait, ArrayAccessTrait;
+    use ObjectAccessTrait, ResponseTrait, ArrayAccessTrait, ClientAwareTrait;
 
     protected $requestData = [];
 
@@ -27,7 +29,7 @@ class SendCode implements ModelInterface
      * @param $brand
      * @param array $extra
      */
-    public function __construct($to, $brand, $extra = [])
+    public function __construct($to = null, $brand = null, $extra = [])
     {
         $this->requestData['mocean-to'] = $to;
         $this->requestData['mocean-brand'] = $brand;
@@ -37,9 +39,9 @@ class SendCode implements ModelInterface
     /**
      * @param $responseData
      *
+     * @return SendCode
      * @throws Exception
      *
-     * @return SendCode
      */
     public static function createFromResponse($responseData)
     {
@@ -101,6 +103,20 @@ class SendCode implements ModelInterface
         $this->requestData['mocean-resp-format'] = $responseFormat;
 
         return $this;
+    }
+
+    public function resend()
+    {
+        if (!$this->reqid) {
+            throw new Exception('reqid not available due to failed request or this is not a response object');
+        }
+
+        /** @var Client $client */
+        $client = $this->getClient();
+
+        return $client->start([
+            'mocean-reqid' => $this->reqid
+        ], true);
     }
 
     public function getRequestData()

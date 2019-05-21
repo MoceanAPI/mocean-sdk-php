@@ -18,38 +18,53 @@ class Client implements ClientAwareInterface
 {
     use ClientAwareTrait;
 
-    protected $verifyChargeType = ChargeType::CHARGE_PER_CONVERSION;
+    public $channel = Channel::AUTO;
 
-    public function sendAs($chargeType = ChargeType::CHARGE_PER_CONVERSION)
+    public function sendAs($channel = Channel::AUTO)
     {
-        $this->verifyChargeType = $chargeType;
+        $this->channel = $channel;
         return $this;
     }
 
-    public function start($verification)
+    public function start($verification, $isResend = false)
     {
         if (!($verification instanceof ModelInterface)) {
             if (!\is_array($verification)) {
                 throw new \RuntimeException('send code must implement `'.ModelInterface::class.'` or be an array`');
             }
 
-            foreach (['mocean-to', 'mocean-brand'] as $param) {
+            if ($isResend) {
+                $requiredKey = ['mocean-reqid'];
+            } else {
+                $requiredKey = ['mocean-to', 'mocean-brand'];
+            }
+
+            foreach ($requiredKey as $param) {
                 if (!isset($verification[$param])) {
-                    throw new \InvalidArgumentException('missing expected key `'.$param.'`');
+                    throw new \InvalidArgumentException('missing expected key `' . $param . '`');
                 }
             }
 
-            $to = $verification['mocean-to'];
-            $brand = $verification['mocean-brand'];
-            unset($verification['mocean-to'], $verification['mocean-brand']);
-            $verification = new SendCode($to, $brand, $verification);
+            if ($isResend) {
+                if ($this->channel === Channel::AUTO) {
+                    throw new \Mocean\Client\Exception\Exception('resend only available for sms channel/charge per attempt');
+                }
+
+                $verification = new SendCode(null, null, $verification);
+            } else {
+                $to = $verification['mocean-to'];
+                $brand = $verification['mocean-brand'];
+                unset($verification['mocean-to'], $verification['mocean-brand']);
+                $verification = new SendCode($to, $brand, $verification);
+            }
         }
 
         $params = $verification->getRequestData();
 
-        $verifyRequestUrl = \Mocean\Client::BASE_REST . '/verify/req';
-        if ($this->verifyChargeType === ChargeType::CHARGE_PER_ATTEMPT) {
-            $verifyRequestUrl .= '/sms';
+        if ($isResend) {
+            $verifyRequestUrl = $this->buildUriByChannel('/verify/resend');
+        } else {
+            $verifyRequestUrl = $this->buildUriByChannel('/verify/req');
         }
 
         $request = new Request(
@@ -67,7 +82,9 @@ class Client implements ClientAwareInterface
             throw new Exception\Exception('unexpected response from API');
         }
 
-        return SendCode::createFromResponse($data);
+        $sendCodeRes = SendCode::createFromResponse($data);
+        $sendCodeRes->setClient($this);
+        return $sendCodeRes;
     }
 
     public function check($verification)
@@ -92,7 +109,7 @@ class Client implements ClientAwareInterface
         $params = $verification->getRequestData();
 
         $request = new Request(
-            \Mocean\Client::BASE_REST.'/verify/check',
+            '/verify/check',
             'POST',
             'php://temp',
             ['content-type' => 'application/x-www-form-urlencoded']
@@ -108,5 +125,14 @@ class Client implements ClientAwareInterface
         }
 
         return VerifyCode::createFromResponse($data);
+    }
+
+    protected function buildUriByChannel($url)
+    {
+        if ($this->channel === Channel::SMS) {
+            return $url . '/sms';
+        }
+
+        return $url;
     }
 }

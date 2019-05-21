@@ -8,16 +8,11 @@
 
 namespace Mocean\Client;
 
-use Mocean\Client;
-
 trait ClientAwareTrait
 {
-    /**
-     * @var Client
-     */
     protected $client;
 
-    public function setClient(Client $client)
+    public function setClient($client)
     {
         $this->client = $client;
     }

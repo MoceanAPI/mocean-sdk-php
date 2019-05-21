@@ -9,8 +9,8 @@
 namespace Mocean\Verify;
 
 
-class ChargeType
+class Channel
 {
-    const CHARGE_PER_ATTEMPT = 1;
-    const CHARGE_PER_CONVERSION = 2;
+    const AUTO = 0;
+    const SMS = 1;
 }

@@ -8,7 +8,9 @@
 
 namespace MoceanTest\Verify;
 
-use Mocean\Verify\ChargeType;
+use Mocean\Client\Exception\Exception;
+use Mocean\Verify\Channel;
+use Mocean\Verify\SendCode;
 use MoceanTest\AbstractTesting;
 use MoceanTest\ResponseTrait;
 use Prophecy\Argument;
@@ -43,8 +45,7 @@ class ClientTesting extends AbstractTesting
 
         $this->mockMoceanClient->send(Argument::that(function (RequestInterface $request) use ($inputParams) {
             $this->assertEquals('POST', $request->getMethod());
-            $this->assertEquals('rest.moceanapi.com', $request->getUri()->getHost());
-            $this->assertEquals('/rest/1/verify/req', $request->getUri()->getPath());
+            $this->assertEquals('/verify/req', $request->getUri()->getPath());
 
             $request->getBody()->rewind();
             $queryArr = $this->convertArrayFromQueryString($request->getBody()->getContents());
@@ -67,8 +68,7 @@ class ClientTesting extends AbstractTesting
 
         $this->mockMoceanClient->send(Argument::that(function (RequestInterface $request) use ($inputParams) {
             $this->assertEquals('POST', $request->getMethod());
-            $this->assertEquals('rest.moceanapi.com', $request->getUri()->getHost());
-            $this->assertEquals('/rest/1/verify/req/sms', $request->getUri()->getPath());
+            $this->assertEquals('/verify/req/sms', $request->getUri()->getPath());
 
             $request->getBody()->rewind();
             $queryArr = $this->convertArrayFromQueryString($request->getBody()->getContents());
@@ -78,8 +78,39 @@ class ClientTesting extends AbstractTesting
             return true;
         }))->shouldBeCalledTimes(1)->willReturn($this->getResponse(__DIR__ . '/responses/send_code.xml'));
 
-        $sendCodeRes = $this->mockVerifyClient->sendAs(ChargeType::CHARGE_PER_ATTEMPT)->start($inputParams);
+        $sendCodeRes = $this->mockVerifyClient->sendAs(Channel::SMS)->start($inputParams);
         $this->assertInstanceOf(\Mocean\Verify\SendCode::class, $sendCodeRes);
+    }
+
+    public function testResendCode()
+    {
+        $inputParams = [
+            'mocean-reqid' => 'CPASS_restapi_C0000002737000000.0002',
+        ];
+
+        $sendCodeRes = SendCode::createFromResponse($this->getResponseString(__DIR__ . '/responses/send_code.xml'));
+        $sendCodeRes->setClient($this->mockVerifyClient);
+
+        $this->mockMoceanClient->send(Argument::that(function (RequestInterface $request) use ($inputParams) {
+            $this->assertEquals('POST', $request->getMethod());
+            $this->assertEquals('/verify/resend/sms', $request->getUri()->getPath());
+
+            $request->getBody()->rewind();
+            $queryArr = $this->convertArrayFromQueryString($request->getBody()->getContents());
+            $this->assertEquals($inputParams['mocean-reqid'], $queryArr['mocean-reqid']);
+
+            return true;
+        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse(__DIR__ . '/responses/resend_code.xml'));
+
+        try {
+            $sendCodeRes->resend();
+        }catch (\Exception $ex){
+        }
+        $this->assertInstanceOf(Exception::class, $ex);
+
+        $sendCodeRes->setClient($this->mockVerifyClient->sendAs(Channel::SMS));
+        $resendCodeRes = $sendCodeRes->resend();
+        $this->assertInstanceOf(\Mocean\Verify\SendCode::class, $resendCodeRes);
     }
 
     public function testVerifyCode()
@@ -91,8 +122,7 @@ class ClientTesting extends AbstractTesting
 
         $this->mockMoceanClient->send(Argument::that(function (RequestInterface $request) use ($inputParams) {
             $this->assertEquals('POST', $request->getMethod());
-            $this->assertEquals('rest.moceanapi.com', $request->getUri()->getHost());
-            $this->assertEquals('/rest/1/verify/check', $request->getUri()->getPath());
+            $this->assertEquals('/verify/check', $request->getUri()->getPath());
 
             $request->getBody()->rewind();
             $queryArr = $this->convertArrayFromQueryString($request->getBody()->getContents());
