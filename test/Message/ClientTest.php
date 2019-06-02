@@ -9,14 +9,11 @@
 namespace MoceanTest\Message;
 
 use MoceanTest\AbstractTesting;
-use MoceanTest\ResponseTrait;
 use Prophecy\Argument;
 use Psr\Http\Message\RequestInterface;
 
-class ClientTesting extends AbstractTesting
+class ClientTest extends AbstractTesting
 {
-    use ResponseTrait;
-
     /** @var \Mocean\Client $moceanClient */
     protected $moceanClient;
 
@@ -52,7 +49,7 @@ class ClientTesting extends AbstractTesting
             $this->assertEquals($inputParams['mocean-text'], $queryArr['mocean-text']);
 
             return true;
-        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse(__DIR__.'/responses/message.xml'));
+        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse('message.xml'));
 
         $messageRes = $this->mockMessageClient->send($inputParams);
         $this->assertInstanceOf(\Mocean\Message\Message::class, $messageRes);
@@ -72,7 +69,7 @@ class ClientTesting extends AbstractTesting
             $this->assertEquals($inputParams['mocean-msgid'], $queryArr['mocean-msgid']);
 
             return true;
-        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse(__DIR__.'/responses/message_status.xml'));
+        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse('message_status.xml'));
 
         $messageStatusRes = $this->mockMessageClient->search($inputParams);
         $this->assertInstanceOf(\Mocean\Message\MessageStatus::class, $messageStatusRes);
@@ -83,7 +80,7 @@ class ClientTesting extends AbstractTesting
      */
     public function testSendParamsNotImplementModelInterfaceAndNotArray()
     {
-        $this->moceanClient->message()->send('inputString');
+        $this->mockMessageClient->send('inputString');
     }
 
     /**
@@ -91,7 +88,7 @@ class ClientTesting extends AbstractTesting
      */
     public function testSearchParamsNotImplementModelInterfaceAndNotArray()
     {
-        $this->moceanClient->message()->search('inputString');
+        $this->mockMessageClient->search('inputString');
     }
 
     /**
@@ -100,7 +97,7 @@ class ClientTesting extends AbstractTesting
      */
     public function testSendRequiredRequestParamNotPresent()
     {
-        $this->moceanClient->message()->send([]);
+        $this->mockMessageClient->send([]);
     }
 
     /**
@@ -109,28 +106,6 @@ class ClientTesting extends AbstractTesting
      */
     public function testSearchRequiredRequestParamNotPresent()
     {
-        $this->moceanClient->message()->search([]);
-    }
-
-    /**
-     * @expectedException \Mocean\Client\Exception\Exception
-     */
-    public function testSendIfTheresErrorResponse()
-    {
-        $this->moceanClient->message()->send([
-            'mocean-to'   => 'testing to',
-            'mocean-from' => 'testing from',
-            'mocean-text' => 'testing text',
-        ]);
-    }
-
-    /**
-     * @expectedException \Mocean\Client\Exception\Exception
-     */
-    public function testSearchIfTheresErrorResponse()
-    {
-        $this->moceanClient->message()->search([
-            'mocean-msgid' => 'testing msg id',
-        ]);
+        $this->mockMessageClient->search([]);
     }
 }

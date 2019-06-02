@@ -56,7 +56,7 @@ class Client implements ClientAwareInterface
             throw new Exception\Exception('unexpected response from API');
         }
 
-        return Message::createFromResponse($data);
+        return Message::createFromResponse($data, $this->client->version);
     }
 
     public function search($messageStatus)
@@ -91,7 +91,7 @@ class Client implements ClientAwareInterface
             throw new Exception\Exception('unexpected response from API');
         }
 
-        return MessageStatus::createFromResponse($data);
+        return MessageStatus::createFromResponse($data, $this->client->version);
     }
 
     public function receiveDLR()

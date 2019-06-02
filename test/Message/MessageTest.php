@@ -9,12 +9,9 @@
 namespace MoceanTest\Message;
 
 use MoceanTest\AbstractTesting;
-use MoceanTest\ResponseTrait;
 
-class MessageTesting extends AbstractTesting
+class MessageTest extends AbstractTesting
 {
-    use ResponseTrait;
-
     protected $mockJsonResponseStr;
     protected $mockXmlResponseStr;
 
@@ -23,11 +20,11 @@ class MessageTesting extends AbstractTesting
 
     protected function setUp()
     {
-        $this->mockJsonResponseStr = $this->getResponseString(__DIR__.'/responses/message.json');
-        $this->mockXmlResponseStr = $this->getResponseString(__DIR__.'/responses/message.xml');
+        $this->mockJsonResponseStr = $this->getResponseString('message.json');
+        $this->mockXmlResponseStr = $this->getResponseString('message.xml');
 
-        $this->jsonResponse = \Mocean\Message\Message::createFromResponse($this->mockJsonResponseStr);
-        $this->xmlResponse = \Mocean\Message\Message::createFromResponse($this->mockXmlResponseStr);
+        $this->jsonResponse = \Mocean\Message\Message::createFromResponse($this->mockJsonResponseStr, $this->defaultVersion);
+        $this->xmlResponse = \Mocean\Message\Message::createFromResponse($this->mockXmlResponseStr, $this->defaultVersion);
     }
 
     public function testRequestDataParams()
@@ -63,23 +60,25 @@ class MessageTesting extends AbstractTesting
         $this->assertEquals($this->xmlResponse, $this->mockXmlResponseStr);
     }
 
-    public function testDirectAccessResponseDataUsingArray()
+    public function testDirectAccessResponseData()
     {
-        $this->assertEquals($this->jsonResponse['messages'][0]['status'], '0');
-        $this->assertEquals($this->jsonResponse['messages'][0]['receiver'], '60123456789');
-        $this->assertCount(1, $this->jsonResponse['messages']);
+        $this->objectTesting($this->jsonResponse);
+        $this->objectTesting($this->xmlResponse);
 
-        $this->assertEquals($this->xmlResponse['message']['status'], '0');
-        $this->assertEquals($this->xmlResponse['message']['receiver'], '60123456789');
+        $this->objectTesting(\Mocean\Message\Message::createFromResponse($this->mockJsonResponseStr, '2'));
+        $this->objectTesting(\Mocean\Message\Message::createFromResponse($this->getResponseString('message_v2.xml'), '2'));
     }
 
-    public function testDirectAccessResponseDataUsingMagicProperties()
+    private function objectTesting($res)
     {
-        $this->assertEquals($this->jsonResponse->messages[0]->status, '0');
-        $this->assertEquals($this->jsonResponse->messages[0]->receiver, '60123456789');
-        $this->assertCount(1, $this->jsonResponse->messages);
+        $this->assertEquals($res->messages[0]->status, '0');
+        $this->assertEquals($res->messages[0]->receiver, '60123456789');
+        $this->assertEquals($res->messages[0]->msgid, 'CPASS_restapi_C0000002737000000.0001');
+        $this->assertCount(1, $res->messages);
 
-        $this->assertEquals($this->xmlResponse->message->status, '0');
-        $this->assertEquals($this->xmlResponse->message->receiver, '60123456789');
+        $this->assertEquals($res['messages'][0]['status'], '0');
+        $this->assertEquals($res['messages'][0]['receiver'], '60123456789');
+        $this->assertEquals($res['messages'][0]['msgid'], 'CPASS_restapi_C0000002737000000.0001');
+        $this->assertCount(1, $res['messages']);
     }
 }

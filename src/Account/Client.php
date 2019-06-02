@@ -37,7 +37,7 @@ class Client implements ClientAwareInterface
             throw new Exception\Server('No results found');
         }
 
-        return Price::createFromResponse($data);
+        return Price::createFromResponse($data, $this->client->version);
     }
 
     public function getBalance($balance = [])
@@ -64,7 +64,7 @@ class Client implements ClientAwareInterface
             throw new Exception\Server('No results found');
         }
 
-        return Balance::createFromResponse($data);
+        return Balance::createFromResponse($data, $this->client->version);
     }
 
     protected function getException(ResponseInterface $response, $application = null)

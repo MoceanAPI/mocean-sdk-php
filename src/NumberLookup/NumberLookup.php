@@ -58,11 +58,11 @@ class NumberLookup implements ModelInterface
         return $this->requestData;
     }
 
-    public static function createFromResponse($responseData)
+    public static function createFromResponse($responseData, $version)
     {
         $numberLookup = new self(null);
         $numberLookup->setRawResponseData($responseData)
-            ->processResponse();
+            ->processResponse($version);
 
         if ($numberLookup['status'] !== 0 && $numberLookup['status'] !== '0') {
             throw new Exception($numberLookup['err_msg']);

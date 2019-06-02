@@ -1,0 +1,205 @@
+{
+  "status": 0,
+  "destinations": [
+    {
+      "country": "Default",
+      "operator": "Default",
+      "mcc": "Default",
+      "mnc": "Default",
+      "price": 2.0000,
+      "currency": "MYR"
+    },
+    {
+      "country": "Malaysia",
+      "operator": "Default",
+      "mcc": "502",
+      "mnc": "Default",
+      "price": 1.0000,
+      "currency": "MYR"
+    },
+    {
+      "country": "Singapore",
+      "operator": "Default",
+      "mcc": "525",
+      "mnc": "Default",
+      "price": 0.1240,
+      "currency": "MYR"
+    },
+    {
+      "country": "Tanzania+%28United+Republic+of%29",
+      "operator": "Default",
+      "mcc": "640",
+      "mnc": "Default",
+      "price": 0.2600,
+      "currency": "MYR"
+    },
+    {
+      "country": "United+States",
+      "operator": "Default",
+      "mcc": "310",
+      "mnc": "Default",
+      "price": 3.0000,
+      "currency": "MYR"
+    },
+    {
+      "country": "Angola",
+      "operator": "Movicel+%28CDMA%29",
+      "mcc": "631",
+      "mnc": "04,03",
+      "price": 0.0856,
+      "currency": "MYR"
+    },
+    {
+      "country": "Eritrea",
+      "operator": "Eritrea+Telecommunications+Services+Corporation+%28Eritea%29",
+      "mcc": "657",
+      "mnc": "01",
+      "price": 0.0157,
+      "currency": "MYR"
+    },
+    {
+      "country": "Guam",
+      "operator": "Choice+Phone+Llc+Dba+Iconn",
+      "mcc": "535",
+      "mnc": "480",
+      "price": 0.0001,
+      "currency": "MYR"
+    },
+    {
+      "country": "Guam",
+      "operator": "Pulse+Mobile+LLC",
+      "mcc": "535",
+      "mnc": "140",
+      "price": 0.1444,
+      "currency": "MYR"
+    },
+    {
+      "country": "Malaysia",
+      "operator": "Celcom",
+      "mcc": "502",
+      "mnc": "13,19",
+      "price": 0.1566,
+      "currency": "MYR"
+    },
+    {
+      "country": "Malaysia",
+      "operator": "DiGi+Telecom",
+      "mcc": "502",
+      "mnc": "16,10",
+      "price": 0.1566,
+      "currency": "MYR"
+    },
+    {
+      "country": "Malaysia",
+      "operator": "Maxis+Mobile",
+      "mcc": "502",
+      "mnc": "17,12",
+      "price": 0.1937,
+      "currency": "MYR"
+    },
+    {
+      "country": "Malaysia",
+      "operator": "XOX",
+      "mcc": "502",
+      "mnc": "992",
+      "price": 0.0088,
+      "currency": "MYR"
+    },
+    {
+      "country": "Malaysia",
+      "operator": "Unifi+%28formerly+webe%29",
+      "mcc": "502",
+      "mnc": "153",
+      "price": 0.0001,
+      "currency": "MYR"
+    },
+    {
+      "country": "New+Zealand",
+      "operator": "2degrees",
+      "mcc": "530",
+      "mnc": "24",
+      "price": 0.2276,
+      "currency": "MYR"
+    },
+    {
+      "country": "Palau",
+      "operator": "Palau+National+Communications+Corporation+%28PNCC%29",
+      "mcc": "552",
+      "mnc": "01",
+      "price": 0.0083,
+      "currency": "MYR"
+    },
+    {
+      "country": "Seychelles",
+      "operator": "Cable+and+Wireless+%28Seychelles%29+Ltd",
+      "mcc": "633",
+      "mnc": "01",
+      "price": 0.0157,
+      "currency": "MYR"
+    },
+    {
+      "country": "Seychelles",
+      "operator": "MediaTech",
+      "mcc": "633",
+      "mnc": "02",
+      "price": 0.0226,
+      "currency": "MYR"
+    },
+    {
+      "country": "Seychelles",
+      "operator": "Telecom+%28Seychelles%29+%28Airtel%29",
+      "mcc": "633",
+      "mnc": "10",
+      "price": 0.0226,
+      "currency": "MYR"
+    },
+    {
+      "country": "Singapore",
+      "operator": "SingTel+Mobile",
+      "mcc": "525",
+      "mnc": "01,02,07",
+      "price": 0.1057,
+      "currency": "MYR"
+    },
+    {
+      "country": "Somalia",
+      "operator": "Somtel",
+      "mcc": "637",
+      "mnc": "71",
+      "price": 0.0001,
+      "currency": "MYR"
+    },
+    {
+      "country": "Spain",
+      "operator": "Xfera+Moviles%2C+S%2EA%2E+%28Yoigo%29",
+      "mcc": "214",
+      "mnc": "04",
+      "price": 0.1884,
+      "currency": "MYR"
+    },
+    {
+      "country": "Tanzania+%28United+Republic+of%29",
+      "operator": "MIC+%28T%29+Ltd%2E+%28Mobitel%29+%28Tigo%29",
+      "mcc": "640",
+      "mnc": "02",
+      "price": 0.2667,
+      "currency": "MYR"
+    },
+    {
+      "country": "Tuvalu",
+      "operator": "Tuvalu+Telecommunications+Corporation",
+      "mcc": "553",
+      "mnc": "01",
+      "price": 0.7224,
+      "currency": "MYR"
+    },
+    {
+      "country": "Uzbekistan",
+      "operator": "UCell+%28Coscom%29",
+      "mcc": "434",
+      "mnc": "05",
+      "price": 0.2765,
+      "currency": "MYR"
+    }
+  ]
+}

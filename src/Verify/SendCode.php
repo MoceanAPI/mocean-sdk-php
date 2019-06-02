@@ -43,11 +43,11 @@ class SendCode implements ModelInterface, ClientAwareInterface
      * @throws Exception
      *
      */
-    public static function createFromResponse($responseData)
+    public static function createFromResponse($responseData, $version)
     {
         $sendCode = new self(null, null);
         $sendCode->setRawResponseData($responseData)
-            ->processResponse();
+            ->processResponse($version);
 
         if ($sendCode['status'] !== 0 && $sendCode['status'] !== '0') {
             throw new Exception($sendCode['err_msg']);

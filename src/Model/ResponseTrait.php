@@ -13,13 +13,17 @@ trait ResponseTrait
     protected $rawResponseData;
     protected $responseData;
 
-    protected function processResponse()
+    protected function processResponse($version)
     {
         //test if object is json
         $obj = json_decode($this->rawResponseData);
         if ($obj === null) {
             //assume json decode failed, it might be in xml format
-            $responseData = str_replace(['<verify_request>', '</verify_request>', '<verify_check>', '</verify_check>'], '', $this->rawResponseData);
+            if ($version === '1') {
+                $responseData = $this->formatV1ResponseBeforeProcess();
+            } else {
+                $responseData = $this->rawResponseData;
+            }
             $obj = simplexml_load_string($responseData);
         }
 
@@ -28,7 +32,9 @@ trait ResponseTrait
             throw new \RuntimeException('failed to format response');
         }
 
-        $this->responseData = json_decode(json_encode($obj), true);
+        $this->responseData = $this->formatResponseObjAfterProcess(
+            json_decode(json_encode($obj), true)
+        );
     }
 
     protected function setRawResponseData($rawResponseData)
@@ -36,6 +42,41 @@ trait ResponseTrait
         $this->rawResponseData = $rawResponseData;
 
         return $this;
+    }
+
+    protected function formatV1ResponseBeforeProcess()
+    {
+        $responseData = str_replace(['<verify_request>', '</verify_request>', '<verify_check>', '</verify_check>'], '', $this->rawResponseData);
+
+        if (self::class === 'Mocean\Account\Price') {
+            $responseData = str_replace(
+                ['<data>', '</data>'],
+                ['<destinations>', '</destinations>'],
+                $responseData
+            );
+        } else if (self::class === 'Mocean\Message\Message') {
+            $responseData = str_replace(
+                ['<result>', '</result>'],
+                ['<result><messages>', '</messages></result>'],
+                $responseData
+            );
+        }
+
+        return $responseData;
+    }
+
+    protected function formatResponseObjAfterProcess($obj)
+    {
+        if (self::class === 'Mocean\Account\Price' && isset($obj['destinations']['destination'])) {
+            $obj['destinations'] = $obj['destinations']['destination'];
+        } else if (self::class === 'Mocean\Message\Message' && isset($obj['messages']['message'])) {
+            if (!is_array(json_decode(json_encode($obj['messages']['message'])))) {
+                $obj['messages']['message'] = [$obj['messages']['message']];
+            }
+            $obj['messages'] = $obj['messages']['message'];
+        }
+
+        return $obj;
     }
 
     public function getRawResponseData()

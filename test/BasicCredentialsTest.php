@@ -8,7 +8,7 @@
 
 namespace MoceanTest;
 
-class BasicCredentialsTesting extends AbstractTesting
+class BasicCredentialsTest extends AbstractTesting
 {
     public function testDirectAccessByArray()
     {

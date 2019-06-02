@@ -9,12 +9,9 @@
 namespace MoceanTest\Verify;
 
 use MoceanTest\AbstractTesting;
-use MoceanTest\ResponseTrait;
 
-class SendCodeTesting extends AbstractTesting
+class SendCodeTest extends AbstractTesting
 {
-    use ResponseTrait;
-
     protected $mockJsonResponseStr;
     protected $mockXmlResponseStr;
 
@@ -23,11 +20,11 @@ class SendCodeTesting extends AbstractTesting
 
     protected function setUp()
     {
-        $this->mockJsonResponseStr = $this->getResponseString(__DIR__.'/responses/send_code.json');
-        $this->mockXmlResponseStr = $this->getResponseString(__DIR__.'/responses/send_code.xml');
+        $this->mockJsonResponseStr = $this->getResponseString('send_code.json');
+        $this->mockXmlResponseStr = $this->getResponseString('send_code.xml');
 
-        $this->jsonResponse = \Mocean\Verify\SendCode::createFromResponse($this->mockJsonResponseStr);
-        $this->xmlResponse = \Mocean\Verify\SendCode::createFromResponse($this->mockXmlResponseStr);
+        $this->jsonResponse = \Mocean\Verify\SendCode::createFromResponse($this->mockJsonResponseStr, $this->defaultVersion);
+        $this->xmlResponse = \Mocean\Verify\SendCode::createFromResponse($this->mockXmlResponseStr, $this->defaultVersion);
     }
 
     public function testRequestDataParams()
@@ -61,21 +58,18 @@ class SendCodeTesting extends AbstractTesting
         $this->assertEquals($this->xmlResponse, $this->mockXmlResponseStr);
     }
 
-    public function testDirectAccessResponseDataUsingArray()
+    public function testDirectAccessResponseData()
     {
-        $this->assertEquals($this->jsonResponse['status'], '0');
-        $this->assertEquals($this->jsonResponse['reqid'], 'CPASS_restapi_C0000002737000000.0002');
-
-        $this->assertEquals($this->xmlResponse['status'], '0');
-        $this->assertEquals($this->xmlResponse['reqid'], 'CPASS_restapi_C0000002737000000.0002');
+        $this->objectTesting($this->jsonResponse);
+        $this->objectTesting($this->xmlResponse);
     }
 
-    public function testDirectAccessResponseDataUsingMagicProperties()
+    private function objectTesting($res)
     {
-        $this->assertEquals($this->jsonResponse->status, '0');
-        $this->assertEquals($this->jsonResponse->reqid, 'CPASS_restapi_C0000002737000000.0002');
+        $this->assertEquals($res->status, '0');
+        $this->assertEquals($res->reqid, 'CPASS_restapi_C0000002737000000.0002');
 
-        $this->assertEquals($this->xmlResponse->status, '0');
-        $this->assertEquals($this->xmlResponse->reqid, 'CPASS_restapi_C0000002737000000.0002');
+        $this->assertEquals($res['status'], '0');
+        $this->assertEquals($res['reqid'], 'CPASS_restapi_C0000002737000000.0002');
     }
 }

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<result>
+    <verify_check>
+        <reqid>CPASS_restapi_C0000002737000000.0002</reqid>
+        <status>0</status>
+        <msgid>CPASS_restapi_C0000002737000000.0002</msgid>
+        <price>0.35</price>
+        <currency>MYR</currency>
+    </verify_check>
+</result>

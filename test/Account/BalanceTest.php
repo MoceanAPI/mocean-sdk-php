@@ -9,12 +9,9 @@
 namespace MoceanTest\Account;
 
 use MoceanTest\AbstractTesting;
-use MoceanTest\ResponseTrait;
 
-class BalanceTesting extends AbstractTesting
+class BalanceTest extends AbstractTesting
 {
-    use ResponseTrait;
-
     protected $mockJsonResponseStr;
     protected $mockXmlResponseStr;
 
@@ -23,11 +20,11 @@ class BalanceTesting extends AbstractTesting
 
     protected function setUp()
     {
-        $this->mockJsonResponseStr = $this->getResponseString(__DIR__.'/responses/balance.json');
-        $this->mockXmlResponseStr = $this->getResponseString(__DIR__.'/responses/balance.xml');
+        $this->mockJsonResponseStr = $this->getResponseString('balance.json');
+        $this->mockXmlResponseStr = $this->getResponseString('balance.xml');
 
-        $this->jsonResponse = \Mocean\Account\Balance::createFromResponse($this->mockJsonResponseStr);
-        $this->xmlResponse = \Mocean\Account\Balance::createFromResponse($this->mockXmlResponseStr);
+        $this->jsonResponse = \Mocean\Account\Balance::createFromResponse($this->mockJsonResponseStr, $this->defaultVersion);
+        $this->xmlResponse = \Mocean\Account\Balance::createFromResponse($this->mockXmlResponseStr, $this->defaultVersion);
     }
 
     public function testRequestDataParams()
@@ -55,21 +52,18 @@ class BalanceTesting extends AbstractTesting
         $this->assertEquals($this->xmlResponse, $this->mockXmlResponseStr);
     }
 
-    public function testDirectAccessResponseDataUsingArray()
+    public function testDirectAccessResponseData()
     {
-        $this->assertEquals($this->jsonResponse['status'], '0');
-        $this->assertEquals($this->jsonResponse['value'], '100.0000');
-
-        $this->assertEquals($this->xmlResponse['status'], '0');
-        $this->assertEquals($this->xmlResponse['value'], '100.0000');
+        $this->objectTesting($this->jsonResponse);
+        $this->objectTesting($this->xmlResponse);
     }
 
-    public function testDirectAccessResponseDataUsingMagicProperties()
+    private function objectTesting($res)
     {
-        $this->assertEquals($this->jsonResponse->status, '0');
-        $this->assertEquals($this->jsonResponse->value, '100.0000');
+        $this->assertEquals($res->status, '0');
+        $this->assertEquals($res->value, '100.0000');
 
-        $this->assertEquals($this->xmlResponse->status, '0');
-        $this->assertEquals($this->xmlResponse->value, '100.0000');
+        $this->assertEquals($res['status'], '0');
+        $this->assertEquals($res['value'], '100.0000');
     }
 }

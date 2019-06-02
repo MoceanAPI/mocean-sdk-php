@@ -9,14 +9,11 @@
 namespace MoceanTest\NumberLookup;
 
 use MoceanTest\AbstractTesting;
-use MoceanTest\ResponseTrait;
 use Prophecy\Argument;
 use Psr\Http\Message\RequestInterface;
 
-class ClientTesting extends AbstractTesting
+class ClientTest extends AbstractTesting
 {
-    use ResponseTrait;
-
     /** @var \Mocean\Client $moceanClient */
     protected $moceanClient;
 
@@ -44,7 +41,7 @@ class ClientTesting extends AbstractTesting
             $this->assertEquals('/nl', $request->getUri()->getPath());
 
             return true;
-        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse(__DIR__.'/responses/number_lookup.xml'));
+        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse('number_lookup.xml'));
 
         $numberLookupRes = $this->mockNumberLookupClient->inquiry($inputParams);
         $this->assertInstanceOf(\Mocean\NumberLookup\NumberLookup::class, $numberLookupRes);
@@ -55,7 +52,7 @@ class ClientTesting extends AbstractTesting
      */
     public function testSendParamsNotImplementModelInterfaceAndNotArray()
     {
-        $this->moceanClient->numberLookup()->inquiry('inputString');
+        $this->mockNumberLookupClient->inquiry('inputString');
     }
 
     /**
@@ -64,6 +61,6 @@ class ClientTesting extends AbstractTesting
      */
     public function testSendRequiredRequestParamNotPresent()
     {
-        $this->moceanClient->numberLookup()->inquiry([]);
+        $this->mockNumberLookupClient->inquiry([]);
     }
 }

@@ -9,12 +9,9 @@
 namespace MoceanTest\Message;
 
 use MoceanTest\AbstractTesting;
-use MoceanTest\ResponseTrait;
 
-class MessageStatusTesting extends AbstractTesting
+class MessageStatusTest extends AbstractTesting
 {
-    use ResponseTrait;
-
     protected $mockJsonResponseStr;
     protected $mockXmlResponseStr;
 
@@ -23,11 +20,11 @@ class MessageStatusTesting extends AbstractTesting
 
     protected function setUp()
     {
-        $this->mockJsonResponseStr = $this->getResponseString(__DIR__.'/responses/message_status.json');
-        $this->mockXmlResponseStr = $this->getResponseString(__DIR__.'/responses/message_status.xml');
+        $this->mockJsonResponseStr = $this->getResponseString('message_status.json');
+        $this->mockXmlResponseStr = $this->getResponseString('message_status.xml');
 
-        $this->jsonResponse = \Mocean\Message\MessageStatus::createFromResponse($this->mockJsonResponseStr);
-        $this->xmlResponse = \Mocean\Message\MessageStatus::createFromResponse($this->mockXmlResponseStr);
+        $this->jsonResponse = \Mocean\Message\MessageStatus::createFromResponse($this->mockJsonResponseStr, $this->defaultVersion);
+        $this->xmlResponse = \Mocean\Message\MessageStatus::createFromResponse($this->mockXmlResponseStr, $this->defaultVersion);
     }
 
     public function testRequestDataParams()
@@ -59,21 +56,22 @@ class MessageStatusTesting extends AbstractTesting
         $this->assertEquals($this->xmlResponse, $this->mockXmlResponseStr);
     }
 
-    public function testDirectAccessResponseDataUsingArray()
+    public function testDirectAccessResponseData()
     {
-        $this->assertEquals($this->jsonResponse['message_status'], 'Transaction not found');
-        $this->assertEquals($this->jsonResponse['msgid'], 'CPASS_restapi_C0000002737000000.0001');
-
-        $this->assertEquals($this->xmlResponse['message_status'], 'Transaction not found');
-        $this->assertEquals($this->xmlResponse['msgid'], 'CPASS_restapi_C0000002737000000.0001');
+        $this->objectTesting($this->jsonResponse);
+        $this->objectTesting($this->xmlResponse);
     }
 
-    public function testDirectAccessResponseDataUsingMagicProperties()
+    private function objectTesting($res)
     {
-        $this->assertEquals($this->jsonResponse->message_status, 'Transaction not found');
-        $this->assertEquals($this->jsonResponse->msgid, 'CPASS_restapi_C0000002737000000.0001');
+        $this->assertEquals($res->status, '0');
+        $this->assertEquals($res->message_status, 'Transaction not found');
+        $this->assertEquals($res->msgid, 'CPASS_restapi_C0000002737000000.0001');
+        $this->assertEquals($res->credit_deducted, '0.0000');
 
-        $this->assertEquals($this->xmlResponse->message_status, 'Transaction not found');
-        $this->assertEquals($this->xmlResponse->msgid, 'CPASS_restapi_C0000002737000000.0001');
+        $this->assertEquals($res['status'], '0');
+        $this->assertEquals($res['message_status'], 'Transaction not found');
+        $this->assertEquals($res['msgid'], 'CPASS_restapi_C0000002737000000.0001');
+        $this->assertEquals($res['credit_deducted'], '0.0000');
     }
 }

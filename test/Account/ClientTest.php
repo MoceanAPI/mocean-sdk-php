@@ -9,14 +9,11 @@
 namespace MoceanTest\Account;
 
 use MoceanTest\AbstractTesting;
-use MoceanTest\ResponseTrait;
 use Prophecy\Argument;
 use Psr\Http\Message\RequestInterface;
 
-class ClientTesting extends AbstractTesting
+class ClientTest extends AbstractTesting
 {
-    use ResponseTrait;
-
     /** @var \Mocean\Client $moceanClient */
     protected $moceanClient;
 
@@ -40,7 +37,7 @@ class ClientTesting extends AbstractTesting
             $this->assertEquals('/account/balance', $request->getUri()->getPath());
 
             return true;
-        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse(__DIR__.'/responses/balance.xml'));
+        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse('balance.xml'));
 
         $balanceRes = $this->mockAccountClient->getBalance();
         $this->assertInstanceOf(\Mocean\Account\Balance::class, $balanceRes);
@@ -53,7 +50,7 @@ class ClientTesting extends AbstractTesting
             $this->assertEquals('/account/pricing', $request->getUri()->getPath());
 
             return true;
-        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse(__DIR__.'/responses/price.xml'));
+        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse('price.xml'));
 
         $priceRes = $this->mockAccountClient->getPricing();
         $this->assertInstanceOf(\Mocean\Account\Price::class, $priceRes);
@@ -64,7 +61,7 @@ class ClientTesting extends AbstractTesting
      */
     public function testGetBalanceParamsNotImplementModelInterfaceAndNotArray()
     {
-        $this->moceanClient->account()->getBalance('inputString');
+        $this->mockAccountClient->getBalance('inputString');
     }
 
     /**
@@ -72,22 +69,6 @@ class ClientTesting extends AbstractTesting
      */
     public function testGetPricingParamsNotImplementModelInterfaceAndNotArray()
     {
-        $this->moceanClient->account()->getPricing('inputString');
-    }
-
-    /**
-     * @expectedException \Mocean\Client\Exception\Exception
-     */
-    public function testGetBalanceIfTheresErrorResponse()
-    {
-        $this->moceanClient->account()->getBalance();
-    }
-
-    /**
-     * @expectedException \Mocean\Client\Exception\Exception
-     */
-    public function testGetPricingIfTheresErrorResponse()
-    {
-        $this->moceanClient->account()->getPricing();
+        $this->mockAccountClient->getPricing('inputString');
     }
 }

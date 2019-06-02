@@ -12,14 +12,11 @@ use Mocean\Client\Exception\Exception;
 use Mocean\Verify\Channel;
 use Mocean\Verify\SendCode;
 use MoceanTest\AbstractTesting;
-use MoceanTest\ResponseTrait;
 use Prophecy\Argument;
 use Psr\Http\Message\RequestInterface;
 
-class ClientTesting extends AbstractTesting
+class ClientTest extends AbstractTesting
 {
-    use ResponseTrait;
-
     /** @var \Mocean\Client $moceanClient */
     protected $moceanClient;
 
@@ -53,13 +50,13 @@ class ClientTesting extends AbstractTesting
             $this->assertEquals($inputParams['mocean-brand'], $queryArr['mocean-brand']);
 
             return true;
-        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse(__DIR__.'/responses/send_code.xml'));
+        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse('send_code.xml'));
 
         $sendCodeRes = $this->mockVerifyClient->start($inputParams);
         $this->assertInstanceOf(\Mocean\Verify\SendCode::class, $sendCodeRes);
     }
 
-    public function testSendCodeAsCPA()
+    public function testSendCodeAsSmsChannel()
     {
         $inputParams = [
             'mocean-to' => 'testing to',
@@ -76,7 +73,7 @@ class ClientTesting extends AbstractTesting
             $this->assertEquals($inputParams['mocean-brand'], $queryArr['mocean-brand']);
 
             return true;
-        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse(__DIR__ . '/responses/send_code.xml'));
+        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse('send_code.xml'));
 
         $sendCodeRes = $this->mockVerifyClient->sendAs(Channel::SMS)->start($inputParams);
         $this->assertInstanceOf(\Mocean\Verify\SendCode::class, $sendCodeRes);
@@ -88,7 +85,7 @@ class ClientTesting extends AbstractTesting
             'mocean-reqid' => 'CPASS_restapi_C0000002737000000.0002',
         ];
 
-        $sendCodeRes = SendCode::createFromResponse($this->getResponseString(__DIR__ . '/responses/send_code.xml'));
+        $sendCodeRes = SendCode::createFromResponse($this->getResponseString('send_code.xml'), $this->defaultVersion);
         $sendCodeRes->setClient($this->mockVerifyClient);
 
         $this->mockMoceanClient->send(Argument::that(function (RequestInterface $request) use ($inputParams) {
@@ -100,7 +97,7 @@ class ClientTesting extends AbstractTesting
             $this->assertEquals($inputParams['mocean-reqid'], $queryArr['mocean-reqid']);
 
             return true;
-        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse(__DIR__ . '/responses/resend_code.xml'));
+        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse('resend_code.xml'));
 
         try {
             $sendCodeRes->resend();
@@ -130,7 +127,7 @@ class ClientTesting extends AbstractTesting
             $this->assertEquals($inputParams['mocean-code'], $queryArr['mocean-code']);
 
             return true;
-        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse(__DIR__.'/responses/verify_code.xml'));
+        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse('verify_code.xml'));
 
         $verifyCodeRes = $this->mockVerifyClient->check($inputParams);
         $this->assertInstanceOf(\Mocean\Verify\VerifyCode::class, $verifyCodeRes);
@@ -141,7 +138,7 @@ class ClientTesting extends AbstractTesting
      */
     public function testStartParamsNotImplementModelInterfaceAndNotArray()
     {
-        $this->moceanClient->verify()->start('inputString');
+        $this->mockVerifyClient->start('inputString');
     }
 
     /**
@@ -149,7 +146,7 @@ class ClientTesting extends AbstractTesting
      */
     public function testCheckParamsNotImplementModelInterfaceAndNotArray()
     {
-        $this->moceanClient->verify()->check('inputString');
+        $this->mockVerifyClient->check('inputString');
     }
 
     /**
@@ -158,7 +155,7 @@ class ClientTesting extends AbstractTesting
      */
     public function testStartRequiredRequestParamNotPresent()
     {
-        $this->moceanClient->verify()->start([]);
+        $this->mockVerifyClient->start([]);
     }
 
     /**
@@ -167,28 +164,6 @@ class ClientTesting extends AbstractTesting
      */
     public function testCheckRequiredRequestParamNotPresent()
     {
-        $this->moceanClient->verify()->check([]);
-    }
-
-    /**
-     * @expectedException \Mocean\Client\Exception\Exception
-     */
-    public function testStartIfTheresErrorResponse()
-    {
-        $this->moceanClient->verify()->start([
-            'mocean-to'    => 'testing to',
-            'mocean-brand' => 'testing brand',
-        ]);
-    }
-
-    /**
-     * @expectedException \Mocean\Client\Exception\Exception
-     */
-    public function testCheckIfTheresErrorResponse()
-    {
-        $this->moceanClient->verify()->check([
-            'mocean-reqid' => 'testing req id',
-            'mocean-code'  => 'testing code',
-        ]);
+        $this->mockVerifyClient->check([]);
     }
 }

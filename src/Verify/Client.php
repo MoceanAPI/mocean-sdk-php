@@ -82,7 +82,7 @@ class Client implements ClientAwareInterface
             throw new Exception\Exception('unexpected response from API');
         }
 
-        $sendCodeRes = SendCode::createFromResponse($data);
+        $sendCodeRes = SendCode::createFromResponse($data, $this->client->version);
         $sendCodeRes->setClient($this);
         return $sendCodeRes;
     }
@@ -124,7 +124,7 @@ class Client implements ClientAwareInterface
             throw new Exception\Exception('unexpected response from API');
         }
 
-        return VerifyCode::createFromResponse($data);
+        return VerifyCode::createFromResponse($data, $this->client->version);
     }
 
     protected function buildUriByChannel($url)

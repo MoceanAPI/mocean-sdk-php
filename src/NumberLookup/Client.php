@@ -51,6 +51,6 @@ class Client implements ClientAwareInterface
             throw new Exception\Exception('unexpected response from API');
         }
 
-        return NumberLookup::createFromResponse($data);
+        return NumberLookup::createFromResponse($data, $this->client->version);
     }
 }

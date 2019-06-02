@@ -8,7 +8,7 @@
 
 namespace MoceanTest;
 
-class MoceanClientTesting extends AbstractTesting
+class MoceanClientTest extends AbstractTesting
 {
     public function testCreateMoceanClientUsingBasicCredentials()
     {

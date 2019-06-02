@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<result>
+    <status>0</status>
+    <msgid>CPASS_restapi_C00000000000000.0002</msgid>
+    <to>60123456789</to>
+    <current_carrier>
+        <country>MY</country>
+        <name>U Mobile</name>
+        <network_code>50218</network_code>
+        <mcc>502</mcc>
+        <mnc>18</mnc>
+    </current_carrier>
+    <original_carrier>
+        <country>MY</country>
+        <name>Maxis Mobile</name>
+        <network_code>50212</network_code>
+        <mcc>502</mcc>
+        <mnc>12</mnc>
+    </original_carrier>
+    <ported>ported</ported>
+    <reachable>reachable</reachable>
+</result>
