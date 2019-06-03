@@ -46,10 +46,6 @@ class Client implements ClientAwareInterface
             }
 
             if ($isResend) {
-                if ($this->channel === Channel::AUTO) {
-                    throw new \Mocean\Client\Exception\Exception('resend only available for sms channel/charge per attempt');
-                }
-
                 $verification = new SendCode(null, null, $verification);
             } else {
                 $to = $verification['mocean-to'];
@@ -62,6 +58,7 @@ class Client implements ClientAwareInterface
         $params = $verification->getRequestData();
 
         if ($isResend) {
+            $this->channel = Channel::SMS;
             $verifyRequestUrl = $this->buildUriByChannel('/verify/resend');
         } else {
             $verifyRequestUrl = $this->buildUriByChannel('/verify/req');
