@@ -99,13 +99,6 @@ class ClientTest extends AbstractTesting
             return true;
         }))->shouldBeCalledTimes(1)->willReturn($this->getResponse('resend_code.xml'));
 
-        try {
-            $sendCodeRes->resend();
-        }catch (\Exception $ex){
-        }
-        $this->assertInstanceOf(Exception::class, $ex);
-
-        $sendCodeRes->setClient($this->mockVerifyClient->sendAs(Channel::SMS));
         $resendCodeRes = $sendCodeRes->resend();
         $this->assertInstanceOf(\Mocean\Verify\SendCode::class, $resendCodeRes);
     }
