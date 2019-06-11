@@ -66,20 +66,4 @@ class Client implements ClientAwareInterface
 
         return Balance::createFromResponse($data, $this->client->version);
     }
-
-    protected function getException(ResponseInterface $response, $application = null)
-    {
-        $body = json_decode($response->getBody()->getContents(), true);
-        $status = $response->getStatusCode();
-
-        if ($status >= 400 and $status < 500) {
-            $e = new Exception\Request($body['error_title'], $status);
-        } elseif ($status >= 500 and $status < 600) {
-            $e = new Exception\Server($body['error_title'], $status);
-        } else {
-            $e = new Exception\Exception('Unexpected HTTP Status Code');
-        }
-
-        return $e;
-    }
 }

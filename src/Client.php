@@ -64,7 +64,7 @@ class Client
      */
     public function __construct(CredentialsInterface $credentials, $options = [], HttpClient $client = null)
     {
-        if (is_null($client)) {
+        if ($client === null) {
             $client = new \Http\Adapter\Guzzle6\Client();
         }
 

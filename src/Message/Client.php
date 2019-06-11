@@ -94,18 +94,6 @@ class Client implements ClientAwareInterface
         return MessageStatus::createFromResponse($data, $this->client->version);
     }
 
-    public function receiveDLR()
-    {
-        parse_str(file_get_contents('php://input'), $data);
-
-        if (isset($data['mocean-dlr-status'])) {
-            $data['mocean-dlr-status'] = $this->delivery_status[$data['mocean-dlr-status']];
-        }
-        $data_json = json_encode($data);
-
-        return $data_json;
-    }
-
     protected function createMessageFromArray($message)
     {
         if (!is_array($message)) {
