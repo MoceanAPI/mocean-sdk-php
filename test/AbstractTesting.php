@@ -15,7 +15,7 @@ class AbstractTesting extends TestCase
 {
     protected $apiKey = 'test_api_key';
     protected $apiSecret = 'test_api_secret';
-    protected $defaultVersion = '1';
+    protected $defaultVersion = '2';
 
     public function getClass($class, $property, $object)
     {

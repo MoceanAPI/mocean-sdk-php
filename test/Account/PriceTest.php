@@ -21,7 +21,7 @@ class PriceTest extends AbstractTesting
     protected function setUp()
     {
         $this->mockJsonResponseStr = $this->getResponseString('price.json');
-        $this->mockXmlResponseStr = $this->getResponseString('price.xml');
+        $this->mockXmlResponseStr = $this->getResponseString('price_v2.xml');
 
         $this->jsonResponse = \Mocean\Account\Price::createFromResponse($this->mockJsonResponseStr, $this->defaultVersion);
         $this->xmlResponse = \Mocean\Account\Price::createFromResponse($this->mockXmlResponseStr, $this->defaultVersion);
@@ -29,13 +29,21 @@ class PriceTest extends AbstractTesting
 
     public function testRequestDataParams()
     {
-        $params = ['mocean-resp-format' => 'json'];
+        $params = [
+            'mocean-resp-format' => 'json',
+            'mocean-mcc' => 'test mcc',
+            'mocean-mnc' => 'test mnc',
+            'mocean-delimiter' => 'test delimiter'
+        ];
         $req = new \Mocean\Account\Price($params);
 
         $this->assertEquals($params, $req->getRequestData());
 
         $setterReq = new \Mocean\Account\Price();
         $setterReq->setResponseFormat('json');
+        $setterReq->setMcc('test mcc');
+        $setterReq->setMnc('test mnc');
+        $setterReq->setDelimiter('test delimiter');
 
         $this->assertEquals($params, $setterReq->getRequestData());
     }
@@ -54,11 +62,11 @@ class PriceTest extends AbstractTesting
 
     public function testDirectAccessResponseData()
     {
+        $this->objectTesting(\Mocean\Account\Price::createFromResponse($this->mockJsonResponseStr, '1'));
+        $this->objectTesting(\Mocean\Account\Price::createFromResponse($this->getResponseString('price.xml'), '1'));
+
         $this->objectTesting($this->jsonResponse);
         $this->objectTesting($this->xmlResponse);
-
-        $this->objectTesting(\Mocean\Account\Price::createFromResponse($this->mockJsonResponseStr, '2'));
-        $this->objectTesting(\Mocean\Account\Price::createFromResponse($this->getResponseString('price_v2.xml'), '2'));
     }
 
     private function objectTesting($res)

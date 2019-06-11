@@ -39,12 +39,15 @@ class Client implements ClientAwareInterface
         $params = $numberLookup->getRequestData();
 
         $request = new Request(
-            '/nl?'.http_build_query($params),
-            'GET',
-            'php://temp'
+             '/nl',
+            'POST',
+            'php://temp',
+            ['content-type' => 'application/x-www-form-urlencoded']
         );
 
+        $request->getBody()->write(http_build_query($params));
         $response = $this->client->send($request);
+        $response->getBody()->rewind();
         $data = $response->getBody()->getContents();
 
         if (!isset($data)) {

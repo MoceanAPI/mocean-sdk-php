@@ -22,7 +22,7 @@ trait ResponseTrait
             if ($version === '1') {
                 $responseData = $this->formatV1ResponseBeforeProcess();
             } else {
-                $responseData = $this->rawResponseData;
+                $responseData = $this->replaceVerifyWrapper($this->rawResponseData);
             }
             $obj = simplexml_load_string($responseData);
         }
@@ -46,7 +46,7 @@ trait ResponseTrait
 
     protected function formatV1ResponseBeforeProcess()
     {
-        $responseData = str_replace(['<verify_request>', '</verify_request>', '<verify_check>', '</verify_check>'], '', $this->rawResponseData);
+        $responseData = $this->replaceVerifyWrapper($this->rawResponseData);
 
         if (self::class === 'Mocean\Account\Price') {
             $responseData = str_replace(
@@ -77,6 +77,11 @@ trait ResponseTrait
         }
 
         return $obj;
+    }
+
+    protected function replaceVerifyWrapper($responseData)
+    {
+        return str_replace(['<verify_request>', '</verify_request>', '<verify_check>', '</verify_check>'], '', $responseData);
     }
 
     public function getRawResponseData()

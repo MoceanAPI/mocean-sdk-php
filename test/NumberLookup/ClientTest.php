@@ -37,7 +37,7 @@ class ClientTest extends AbstractTesting
         ];
 
         $this->mockMoceanClient->send(Argument::that(function (RequestInterface $request) {
-            $this->assertEquals('GET', $request->getMethod());
+            $this->assertEquals('POST', $request->getMethod());
             $this->assertEquals('/nl', $request->getUri()->getPath());
 
             return true;

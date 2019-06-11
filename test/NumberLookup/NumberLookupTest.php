@@ -32,6 +32,7 @@ class NumberLookupTest extends AbstractTesting
         $params = [
             'mocean-resp-format' => 'json',
             'mocean-to'          => 'testing to',
+            'mocean-nl-url' => 'testing nl url'
         ];
 
         $req = new \Mocean\NumberLookup\NumberLookup('testing to', $params);
@@ -41,6 +42,7 @@ class NumberLookupTest extends AbstractTesting
         $setterReq = new \Mocean\NumberLookup\NumberLookup('testing to');
         $setterReq->setTo('testing to');
         $setterReq->setResponseFormat('json');
+        $setterReq->setNlUrl('testing nl url');
 
         $this->assertEquals($params, $setterReq->getRequestData());
     }

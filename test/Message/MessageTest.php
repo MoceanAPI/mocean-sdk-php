@@ -21,7 +21,7 @@ class MessageTest extends AbstractTesting
     protected function setUp()
     {
         $this->mockJsonResponseStr = $this->getResponseString('message.json');
-        $this->mockXmlResponseStr = $this->getResponseString('message.xml');
+        $this->mockXmlResponseStr = $this->getResponseString('message_v2.xml');
 
         $this->jsonResponse = \Mocean\Message\Message::createFromResponse($this->mockJsonResponseStr, $this->defaultVersion);
         $this->xmlResponse = \Mocean\Message\Message::createFromResponse($this->mockXmlResponseStr, $this->defaultVersion);
@@ -34,6 +34,15 @@ class MessageTest extends AbstractTesting
             'mocean-from'        => 'testing from',
             'mocean-to'          => 'testing to',
             'mocean-text'        => 'testing text',
+            'mocean-udh' => 'testing udh',
+            'mocean-coding' => 'testing coding',
+            'mocean-dlr-mask' => 'testing dlr mask',
+            'mocean-dlr-url' => 'testing dlr url',
+            'mocean-schedule' => 'testing schedule',
+            'mocean-mclass' => 'testing mclass',
+            'mocean-alt-dcs' => 'testing alt dcs',
+            'mocean-charset' => 'testing charset',
+            'mocean-validity' => 'testing validity'
         ];
         $req = new \Mocean\Message\Message('testing from', 'testing to', 'testing-text', $params);
 
@@ -43,6 +52,15 @@ class MessageTest extends AbstractTesting
         $setterReq->setFrom('testing from');
         $setterReq->setTo('testing to');
         $setterReq->setText('testing text');
+        $setterReq->setUdh('testing udh');
+        $setterReq->setCoding('testing coding');
+        $setterReq->setDlrMask('testing dlr mask');
+        $setterReq->setDlrUrl('testing dlr url');
+        $setterReq->setSchedule('testing schedule');
+        $setterReq->setMclass('testing mclass');
+        $setterReq->setAltDcs('testing alt dcs');
+        $setterReq->setCharset('testing charset');
+        $setterReq->setValidity('testing validity');
         $setterReq->setResponseFormat('json');
 
         $this->assertEquals($params, $setterReq->getRequestData());
@@ -62,11 +80,11 @@ class MessageTest extends AbstractTesting
 
     public function testDirectAccessResponseData()
     {
+        $this->objectTesting(\Mocean\Message\Message::createFromResponse($this->mockJsonResponseStr, '1'));
+        $this->objectTesting(\Mocean\Message\Message::createFromResponse($this->getResponseString('message.xml'), '1'));
+
         $this->objectTesting($this->jsonResponse);
         $this->objectTesting($this->xmlResponse);
-
-        $this->objectTesting(\Mocean\Message\Message::createFromResponse($this->mockJsonResponseStr, '2'));
-        $this->objectTesting(\Mocean\Message\Message::createFromResponse($this->getResponseString('message_v2.xml'), '2'));
     }
 
     private function objectTesting($res)

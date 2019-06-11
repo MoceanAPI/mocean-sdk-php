@@ -114,49 +114,4 @@ class Client implements ClientAwareInterface
 
         return new Message($from, $to, $text, $message);
     }
-
-    public function count()
-    {
-        $data = $this->getResponseData();
-        if (!isset($data['messages'])) {
-            return 0;
-        }
-
-        return count($data['messages']);
-    }
-
-    /**
-     * Convenience feature allowing messages to be sent without creating a message object first.
-     *
-     * @param $name
-     * @param $arguments
-     *
-     * @return MessageInterface
-     */
-    public function __call($name, $arguments)
-    {
-        if (!(strstr($name, 'send') !== 0)) {
-            throw new \RuntimeException(sprintf(
-                '`%s` is not a valid method on `%s`',
-                $name,
-                get_class($this)
-            ));
-        }
-
-        $class = substr($name, 4);
-        $class = 'Mocean\\Message\\'.ucfirst(strtolower($class));
-
-        if (!class_exists($class)) {
-            throw new \RuntimeException(sprintf(
-                '`%s` is not a valid method on `%s`',
-                $name,
-                get_class($this)
-            ));
-        }
-
-        $reflection = new \ReflectionClass($class);
-        $message = $reflection->newInstanceArgs($arguments);
-
-        return $this->send($message);
-    }
 }

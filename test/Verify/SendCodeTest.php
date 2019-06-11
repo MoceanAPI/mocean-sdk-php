@@ -33,6 +33,10 @@ class SendCodeTest extends AbstractTesting
             'mocean-resp-format' => 'json',
             'mocean-to'          => 'testing to',
             'mocean-brand'       => 'testing brand',
+            'mocean-from' => 'testing from',
+            'mocean-code-length' => 'testing code length',
+            'mocean-pin-validity' => 'testing pin validity',
+            'mocean-next-event-wait' => 'testing next event wait'
         ];
         $req = new \Mocean\Verify\SendCode('testing to', 'testing brand', $params);
 
@@ -42,6 +46,10 @@ class SendCodeTest extends AbstractTesting
         $setterReq->setTo('testing to');
         $setterReq->setBrand('testing brand');
         $setterReq->setResponseFormat('json');
+        $setterReq->setFrom('testing from');
+        $setterReq->setCodeLength('testing code length');
+        $setterReq->setPinValidity('testing pin validity');
+        $setterReq->setNextEventWait('testing next event wait');
 
         $this->assertEquals($params, $setterReq->getRequestData());
     }

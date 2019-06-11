@@ -10,11 +10,7 @@ namespace Mocean;
 
 use Http\Client\HttpClient;
 use Mocean\Client\Credentials\Basic;
-use Mocean\Client\Credentials\Container;
 use Mocean\Client\Credentials\CredentialsInterface;
-use Mocean\Client\Credentials\Keypair;
-use Mocean\Client\Credentials\OAuth;
-use Mocean\Client\Credentials\SharedSecret;
 use Mocean\Client\Factory\FactoryInterface;
 use Mocean\Client\Factory\MapFactory;
 use Psr\Http\Message\RequestInterface;
@@ -23,8 +19,6 @@ use Zend\Diactoros\Uri;
 /**
  * Mocean API Client, allows access to the API from PHP.
  *
- * @property \Mocean\Message\Client $message
- *
  * @method \Mocean\Message\Client message()
  * @method \Mocean\Account\Client account()
  * @method \Mocean\Verify\Client verify()
@@ -32,7 +26,7 @@ use Zend\Diactoros\Uri;
  */
 class Client
 {
-    public $version = '1';
+    public $version = '2';
     public $baseUrl = 'https://rest.moceanapi.com';
     const PL = 'PHP-SDK';
     /**
@@ -71,7 +65,7 @@ class Client
         $this->setHttpClient($client);
 
         //make sure we know how to use the credentials
-        if (!($credentials instanceof Container) && !($credentials instanceof Basic) && !($credentials instanceof SharedSecret) && !($credentials instanceof OAuth)) {
+        if (!($credentials instanceof Basic)) {
             throw new \RuntimeException('unknown credentials type: '.get_class($credentials));
         }
 
@@ -136,49 +130,6 @@ class Client
         return $this;
     }
 
-    /**
-     * @param RequestInterface $request
-     * @param Signature        $signature
-     *
-     * @return RequestInterface
-     */
-    public static function signRequest(RequestInterface $request, SharedSecret $credentials)
-    {
-        switch ($request->getHeaderLine('content-type')) {
-            case 'application/json':
-                $body = $request->getBody();
-                $body->rewind();
-                $content = $body->getContents();
-                $params = json_decode($content, true);
-                $params['api_key'] = $credentials['api_key'];
-                $signature = new Signature($params, $credentials['shared_secret']);
-                $body->rewind();
-                $body->write(json_encode($signature->getSignedParams()));
-                break;
-            case 'application/x-www-form-urlencoded':
-                $body = $request->getBody();
-                $body->rewind();
-                $content = $body->getContents();
-                $params = [];
-                parse_str($content, $params);
-                $params['api_key'] = $credentials['api_key'];
-                $signature = new Signature($params, $credentials['shared_secret']);
-                $params = $signature->getSignedParams();
-                $body->rewind();
-                $body->write(http_build_query($params, null, '&'));
-                break;
-            default:
-                $query = [];
-                parse_str($request->getUri()->getQuery(), $query);
-                $query['api_key'] = $credentials['api_key'];
-                $signature = new Signature($query, $credentials['shared_secret']);
-                $request = $request->withUri($request->getUri()->withQuery(http_build_query($signature->getSignedParams())));
-                break;
-        }
-
-        return $request;
-    }
-
     public static function authRequest(RequestInterface $request, Basic $credentials)
     {
         switch ($request->getHeaderLine('content-type')) {
@@ -188,7 +139,10 @@ class Client
                 $content = $body->getContents();
                 $params = json_decode($content, true);
                 $params = array_merge($params, $credentials->asArray());
-        $params = array_merge($params, ['mocean-medium' => \Mocean\Client::PL]);
+                $params = array_merge($params, ['mocean-medium' => \Mocean\Client::PL]);
+                if (!isset($params['mocean-resp-format'])) {
+                    $params['mocean-resp-format'] = 'json';
+                }
                 $body->rewind();
                 $body->write(json_encode($params));
                 break;
@@ -199,7 +153,10 @@ class Client
                 $params = [];
                 parse_str($content, $params);
                 $params = array_merge($params, $credentials->asArray());
-        $params = array_merge($params, ['mocean-medium' => \Mocean\Client::PL]);
+                $params = array_merge($params, ['mocean-medium' => \Mocean\Client::PL]);
+                if (!isset($params['mocean-resp-format'])) {
+                    $params['mocean-resp-format'] = 'json';
+                }
                 $body->rewind();
                 $body->write(http_build_query($params, null, '&'));
                 break;
@@ -207,7 +164,10 @@ class Client
                 $query = [];
                 parse_str($request->getUri()->getQuery(), $query);
                 $query = array_merge($query, $credentials->asArray());
-        $query = array_merge($query, ['mocean-medium' => \Mocean\Client::PL]);
+                $query = array_merge($query, ['mocean-medium' => \Mocean\Client::PL]);
+                if (!isset($query['mocean-resp-format'])) {
+                    $query['mocean-resp-format'] = 'json';
+                }
                 $request = $request->withUri($request->getUri()->withQuery(http_build_query($query)));
                 break;
         }
@@ -224,21 +184,9 @@ class Client
      */
     public function send(\Psr\Http\Message\RequestInterface $request)
     {
-        if ($this->credentials instanceof Container) {
-            if (strpos($request->getUri()->getPath(), '/v1/calls') === 0) {
-                $request = $request->withHeader('Authorization', 'Bearer '.$this->credentials->get(Keypair::class)->generateJwt());
-            } else {
-                $request = self::authRequest($request, $this->credentials->get(Basic::class));
-            }
-        } elseif ($this->credentials instanceof Keypair) {
-            $request = $request->withHeader('Authorization', 'Bearer '.$this->credentials->get(Keypair::class)->generateJwt());
-        } elseif ($this->credentials instanceof SharedSecret) {
-            $request = self::signRequest($request, $this->credentials);
-        } elseif ($this->credentials instanceof Basic) {
+        if ($this->credentials instanceof Basic) {
             $request = self::authRequest($request, $this->credentials);
         }
-
-        //todo: add oauth support
 
         $uri = (string) $request->getUri();
 

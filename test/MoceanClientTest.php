@@ -42,5 +42,6 @@ class MoceanClientTest extends AbstractTesting
         $moceanClient->setFactory($factory->reveal());
 
         $this->assertSame($api, $moceanClient->message());
+        $this->assertSame($api, $moceanClient->message);
     }
 }
