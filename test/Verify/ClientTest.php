@@ -8,12 +8,12 @@
 
 namespace MoceanTest\Verify;
 
-use Mocean\Client\Exception\Exception;
 use Mocean\Verify\Channel;
 use Mocean\Verify\SendCode;
 use MoceanTest\AbstractTesting;
 use Prophecy\Argument;
 use Psr\Http\Message\RequestInterface;
+use Zend\Diactoros\Response;
 
 class ClientTest extends AbstractTesting
 {
@@ -158,5 +158,30 @@ class ClientTest extends AbstractTesting
     public function testCheckRequiredRequestParamNotPresent()
     {
         $this->mockVerifyClient->check([]);
+    }
+
+    public function testResponseDataIsEmpty()
+    {
+        $this->mockMoceanClient->send(Argument::that(function () {
+            return true;
+        }))->shouldBeCalledTimes(2)->willReturn(new Response());
+
+        try {
+            $this->mockVerifyClient->start([
+                'mocean-to' => 'testing to',
+                'mocean-brand' => 'testing brand',
+            ]);
+            $this->fail();
+        } catch (\Mocean\Client\Exception\Exception $e) {
+        }
+
+        try {
+            $this->mockVerifyClient->check([
+                'mocean-reqid' => 'testing reqid',
+                'mocean-code'  => 'testing code',
+            ]);
+            $this->fail();
+        } catch (\Mocean\Client\Exception\Exception $e) {
+        }
     }
 }

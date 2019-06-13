@@ -33,8 +33,8 @@ class Client implements ClientAwareInterface
         $response = $this->client->send($request);
         $data = $response->getBody()->getContents();
 
-        if ($data === '') {
-            throw new Exception\Server('No results found');
+        if (!isset($data) || $data === '') {
+            throw new Exception\Exception('unexpected response from API');
         }
 
         return Price::createFromResponse($data, $this->client->version);
@@ -60,8 +60,8 @@ class Client implements ClientAwareInterface
         $response = $this->client->send($request);
         $data = $response->getBody()->getContents();
 
-        if ($data === '') {
-            throw new Exception\Server('No results found');
+        if (!isset($data) || $data === '') {
+            throw new Exception\Exception('unexpected response from API');
         }
 
         return Balance::createFromResponse($data, $this->client->version);

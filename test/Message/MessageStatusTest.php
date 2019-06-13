@@ -62,6 +62,15 @@ class MessageStatusTest extends AbstractTesting
         $this->objectTesting($this->xmlResponse);
     }
 
+    public function testObjectErrorWhenCreateFromResponseWithStatus0()
+    {
+        try {
+            \Mocean\Message\Message::createFromResponse($this->getResponseString('error_response.json'), $this->defaultVersion);
+            $this->fail();
+        } catch (\Mocean\Client\Exception\Exception $e) {
+        }
+    }
+
     private function objectTesting($res)
     {
         $this->assertEquals($res->status, '0');

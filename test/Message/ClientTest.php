@@ -11,6 +11,7 @@ namespace MoceanTest\Message;
 use MoceanTest\AbstractTesting;
 use Prophecy\Argument;
 use Psr\Http\Message\RequestInterface;
+use Zend\Diactoros\Response;
 
 class ClientTest extends AbstractTesting
 {
@@ -107,5 +108,28 @@ class ClientTest extends AbstractTesting
     public function testSearchRequiredRequestParamNotPresent()
     {
         $this->mockMessageClient->search([]);
+    }
+
+    public function testResponseDataIsEmpty()
+    {
+        $this->mockMoceanClient->send(Argument::that(function () {
+            return true;
+        }))->shouldBeCalledTimes(2)->willReturn(new Response());
+
+        try {
+            $this->mockMessageClient->search(['mocean-msgid' => 'testing msgid']);
+            $this->fail();
+        } catch (\Mocean\Client\Exception\Exception $e) {
+        }
+
+        try {
+            $this->mockMessageClient->send([
+                'mocean-to'   => 'testing to',
+                'mocean-from' => 'testing from',
+                'mocean-text' => 'testing text',
+            ]);
+            $this->fail();
+        } catch (\Mocean\Client\Exception\Exception $e) {
+        }
     }
 }

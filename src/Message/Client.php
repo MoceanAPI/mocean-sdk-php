@@ -52,7 +52,7 @@ class Client implements ClientAwareInterface
         $response->getBody()->rewind();
         $data = $response->getBody()->getContents();
 
-        if (!isset($data)) {
+        if (!isset($data) || $data === '') {
             throw new Exception\Exception('unexpected response from API');
         }
 
@@ -87,7 +87,7 @@ class Client implements ClientAwareInterface
         $response->getBody()->rewind();
         $data = $response->getBody()->getContents();
 
-        if (!isset($data)) {
+        if (!isset($data) || $data === '') {
             throw new Exception\Exception('unexpected response from API');
         }
 

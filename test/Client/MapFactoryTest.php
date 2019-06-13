@@ -32,4 +32,44 @@ class MapFactoryTest extends TestCase
         $this->assertTrue($this->factory->hasApi('test'));
         $this->assertSame($this->client, $api->getClient());
     }
+
+    public function testCache()
+    {
+        $api = $this->factory->getApi('test');
+        $cache = $this->factory->getApi('test');
+
+        $this->assertSame($api, $cache);
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     */
+    public function testGetClientWithoutSettingClient()
+    {
+        (new \MoceanTest\Client\TempObject())->getClient();
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     */
+    public function testGetNonExistApiFromFactory()
+    {
+        $this->factory->getApi('dummy');
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     */
+    public function testCallNonExistApiWithProperty()
+    {
+        $this->client->helloworld;
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     */
+    public function testCallNonExistApiWithMethod()
+    {
+        $this->client->helloworld();
+    }
 }

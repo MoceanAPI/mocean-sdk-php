@@ -64,18 +64,21 @@ class VerifyCodeTest extends AbstractTesting
         $this->objectTesting($this->xmlResponse);
     }
 
+    public function testObjectErrorWhenCreateFromResponseWithStatus0()
+    {
+        try {
+            \Mocean\Verify\VerifyCode::createFromResponse($this->getResponseString('error_response.json'), $this->defaultVersion);
+            $this->fail();
+        } catch (\Mocean\Client\Exception\Exception $e) {
+        }
+    }
+
     private function objectTesting($res)
     {
         $this->assertEquals($res->status, '0');
         $this->assertEquals($res->reqid, 'CPASS_restapi_C0000002737000000.0002');
-        $this->assertEquals($res->msgid, 'CPASS_restapi_C0000002737000000.0002');
-        $this->assertEquals($res->price, '0.35');
-        $this->assertEquals($res->currency, 'MYR');
 
         $this->assertEquals($res['status'], '0');
         $this->assertEquals($res['reqid'], 'CPASS_restapi_C0000002737000000.0002');
-        $this->assertEquals($res['msgid'], 'CPASS_restapi_C0000002737000000.0002');
-        $this->assertEquals($res['price'], '0.35');
-        $this->assertEquals($res['currency'], 'MYR');
     }
 }

@@ -11,6 +11,7 @@ namespace MoceanTest\Account;
 use MoceanTest\AbstractTesting;
 use Prophecy\Argument;
 use Psr\Http\Message\RequestInterface;
+use Zend\Diactoros\Response;
 
 class ClientTest extends AbstractTesting
 {
@@ -70,5 +71,24 @@ class ClientTest extends AbstractTesting
     public function testGetPricingParamsNotImplementModelInterfaceAndNotArray()
     {
         $this->mockAccountClient->getPricing('inputString');
+    }
+
+    public function testResponseDataIsEmpty()
+    {
+        $this->mockMoceanClient->send(Argument::that(function () {
+            return true;
+        }))->shouldBeCalledTimes(2)->willReturn(new Response());
+
+        try {
+            $this->mockAccountClient->getPricing();
+            $this->fail();
+        } catch (\Mocean\Client\Exception\Exception $e) {
+        }
+
+        try {
+            $this->mockAccountClient->getBalance();
+            $this->fail();
+        } catch (\Mocean\Client\Exception\Exception $e) {
+        }
     }
 }

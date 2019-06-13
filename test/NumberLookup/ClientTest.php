@@ -11,6 +11,7 @@ namespace MoceanTest\NumberLookup;
 use MoceanTest\AbstractTesting;
 use Prophecy\Argument;
 use Psr\Http\Message\RequestInterface;
+use Zend\Diactoros\Response;
 
 class ClientTest extends AbstractTesting
 {
@@ -33,7 +34,7 @@ class ClientTest extends AbstractTesting
     public function testNumberLookup()
     {
         $inputParams = [
-            'mocean-to'    => 'testing to',
+            'mocean-to' => 'testing to',
         ];
 
         $this->mockMoceanClient->send(Argument::that(function (RequestInterface $request) {
@@ -62,5 +63,18 @@ class ClientTest extends AbstractTesting
     public function testSendRequiredRequestParamNotPresent()
     {
         $this->mockNumberLookupClient->inquiry([]);
+    }
+
+    public function testResponseDataIsEmpty()
+    {
+        $this->mockMoceanClient->send(Argument::that(function () {
+            return true;
+        }))->shouldBeCalledTimes(1)->willReturn(new Response());
+
+        try {
+            $this->mockNumberLookupClient->inquiry(['mocean-to' => 'testing to']);
+            $this->fail();
+        } catch (\Mocean\Client\Exception\Exception $e) {
+        }
     }
 }

@@ -10,10 +10,11 @@ namespace MoceanTest\Model;
 
 
 use Mocean\Model\ArrayAccessTrait;
+use Mocean\Model\ObjectAccessTrait;
 
 class ObjectUsedByTrait implements \ArrayAccess
 {
-    use ArrayAccessTrait;
+    use ArrayAccessTrait, ObjectAccessTrait;
 
     public $responseData;
 
@@ -31,5 +32,10 @@ class ObjectUsedByTrait implements \ArrayAccess
     public function setResponseData($responseData)
     {
         $this->responseData = $responseData;
+    }
+
+    protected function getRawResponseData()
+    {
+        return $this->responseData;
     }
 }

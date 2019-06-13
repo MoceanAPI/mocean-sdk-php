@@ -13,9 +13,8 @@ trait ObjectAccessTrait
     public function __get($name)
     {
         $tmp = json_decode(json_encode($this->responseData));
-        if (isset($tmp->$name)) {
-            return $tmp->$name;
-        }
+
+        return isset($tmp->$name) ? $tmp->$name : null;
     }
 
     public function __toString()

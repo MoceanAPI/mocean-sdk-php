@@ -31,8 +31,8 @@ class SendCodeTest extends AbstractTesting
     {
         $params = [
             'mocean-resp-format' => 'json',
-            'mocean-to'          => 'testing to',
-            'mocean-brand'       => 'testing brand',
+            'mocean-to' => 'testing to',
+            'mocean-brand' => 'testing brand',
             'mocean-from' => 'testing from',
             'mocean-code-length' => 'testing code length',
             'mocean-pin-validity' => 'testing pin validity',
@@ -70,6 +70,23 @@ class SendCodeTest extends AbstractTesting
     {
         $this->objectTesting($this->jsonResponse);
         $this->objectTesting($this->xmlResponse);
+    }
+
+    public function testObjectErrorWhenCreateFromResponseWithStatus0()
+    {
+        try {
+            \Mocean\Verify\SendCode::createFromResponse($this->getResponseString('error_response.json'), $this->defaultVersion);
+            $this->fail();
+        } catch (\Mocean\Client\Exception\Exception $e) {
+        }
+    }
+
+    /**
+     * @expectedException \Mocean\Client\Exception\Exception
+     */
+    public function testResendWithoutReqId()
+    {
+        (new \Mocean\Verify\SendCode())->resend();
     }
 
     private function objectTesting($res)
