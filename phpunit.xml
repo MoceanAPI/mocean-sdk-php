@@ -12,7 +12,7 @@
 >
     <filter>
         <whitelist>
-            <directory suffix=".php">./test/</directory>
+            <directory suffix=".php">./src/</directory>
             <exclude>./test/AbstractTesting.php</exclude>
             <exclude>./test/DummyCredentials.php</exclude>
             <exclude>./test/Model/ObjectUsedByTrait.php</exclude>
