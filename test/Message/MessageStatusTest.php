@@ -65,7 +65,7 @@ class MessageStatusTest extends AbstractTesting
     public function testObjectErrorWhenCreateFromResponseWithStatus0()
     {
         try {
-            \Mocean\Message\Message::createFromResponse($this->getResponseString('error_response.json'), $this->defaultVersion);
+            \Mocean\Message\MessageStatus::createFromResponse($this->getResponseString('error_response.json'), $this->defaultVersion);
             $this->fail();
         } catch (\Mocean\Client\Exception\Exception $e) {
         }
