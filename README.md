@@ -1,10 +1,12 @@
 MoceanAPI Client Library for PHP 
 ============================
-[![Latest Stable Version](https://poser.pugx.org/mocean/client/v/stable)](https://packagist.org/packages/mocean/client)
-[![Build Status](https://travis-ci.org/MoceanAPI/mocean-sdk-php.svg?branch=master)](https://travis-ci.org/MoceanAPI/mocean-sdk-php)
+[![Latest Stable Version](https://img.shields.io/packagist/v/mocean/client.svg)](https://packagist.org/packages/mocean/client)
+[![Build Status](https://img.shields.io/travis/com/MoceanAPI/mocean-sdk-php.svg)](https://travis-ci.org/MoceanAPI/mocean-sdk-php)
+[![codecov](https://img.shields.io/codecov/c/github/MoceanAPI/mocean-sdk-php.svg)](https://codecov.io/gh/MoceanAPI/mocean-sdk-php)
+[![codacy](https://img.shields.io/codacy/grade/6aeef2100e91448d8c353393e960f358.svg)](https://app.codacy.com/project/MoceanAPI/mocean-sdk-php/dashboard)
 [![StyleCI](https://github.styleci.io/repos/138724921/shield?branch=master)](https://github.styleci.io/repos/138724921)
-[![License](https://poser.pugx.org/mocean/client/license)](https://packagist.org/packages/mocean/client)
-[![Total Downloads](https://poser.pugx.org/mocean/client/downloads)](https://packagist.org/packages/mocean/client)
+[![License](https://img.shields.io/packagist/l/mocean/client.svg)](https://packagist.org/packages/mocean/client)
+[![Total Downloads](https://img.shields.io/packagist/dt/mocean/client.svg)](https://packagist.org/packages/mocean/client)
 
 *This library requires a minimum PHP version of 5.5*
 
@@ -36,7 +38,10 @@ require_once "vendor/autoload.php";
 Create a client with your API key and secret:
 
 ```php
-$mocean = new Mocean\Client(new Mocean\Client\Credentials\Basic('API_KEY_HERE','API_SECRET_HERE'));
+use Mocean\Client;
+use Mocean\Client\Credentials\Basic;
+
+$mocean = newClient(new Basic('API_KEY_HERE','API_SECRET_HERE'));
 ```
 
 ## Example
@@ -55,13 +60,26 @@ $res = $mocean->message()->send([
 
 echo $res;
 ```
+
+### Responses
+
+For your convenient, the API response data can be accessed either using php `object` style or `array` style
+
+```php
+echo $res;            //show full response string
+echo $res['status'];  //show response status, '0' in this case
+echo $res->status;    //same as above
+```
+
+## Documentation
+
+Kindly visit [MoceanApi Docs][doc_main] for more usage
     
 ## License
 
 This library is released under the [MIT License][license]
 
 [signup]: https://dashboard.moceanapi.com/register?medium=github&campaign=sdk-php
+[doc_main]: https://moceanapi.com/docs/?php
 [doc_sms]: https://moceanapi.com/docs/?php#send-sms
-[doc_inbound]: https://moceanapi.com/docs/?php#receive-sms
-[doc_verify]: https://moceanapi.com/docs/?php#overview-2
 [license]: LICENSE
