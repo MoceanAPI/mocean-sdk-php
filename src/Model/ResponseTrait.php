@@ -54,7 +54,7 @@ trait ResponseTrait
                 ['<destinations>', '</destinations>'],
                 $responseData
             );
-        } else if (self::class === 'Mocean\Message\Message') {
+        } elseif (self::class === 'Mocean\Message\Message') {
             $responseData = str_replace(
                 ['<result>', '</result>'],
                 ['<result><messages>', '</messages></result>'],
@@ -69,7 +69,7 @@ trait ResponseTrait
     {
         if (self::class === 'Mocean\Account\Price' && isset($obj['destinations']['destination'])) {
             $obj['destinations'] = $obj['destinations']['destination'];
-        } else if (self::class === 'Mocean\Message\Message' && isset($obj['messages']['message'])) {
+        } elseif (self::class === 'Mocean\Message\Message' && isset($obj['messages']['message'])) {
             if (!is_array(json_decode(json_encode($obj['messages']['message'])))) {
                 $obj['messages']['message'] = [$obj['messages']['message']];
             }

@@ -31,9 +31,9 @@ class PriceTest extends AbstractTesting
     {
         $params = [
             'mocean-resp-format' => 'json',
-            'mocean-mcc' => 'test mcc',
-            'mocean-mnc' => 'test mnc',
-            'mocean-delimiter' => 'test delimiter'
+            'mocean-mcc'         => 'test mcc',
+            'mocean-mnc'         => 'test mnc',
+            'mocean-delimiter'   => 'test delimiter',
         ];
         $req = new \Mocean\Account\Price($params);
 

@@ -28,12 +28,12 @@ class AbstractTesting extends TestCase
 
     protected function getResponse($fileName, $status = 200)
     {
-        return new Response(fopen(__DIR__ . '/Resources/' . $fileName, 'r'), $status);
+        return new Response(fopen(__DIR__.'/Resources/'.$fileName, 'r'), $status);
     }
 
     protected function getResponseString($fileName)
     {
-        return file_get_contents(__DIR__ . '/Resources/' . $fileName);
+        return file_get_contents(__DIR__.'/Resources/'.$fileName);
     }
 
     protected function convertArrayFromQueryString($queryStr)

@@ -59,7 +59,7 @@ class ClientTest extends AbstractTesting
     public function testSendCodeAsSmsChannel()
     {
         $inputParams = [
-            'mocean-to' => 'testing to',
+            'mocean-to'    => 'testing to',
             'mocean-brand' => 'testing brand',
         ];
 
@@ -168,7 +168,7 @@ class ClientTest extends AbstractTesting
 
         try {
             $this->mockVerifyClient->start([
-                'mocean-to' => 'testing to',
+                'mocean-to'    => 'testing to',
                 'mocean-brand' => 'testing brand',
             ]);
             $this->fail();

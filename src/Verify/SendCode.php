@@ -39,9 +39,9 @@ class SendCode implements ModelInterface, ClientAwareInterface
     /**
      * @param $responseData
      *
-     * @return SendCode
      * @throws Exception
      *
+     * @return SendCode
      */
     public static function createFromResponse($responseData, $version)
     {
@@ -115,7 +115,7 @@ class SendCode implements ModelInterface, ClientAwareInterface
         $client = $this->getClient();
 
         return $client->start([
-            'mocean-reqid' => $this->reqid
+            'mocean-reqid' => $this->reqid,
         ], true);
     }
 

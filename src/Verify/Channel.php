@@ -8,7 +8,6 @@
 
 namespace Mocean\Verify;
 
-
 class Channel
 {
     const AUTO = 0;

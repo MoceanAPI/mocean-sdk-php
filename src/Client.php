@@ -73,11 +73,11 @@ class Client
 
         $this->options = $options;
 
-        if(isset($this->options['baseUrl'])){
+        if (isset($this->options['baseUrl'])) {
             $this->baseUrl = rtrim($this->options['baseUrl'], '/');
         }
 
-        if(isset($this->options['version'])) {
+        if (isset($this->options['version'])) {
             $this->version = $this->options['version'];
         }
 
@@ -139,7 +139,7 @@ class Client
                 $content = $body->getContents();
                 $params = json_decode($content, true);
                 $params = array_merge($params, $credentials->asArray());
-                $params = array_merge($params, ['mocean-medium' => \Mocean\Client::PL]);
+                $params = array_merge($params, ['mocean-medium' => self::PL]);
                 if (!isset($params['mocean-resp-format'])) {
                     $params['mocean-resp-format'] = 'json';
                 }
@@ -153,7 +153,7 @@ class Client
                 $params = [];
                 parse_str($content, $params);
                 $params = array_merge($params, $credentials->asArray());
-                $params = array_merge($params, ['mocean-medium' => \Mocean\Client::PL]);
+                $params = array_merge($params, ['mocean-medium' => self::PL]);
                 if (!isset($params['mocean-resp-format'])) {
                     $params['mocean-resp-format'] = 'json';
                 }
@@ -164,7 +164,7 @@ class Client
                 $query = [];
                 parse_str($request->getUri()->getQuery(), $query);
                 $query = array_merge($query, $credentials->asArray());
-                $query = array_merge($query, ['mocean-medium' => \Mocean\Client::PL]);
+                $query = array_merge($query, ['mocean-medium' => self::PL]);
                 if (!isset($query['mocean-resp-format'])) {
                     $query['mocean-resp-format'] = 'json';
                 }
@@ -191,7 +191,7 @@ class Client
         $uri = (string) $request->getUri();
 
         return $this->client->sendRequest(
-            $request->withUri(new Uri($this->baseUrl . '/rest/' . $this->version . $uri))
+            $request->withUri(new Uri($this->baseUrl.'/rest/'.$this->version.$uri))
         );
     }
 

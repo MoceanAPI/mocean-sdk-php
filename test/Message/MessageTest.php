@@ -34,15 +34,15 @@ class MessageTest extends AbstractTesting
             'mocean-from'        => 'testing from',
             'mocean-to'          => 'testing to',
             'mocean-text'        => 'testing text',
-            'mocean-udh' => 'testing udh',
-            'mocean-coding' => 'testing coding',
-            'mocean-dlr-mask' => 'testing dlr mask',
-            'mocean-dlr-url' => 'testing dlr url',
-            'mocean-schedule' => 'testing schedule',
-            'mocean-mclass' => 'testing mclass',
-            'mocean-alt-dcs' => 'testing alt dcs',
-            'mocean-charset' => 'testing charset',
-            'mocean-validity' => 'testing validity'
+            'mocean-udh'         => 'testing udh',
+            'mocean-coding'      => 'testing coding',
+            'mocean-dlr-mask'    => 'testing dlr mask',
+            'mocean-dlr-url'     => 'testing dlr url',
+            'mocean-schedule'    => 'testing schedule',
+            'mocean-mclass'      => 'testing mclass',
+            'mocean-alt-dcs'     => 'testing alt dcs',
+            'mocean-charset'     => 'testing charset',
+            'mocean-validity'    => 'testing validity',
         ];
         $req = new \Mocean\Message\Message('testing from', 'testing to', 'testing-text', $params);
 

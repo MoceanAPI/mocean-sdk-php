@@ -61,7 +61,7 @@ class MoceanClientTest extends AbstractTesting
             new \Mocean\Client\Credentials\Basic($this->apiKey, $this->apiSecret),
             [
                 'baseUrl' => 'https://dummy.com',
-                'version' => '1000'
+                'version' => '1000',
             ]
         );
         $this->assertEquals('https://dummy.com', $mocean->baseUrl);
@@ -130,7 +130,7 @@ class MoceanClientTest extends AbstractTesting
     public function testGetQueryAuthRequest()
     {
         $request = new Request(
-            'https://simplyUrl?' . http_build_query(['test' => 'test value']),
+            'https://simplyUrl?'.http_build_query(['test' => 'test value']),
             'GET',
             'php://temp'
         );
