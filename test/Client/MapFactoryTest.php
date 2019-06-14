@@ -2,7 +2,6 @@
 
 namespace MoceanTest\Client;
 
-
 use Mocean\Client;
 use Mocean\Client\Factory\MapFactory;
 use PHPUnit\Framework\TestCase;

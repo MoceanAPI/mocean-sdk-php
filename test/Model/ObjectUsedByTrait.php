@@ -8,7 +8,6 @@
 
 namespace MoceanTest\Model;
 
-
 use Mocean\Model\ArrayAccessTrait;
 use Mocean\Model\ObjectAccessTrait;
 

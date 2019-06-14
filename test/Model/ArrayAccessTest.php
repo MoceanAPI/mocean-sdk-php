@@ -8,8 +8,6 @@
 
 namespace MoceanTest\Model;
 
-
-use Mocean\Model\ArrayAccessTrait;
 use PHPUnit\Framework\TestCase;
 
 class ArrayAccessTest extends TestCase
@@ -20,7 +18,7 @@ class ArrayAccessTest extends TestCase
     {
         $this->object = new ObjectUsedByTrait();
         $this->object->setResponseData([
-            'test' => 'testing'
+            'test' => 'testing',
         ]);
     }
 

@@ -30,13 +30,13 @@ class SendCodeTest extends AbstractTesting
     public function testRequestDataParams()
     {
         $params = [
-            'mocean-resp-format' => 'json',
-            'mocean-to' => 'testing to',
-            'mocean-brand' => 'testing brand',
-            'mocean-from' => 'testing from',
-            'mocean-code-length' => 'testing code length',
-            'mocean-pin-validity' => 'testing pin validity',
-            'mocean-next-event-wait' => 'testing next event wait'
+            'mocean-resp-format'     => 'json',
+            'mocean-to'              => 'testing to',
+            'mocean-brand'           => 'testing brand',
+            'mocean-from'            => 'testing from',
+            'mocean-code-length'     => 'testing code length',
+            'mocean-pin-validity'    => 'testing pin validity',
+            'mocean-next-event-wait' => 'testing next event wait',
         ];
         $req = new \Mocean\Verify\SendCode('testing to', 'testing brand', $params);
 

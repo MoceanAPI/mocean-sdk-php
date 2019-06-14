@@ -6,7 +6,6 @@ use Mocean\Client\ClientAwareInterface;
 use Mocean\Client\ClientAwareTrait;
 use Mocean\Client\Exception;
 use Mocean\Model\ModelInterface;
-use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\Request;
 
 class Client implements ClientAwareInterface

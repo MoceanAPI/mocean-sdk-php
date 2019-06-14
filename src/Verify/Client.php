@@ -23,6 +23,7 @@ class Client implements ClientAwareInterface
     public function sendAs($channel = Channel::AUTO)
     {
         $this->channel = $channel;
+
         return $this;
     }
 
@@ -41,7 +42,7 @@ class Client implements ClientAwareInterface
 
             foreach ($requiredKey as $param) {
                 if (!isset($verification[$param])) {
-                    throw new \InvalidArgumentException('missing expected key `' . $param . '`');
+                    throw new \InvalidArgumentException('missing expected key `'.$param.'`');
                 }
             }
 
@@ -82,6 +83,7 @@ class Client implements ClientAwareInterface
 
         $sendCodeRes = SendCode::createFromResponse($data, $this->client->version);
         $sendCodeRes->setClient($this);
+
         return $sendCodeRes;
     }
 
@@ -128,7 +130,7 @@ class Client implements ClientAwareInterface
     protected function buildUriByChannel($url)
     {
         if ($this->channel === Channel::SMS) {
-            return $url . '/sms';
+            return $url.'/sms';
         }
 
         return $url;

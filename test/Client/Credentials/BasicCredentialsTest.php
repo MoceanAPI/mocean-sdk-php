@@ -45,6 +45,7 @@ class BasicCredentialsTest extends AbstractTesting
     {
         $credentials = new \Mocean\Client\Credentials\Basic($this->apiKey, $this->apiSecret);
         $credentials['mocean-api-key'] = 'test_api_key';
+
         return $credentials;
     }
 

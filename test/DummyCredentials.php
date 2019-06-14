@@ -5,12 +5,10 @@
 
 namespace MoceanTest;
 
-
 use Mocean\Client\Credentials\CredentialsInterface;
 
 class DummyCredentials implements CredentialsInterface
 {
-
     public function offsetExists($offset)
     {
     }

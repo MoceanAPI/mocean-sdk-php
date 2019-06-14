@@ -5,7 +5,6 @@
 
 namespace MoceanTest\Model;
 
-
 use PHPUnit\Framework\TestCase;
 
 class ObjectAccessTest extends TestCase
@@ -14,7 +13,7 @@ class ObjectAccessTest extends TestCase
     {
         $object = new ObjectUsedByTrait();
         $object->setResponseData([
-            'test' => 'testing'
+            'test' => 'testing',
         ]);
 
         $this->assertEquals('testing', $object->test);

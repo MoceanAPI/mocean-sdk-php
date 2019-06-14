@@ -32,10 +32,11 @@ class Balance implements ModelInterface
 
     /**
      * @param $responseData
-     *
      * @param $version
-     * @return Balance
+     *
      * @throws Exception
+     *
+     * @return Balance
      */
     public static function createFromResponse($responseData, $version)
     {
