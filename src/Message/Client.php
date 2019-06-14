@@ -41,7 +41,7 @@ class Client implements ClientAwareInterface
         $params = $message->getRequestData();
 
         $request = new Request(
-            \Mocean\Client::BASE_REST.'/sms',
+            '/sms',
             'POST',
             'php://temp',
             ['content-type' => 'application/x-www-form-urlencoded']
@@ -52,11 +52,11 @@ class Client implements ClientAwareInterface
         $response->getBody()->rewind();
         $data = $response->getBody()->getContents();
 
-        if (!isset($data)) {
+        if (!isset($data) || $data === '') {
             throw new Exception\Exception('unexpected response from API');
         }
 
-        return Message::createFromResponse($data);
+        return Message::createFromResponse($data, $this->client->version);
     }
 
     public function search($messageStatus)
@@ -77,7 +77,7 @@ class Client implements ClientAwareInterface
         $params = $messageStatus->getRequestData();
 
         $request = new Request(
-            \Mocean\Client::BASE_REST.'/report/message?'.http_build_query($params),
+            '/report/message?'.http_build_query($params),
             'GET',
             'php://temp'
         );
@@ -87,23 +87,11 @@ class Client implements ClientAwareInterface
         $response->getBody()->rewind();
         $data = $response->getBody()->getContents();
 
-        if (!isset($data)) {
+        if (!isset($data) || $data === '') {
             throw new Exception\Exception('unexpected response from API');
         }
 
-        return MessageStatus::createFromResponse($data);
-    }
-
-    public function receiveDLR()
-    {
-        parse_str(file_get_contents('php://input'), $data);
-
-        if (isset($data['mocean-dlr-status'])) {
-            $data['mocean-dlr-status'] = $this->delivery_status[$data['mocean-dlr-status']];
-        }
-        $data_json = json_encode($data);
-
-        return $data_json;
+        return MessageStatus::createFromResponse($data, $this->client->version);
     }
 
     protected function createMessageFromArray($message)
@@ -125,50 +113,5 @@ class Client implements ClientAwareInterface
         unset($message['mocean-to'], $message['mocean-from'], $message['mocean-text']);
 
         return new Message($from, $to, $text, $message);
-    }
-
-    public function count()
-    {
-        $data = $this->getResponseData();
-        if (!isset($data['messages'])) {
-            return 0;
-        }
-
-        return count($data['messages']);
-    }
-
-    /**
-     * Convenience feature allowing messages to be sent without creating a message object first.
-     *
-     * @param $name
-     * @param $arguments
-     *
-     * @return MessageInterface
-     */
-    public function __call($name, $arguments)
-    {
-        if (!(strstr($name, 'send') !== 0)) {
-            throw new \RuntimeException(sprintf(
-                '`%s` is not a valid method on `%s`',
-                $name,
-                get_class($this)
-            ));
-        }
-
-        $class = substr($name, 4);
-        $class = 'Mocean\\Message\\'.ucfirst(strtolower($class));
-
-        if (!class_exists($class)) {
-            throw new \RuntimeException(sprintf(
-                '`%s` is not a valid method on `%s`',
-                $name,
-                get_class($this)
-            ));
-        }
-
-        $reflection = new \ReflectionClass($class);
-        $message = $reflection->newInstanceArgs($arguments);
-
-        return $this->send($message);
     }
 }

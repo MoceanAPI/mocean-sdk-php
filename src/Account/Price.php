@@ -37,11 +37,11 @@ class Price implements ModelInterface
      *
      * @return Price
      */
-    public static function createFromResponse($responseData)
+    public static function createFromResponse($responseData, $version)
     {
         $price = new self();
         $price->setRawResponseData($responseData)
-            ->processResponse();
+            ->processResponse($version);
 
         if ($price['status'] !== 0 && $price['status'] !== '0') {
             throw new Exception($price['err_msg']);

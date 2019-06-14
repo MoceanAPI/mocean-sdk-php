@@ -39,11 +39,11 @@ class VerifyCode implements ModelInterface
      *
      * @return VerifyCode
      */
-    public static function createFromResponse($responseData)
+    public static function createFromResponse($responseData, $version)
     {
         $verifyCode = new self(null, null);
         $verifyCode->setRawResponseData($responseData)
-            ->processResponse();
+            ->processResponse($version);
 
         if ($verifyCode['status'] !== 0 && $verifyCode['status'] !== '0') {
             throw new Exception($verifyCode['err_msg']);

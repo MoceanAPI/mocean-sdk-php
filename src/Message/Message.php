@@ -43,11 +43,11 @@ class Message implements ModelInterface
      *
      * @return Message
      */
-    public static function createFromResponse($responseData)
+    public static function createFromResponse($responseData, $version)
     {
         $message = new self(null, null, null);
         $message->setRawResponseData($responseData)
-            ->processResponse();
+            ->processResponse($version);
 
         if (isset($message['status']) && $message['status'] !== 0 && $message['status'] !== '0') {
             throw new Exception($message['err_msg']);

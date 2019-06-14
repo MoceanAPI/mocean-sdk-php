@@ -14,7 +14,7 @@ interface ModelInterface extends \ArrayAccess
 
     public function getRawResponseData();
 
-    public static function createFromResponse($responseData);
+    public static function createFromResponse($responseData, $version);
 
     public function __get($name);
 

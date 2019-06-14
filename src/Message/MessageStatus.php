@@ -46,11 +46,11 @@ class MessageStatus implements ModelInterface
      *
      * @return MessageStatus
      */
-    public static function createFromResponse($responseData)
+    public static function createFromResponse($responseData, $version)
     {
         $messageStatus = new self(null);
         $messageStatus->setRawResponseData($responseData)
-            ->processResponse();
+            ->processResponse($version);
 
         if ($messageStatus['status'] !== 0 && $messageStatus['status'] !== '0') {
             throw new Exception($messageStatus['err_msg']);

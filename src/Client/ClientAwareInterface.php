@@ -8,9 +8,7 @@
 
 namespace Mocean\Client;
 
-use Mocean\Client;
-
 interface ClientAwareInterface
 {
-    public function setClient(Client $client);
+    public function setClient($client);
 }

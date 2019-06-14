@@ -10,10 +10,22 @@
          stopOnFailure="false"
          syntaxCheck="false"
 >
+    <filter>
+        <whitelist>
+            <directory suffix=".php">./src/</directory>
+            <exclude>./test/AbstractTesting.php</exclude>
+            <exclude>./test/DummyCredentials.php</exclude>
+            <exclude>./test/Model/ObjectUsedByTrait.php</exclude>
+            <exclude>./test/Client/TempObject.php</exclude>
+        </whitelist>
+    </filter>
     <testsuites>
         <testsuite name="Mocean SDK Test Suite">
             <directory suffix=".php">./test/</directory>
             <exclude>./test/AbstractTesting.php</exclude>
+            <exclude>./test/DummyCredentials.php</exclude>
+            <exclude>./test/Model/ObjectUsedByTrait.php</exclude>
+            <exclude>./test/Client/TempObject.php</exclude>
         </testsuite>
     </testsuites>
 </phpunit>

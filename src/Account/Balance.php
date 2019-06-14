@@ -33,15 +33,15 @@ class Balance implements ModelInterface
     /**
      * @param $responseData
      *
-     * @throws Exception
-     *
+     * @param $version
      * @return Balance
+     * @throws Exception
      */
-    public static function createFromResponse($responseData)
+    public static function createFromResponse($responseData, $version)
     {
         $balance = new self();
         $balance->setRawResponseData($responseData)
-            ->processResponse();
+            ->processResponse($version);
 
         if ($balance['status'] !== 0 && $balance['status'] !== '0') {
             throw new Exception($balance['err_msg']);

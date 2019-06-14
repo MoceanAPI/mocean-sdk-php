@@ -25,7 +25,7 @@ class Client implements ClientAwareInterface
         $params = $price->getRequestData();
 
         $request = new Request(
-            \Mocean\Client::BASE_REST.'/account/pricing?'.http_build_query($params),
+            '/account/pricing?'.http_build_query($params),
             'GET',
             'php://temp'
         );
@@ -33,11 +33,11 @@ class Client implements ClientAwareInterface
         $response = $this->client->send($request);
         $data = $response->getBody()->getContents();
 
-        if ($data === '') {
-            throw new Exception\Server('No results found');
+        if (!isset($data) || $data === '') {
+            throw new Exception\Exception('unexpected response from API');
         }
 
-        return Price::createFromResponse($data);
+        return Price::createFromResponse($data, $this->client->version);
     }
 
     public function getBalance($balance = [])
@@ -52,7 +52,7 @@ class Client implements ClientAwareInterface
         $params = $balance->getRequestData();
 
         $request = new Request(
-            \Mocean\Client::BASE_REST.'/account/balance?'.http_build_query($params),
+            '/account/balance?'.http_build_query($params),
             'GET',
             'php://temp'
         );
@@ -60,26 +60,10 @@ class Client implements ClientAwareInterface
         $response = $this->client->send($request);
         $data = $response->getBody()->getContents();
 
-        if ($data === '') {
-            throw new Exception\Server('No results found');
+        if (!isset($data) || $data === '') {
+            throw new Exception\Exception('unexpected response from API');
         }
 
-        return Balance::createFromResponse($data);
-    }
-
-    protected function getException(ResponseInterface $response, $application = null)
-    {
-        $body = json_decode($response->getBody()->getContents(), true);
-        $status = $response->getStatusCode();
-
-        if ($status >= 400 and $status < 500) {
-            $e = new Exception\Request($body['error_title'], $status);
-        } elseif ($status >= 500 and $status < 600) {
-            $e = new Exception\Server($body['error_title'], $status);
-        } else {
-            $e = new Exception\Exception('Unexpected HTTP Status Code');
-        }
-
-        return $e;
+        return Balance::createFromResponse($data, $this->client->version);
     }
 }
