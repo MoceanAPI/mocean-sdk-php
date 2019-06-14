@@ -1,7 +1,7 @@
 MoceanAPI Client Library for PHP 
 ============================
 [![Latest Stable Version](https://img.shields.io/packagist/v/mocean/client.svg)](https://packagist.org/packages/mocean/client)
-[![Build Status](https://img.shields.io/travis/com/MoceanAPI/mocean-sdk-php.svg)](https://travis-ci.org/MoceanAPI/mocean-sdk-php)
+[![Build Status](https://img.shields.io/travis/com/MoceanAPI/mocean-sdk-php.svg)](https://travis-ci.com/MoceanAPI/mocean-sdk-php)
 [![codecov](https://img.shields.io/codecov/c/github/MoceanAPI/mocean-sdk-php.svg)](https://codecov.io/gh/MoceanAPI/mocean-sdk-php)
 [![codacy](https://img.shields.io/codacy/grade/6aeef2100e91448d8c353393e960f358.svg)](https://app.codacy.com/project/MoceanAPI/mocean-sdk-php/dashboard)
 [![StyleCI](https://github.styleci.io/repos/138724921/shield?branch=master)](https://github.styleci.io/repos/138724921)
@@ -41,7 +41,7 @@ Create a client with your API key and secret:
 use Mocean\Client;
 use Mocean\Client\Credentials\Basic;
 
-$mocean = newClient(new Basic('API_KEY_HERE','API_SECRET_HERE'));
+$mocean = new Client(new Basic('API_KEY_HERE','API_SECRET_HERE'));
 ```
 
 ## Example
@@ -54,8 +54,7 @@ The API can be called directly, using a simple array of parameters, the keys mat
 $res = $mocean->message()->send([
     'mocean-to' => '60123456789',
     'mocean-from' => 'MOCEAN',
-    'mocean-text' => 'Hello World',
-    'mocean-resp-format' => 'json'
+    'mocean-text' => 'Hello World'
 ]);
 
 echo $res;
