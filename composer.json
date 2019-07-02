@@ -14,7 +14,7 @@
   "require-dev": {
     "phpunit/phpunit": "^4.8",
     "php-http/mock-client": "^1.1.0",
-    "estahn/phpunit-json-assertions": "^1.0.0"
+    "estahn/phpunit-json-assertions": "^1.0.0 || ^3.0.0"
   },
   "autoload": {
     "psr-4": {
