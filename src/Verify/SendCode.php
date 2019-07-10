@@ -12,11 +12,13 @@ use Mocean\Client\ClientAwareInterface;
 use Mocean\Client\ClientAwareTrait;
 use Mocean\Client\Exception\Exception;
 use Mocean\Model\ArrayAccessTrait;
+use Mocean\Model\AsRequest;
+use Mocean\Model\AsResponse;
 use Mocean\Model\ModelInterface;
 use Mocean\Model\ObjectAccessTrait;
 use Mocean\Model\ResponseTrait;
 
-class SendCode implements ModelInterface, ClientAwareInterface
+class SendCode implements ModelInterface, ClientAwareInterface, AsRequest, AsResponse
 {
     use ObjectAccessTrait, ResponseTrait, ArrayAccessTrait, ClientAwareTrait;
 

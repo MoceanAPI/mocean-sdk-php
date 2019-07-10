@@ -10,12 +10,6 @@ namespace Mocean\Model;
 
 interface ModelInterface extends \ArrayAccess
 {
-    public function getRequestData();
-
-    public function getRawResponseData();
-
-    public static function createFromResponse($responseData, $version);
-
     public function __get($name);
 
     public function __toString();

@@ -10,11 +10,13 @@ namespace Mocean\Account;
 
 use Mocean\Client\Exception\Exception;
 use Mocean\Model\ArrayAccessTrait;
+use Mocean\Model\AsRequest;
+use Mocean\Model\AsResponse;
 use Mocean\Model\ModelInterface;
 use Mocean\Model\ObjectAccessTrait;
 use Mocean\Model\ResponseTrait;
 
-class Balance implements ModelInterface
+class Balance implements ModelInterface, AsRequest, AsResponse
 {
     use ObjectAccessTrait, ResponseTrait, ArrayAccessTrait;
 

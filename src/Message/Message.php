@@ -10,11 +10,13 @@ namespace Mocean\Message;
 
 use Mocean\Client\Exception\Exception;
 use Mocean\Model\ArrayAccessTrait;
+use Mocean\Model\AsRequest;
+use Mocean\Model\AsResponse;
 use Mocean\Model\ModelInterface;
 use Mocean\Model\ObjectAccessTrait;
 use Mocean\Model\ResponseTrait;
 
-class Message implements ModelInterface
+class Message implements ModelInterface, AsRequest, AsResponse
 {
     use ObjectAccessTrait, ResponseTrait, ArrayAccessTrait;
 
