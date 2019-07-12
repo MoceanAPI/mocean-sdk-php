@@ -48,6 +48,9 @@ class McccTest extends AbstractTesting
 
         $play = Mccc::play('testing file');
         $this->assertEquals($play->getRequestData()['file'][0], 'testing file');
+
+        $play = Mccc::play(['testing file 1', 'testing file 2']);
+        $this->assertEquals($play->getRequestData()['file'], ['testing file 1', 'testing file 2']);
     }
 
     public function testMcccSleep()

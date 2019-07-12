@@ -60,10 +60,10 @@ class Client implements ClientAwareInterface
         return Voice::createFromResponse($data, $this->client->version);
     }
 
-    public function hangout($callUuid)
+    public function hangup($callUuid)
     {
         $request = new Request(
-            '/voice/hangout/' . $callUuid,
+            '/voice/hangup/' . $callUuid,
             'GET'
         );
 
