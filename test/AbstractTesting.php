@@ -8,9 +8,9 @@
 
 namespace MoceanTest;
 
+use Http\Mock\Client as HttpMockClient;
 use PHPUnit\Framework\TestCase;
 use Zend\Diactoros\Response;
-use Http\Mock\Client as HttpMockClient;
 
 class AbstractTesting extends TestCase
 {
@@ -56,6 +56,7 @@ class AbstractTesting extends TestCase
         if (is_callable($callback)) {
             $callback($client, $mockClient);
         }
+
         return $client;
     }
 

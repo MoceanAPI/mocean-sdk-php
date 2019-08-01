@@ -8,7 +8,6 @@
 
 namespace Mocean\Model;
 
-
 interface AsRequest
 {
     public function getRequestData();

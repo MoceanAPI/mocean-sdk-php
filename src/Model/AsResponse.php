@@ -8,7 +8,6 @@
 
 namespace Mocean\Model;
 
-
 interface AsResponse
 {
     public function getRawResponseData();
