@@ -10,6 +10,7 @@ namespace MoceanTest;
 
 use PHPUnit\Framework\TestCase;
 use Zend\Diactoros\Response;
+use Http\Mock\Client as HttpMockClient;
 
 class AbstractTesting extends TestCase
 {
@@ -41,5 +42,25 @@ class AbstractTesting extends TestCase
         parse_str($queryStr, $output);
 
         return $output;
+    }
+
+    protected function interceptRequest($fileName = null, $callback = null)
+    {
+        $mockClient = new HttpMockClient();
+        if ($fileName === null) {
+            $mockClient->addResponse(new Response());
+        } else {
+            $mockClient->addResponse($this->getResponse($fileName));
+        }
+        $client = new \Mocean\Client(new \Mocean\Client\Credentials\Basic($this->apiKey, $this->apiSecret), [], $mockClient);
+        if (is_callable($callback)) {
+            $callback($client, $mockClient);
+        }
+        return $client;
+    }
+
+    protected function getTestUri($uri, $version = '2')
+    {
+        return "/rest/$version$uri";
     }
 }

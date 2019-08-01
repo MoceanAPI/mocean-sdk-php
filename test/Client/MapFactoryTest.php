@@ -56,6 +56,16 @@ class MapFactoryTest extends TestCase
         $this->factory->getApi('dummy');
     }
 
+    public function testCallExistApiWithProperty()
+    {
+        self::assertInstanceOf(\Mocean\Account\Client::class, $this->client->account);
+    }
+
+    public function testCallExistApiWithMethod()
+    {
+        self::assertInstanceOf(\Mocean\Account\Client::class, $this->client->account());
+    }
+
     /**
      * @expectedException \RuntimeException
      */
