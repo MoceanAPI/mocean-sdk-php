@@ -9,71 +9,46 @@
 namespace MoceanTest\Message;
 
 use MoceanTest\AbstractTesting;
-use Prophecy\Argument;
-use Psr\Http\Message\RequestInterface;
-use Zend\Diactoros\Response;
 
 class ClientTest extends AbstractTesting
 {
-    /** @var \Mocean\Client $moceanClient */
-    protected $moceanClient;
-
-    protected $mockMoceanClient;
-    /** @var \Mocean\Message\Client $mockAccountClient */
-    protected $mockMessageClient;
-
-    public function setUp()
-    {
-        $this->moceanClient = new \Mocean\Client(new \Mocean\Client\Credentials\Basic($this->apiKey, $this->apiSecret));
-
-        $this->mockMoceanClient = $this->prophesize('Mocean\Client');
-        $this->mockMessageClient = new \Mocean\Message\Client();
-        $this->mockMessageClient->setClient($this->mockMoceanClient->reveal());
-    }
-
     public function testSendMessage()
     {
-        $inputParams = [
-            'mocean-to'   => 'testing to',
-            'mocean-from' => 'testing from',
-            'mocean-text' => 'testing text',
-        ];
+        $this->interceptRequest('message.xml', function (\Mocean\Client $client, \Http\Mock\Client $httpClient) {
+            $inputParams = [
+                'mocean-to'   => 'testing to',
+                'mocean-from' => 'testing from',
+                'mocean-text' => 'testing text',
+            ];
 
-        $this->mockMoceanClient->send(Argument::that(function (RequestInterface $request) use ($inputParams) {
-            $this->assertEquals('POST', $request->getMethod());
-            $this->assertEquals('/sms', $request->getUri()->getPath());
+            $messageRes = $client->message()->send($inputParams);
+            $this->assertInstanceOf(\Mocean\Message\Message::class, $messageRes);
 
-            $request->getBody()->rewind();
-            $queryArr = $this->convertArrayFromQueryString($request->getBody()->getContents());
+            $this->assertEquals('POST', $httpClient->getLastRequest()->getMethod());
+            $this->assertEquals($this->getTestUri('/sms'), $httpClient->getLastRequest()->getUri()->getPath());
+            $httpClient->getLastRequest()->getBody()->rewind();
+            $queryArr = $this->convertArrayFromQueryString($httpClient->getLastRequest()->getBody()->getContents());
             $this->assertEquals($inputParams['mocean-from'], $queryArr['mocean-from']);
             $this->assertEquals($inputParams['mocean-to'], $queryArr['mocean-to']);
             $this->assertEquals($inputParams['mocean-text'], $queryArr['mocean-text']);
-
-            return true;
-        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse('message.xml'));
-
-        $messageRes = $this->mockMessageClient->send($inputParams);
-        $this->assertInstanceOf(\Mocean\Message\Message::class, $messageRes);
+        });
     }
 
     public function testGetMessageStatus()
     {
-        $inputParams = [
-            'mocean-msgid' => 'testing msgid',
-        ];
+        $this->interceptRequest('message_status.xml', function (\Mocean\Client $client, \Http\Mock\Client $httpClient) {
+            $inputParams = [
+                'mocean-msgid' => 'testing msgid',
+            ];
 
-        $this->mockMoceanClient->send(Argument::that(function (RequestInterface $request) use ($inputParams) {
-            $this->assertEquals('GET', $request->getMethod());
-            $this->assertEquals('/report/message', $request->getUri()->getPath());
+            $messageStatusRes = $client->message()->search($inputParams);
+            $this->assertInstanceOf(\Mocean\Message\MessageStatus::class, $messageStatusRes);
 
-            $queryArr = $this->convertArrayFromQueryString($request->getUri()->getQuery());
+            $this->assertEquals('GET', $httpClient->getLastRequest()->getMethod());
+            $this->assertEquals($this->getTestUri('/report/message'), $httpClient->getLastRequest()->getUri()->getPath());
+            $queryArr = $this->convertArrayFromQueryString($httpClient->getLastRequest()->getUri()->getQuery());
             $this->assertEquals($inputParams['mocean-msgid'], $queryArr['mocean-msgid']);
-
-            return true;
-        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse('message_status.xml'));
-
-        $messageStatusRes = $this->mockMessageClient->search($inputParams);
-        $this->assertInstanceOf(\Mocean\Message\MessageStatus::class, $messageStatusRes);
+        });
     }
 
     /**
@@ -81,7 +56,11 @@ class ClientTest extends AbstractTesting
      */
     public function testSendParamsNotImplementModelInterfaceAndNotArray()
     {
-        $this->mockMessageClient->send('inputString');
+        $this->interceptRequest(null, function (\Mocean\Client $client, \Http\Mock\Client $httpClient) {
+            $client->message()->send('inputString');
+
+            $this->assertFalse($httpClient->getLastRequest());
+        });
     }
 
     /**
@@ -89,7 +68,11 @@ class ClientTest extends AbstractTesting
      */
     public function testSearchParamsNotImplementModelInterfaceAndNotArray()
     {
-        $this->mockMessageClient->search('inputString');
+        $this->interceptRequest(null, function (\Mocean\Client $client, \Http\Mock\Client $httpClient) {
+            $client->message()->search('inputString');
+
+            $this->assertFalse($httpClient->getLastRequest());
+        });
     }
 
     /**
@@ -98,7 +81,11 @@ class ClientTest extends AbstractTesting
      */
     public function testSendRequiredRequestParamNotPresent()
     {
-        $this->mockMessageClient->send([]);
+        $this->interceptRequest(null, function (\Mocean\Client $client, \Http\Mock\Client $httpClient) {
+            $client->message()->send([]);
+
+            $this->assertFalse($httpClient->getLastRequest());
+        });
     }
 
     /**
@@ -107,29 +94,31 @@ class ClientTest extends AbstractTesting
      */
     public function testSearchRequiredRequestParamNotPresent()
     {
-        $this->mockMessageClient->search([]);
+        $this->interceptRequest(null, function (\Mocean\Client $client, \Http\Mock\Client $httpClient) {
+            $client->message()->search([]);
+
+            $this->assertFalse($httpClient->getLastRequest());
+        });
     }
 
     public function testResponseDataIsEmpty()
     {
-        $this->mockMoceanClient->send(Argument::that(function () {
-            return true;
-        }))->shouldBeCalledTimes(2)->willReturn(new Response());
+        $this->interceptRequest(null, function (\Mocean\Client $client) {
+            try {
+                $client->message()->search(['mocean-msgid' => 'testing msgid']);
+                $this->fail();
+            } catch (\Mocean\Client\Exception\Exception $e) {
+            }
 
-        try {
-            $this->mockMessageClient->search(['mocean-msgid' => 'testing msgid']);
-            $this->fail();
-        } catch (\Mocean\Client\Exception\Exception $e) {
-        }
-
-        try {
-            $this->mockMessageClient->send([
-                'mocean-to'   => 'testing to',
-                'mocean-from' => 'testing from',
-                'mocean-text' => 'testing text',
-            ]);
-            $this->fail();
-        } catch (\Mocean\Client\Exception\Exception $e) {
-        }
+            try {
+                $client->message()->send([
+                    'mocean-to'   => 'testing to',
+                    'mocean-from' => 'testing from',
+                    'mocean-text' => 'testing text',
+                ]);
+                $this->fail();
+            } catch (\Mocean\Client\Exception\Exception $e) {
+            }
+        });
     }
 }

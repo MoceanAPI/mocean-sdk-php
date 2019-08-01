@@ -9,43 +9,25 @@
 namespace MoceanTest\NumberLookup;
 
 use MoceanTest\AbstractTesting;
-use Prophecy\Argument;
-use Psr\Http\Message\RequestInterface;
-use Zend\Diactoros\Response;
 
 class ClientTest extends AbstractTesting
 {
-    /** @var \Mocean\Client $moceanClient */
-    protected $moceanClient;
-
-    protected $mockMoceanClient;
-    /** @var \Mocean\NumberLookup\Client $mockNumberLookupClient */
-    protected $mockNumberLookupClient;
-
-    public function setUp()
-    {
-        $this->moceanClient = new \Mocean\Client(new \Mocean\Client\Credentials\Basic($this->apiKey, $this->apiSecret));
-
-        $this->mockMoceanClient = $this->prophesize('Mocean\Client');
-        $this->mockNumberLookupClient = new \Mocean\NumberLookup\Client();
-        $this->mockNumberLookupClient->setClient($this->mockMoceanClient->reveal());
-    }
-
     public function testNumberLookup()
     {
-        $inputParams = [
-            'mocean-to' => 'testing to',
-        ];
+        $this->interceptRequest('number_lookup.xml', function (\Mocean\Client $client, \Http\Mock\Client $httpClient) {
+            $inputParams = [
+                'mocean-to' => 'testing to',
+            ];
 
-        $this->mockMoceanClient->send(Argument::that(function (RequestInterface $request) {
-            $this->assertEquals('POST', $request->getMethod());
-            $this->assertEquals('/nl', $request->getUri()->getPath());
+            $numberLookupRes = $client->numberLookup()->inquiry($inputParams);
+            $this->assertInstanceOf(\Mocean\NumberLookup\NumberLookup::class, $numberLookupRes);
 
-            return true;
-        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse('number_lookup.xml'));
-
-        $numberLookupRes = $this->mockNumberLookupClient->inquiry($inputParams);
-        $this->assertInstanceOf(\Mocean\NumberLookup\NumberLookup::class, $numberLookupRes);
+            $this->assertEquals('POST', $httpClient->getLastRequest()->getMethod());
+            $this->assertEquals($this->getTestUri('/nl'), $httpClient->getLastRequest()->getUri()->getPath());
+            $httpClient->getLastRequest()->getBody()->rewind();
+            $queryArr = $this->convertArrayFromQueryString($httpClient->getLastRequest()->getBody()->getContents());
+            $this->assertEquals($inputParams['mocean-to'], $queryArr['mocean-to']);
+        });
     }
 
     /**
@@ -53,7 +35,11 @@ class ClientTest extends AbstractTesting
      */
     public function testSendParamsNotImplementModelInterfaceAndNotArray()
     {
-        $this->mockNumberLookupClient->inquiry('inputString');
+        $this->interceptRequest(null, function (\Mocean\Client $client, \Http\Mock\Client $httpClient) {
+            $client->numberLookup()->inquiry('inputString');
+
+            $this->assertFalse($httpClient->getLastRequest());
+        });
     }
 
     /**
@@ -62,19 +48,21 @@ class ClientTest extends AbstractTesting
      */
     public function testSendRequiredRequestParamNotPresent()
     {
-        $this->mockNumberLookupClient->inquiry([]);
+        $this->interceptRequest(null, function (\Mocean\Client $client, \Http\Mock\Client $httpClient) {
+            $client->numberLookup()->inquiry([]);
+
+            $this->assertFalse($httpClient->getLastRequest());
+        });
     }
 
     public function testResponseDataIsEmpty()
     {
-        $this->mockMoceanClient->send(Argument::that(function () {
-            return true;
-        }))->shouldBeCalledTimes(1)->willReturn(new Response());
-
-        try {
-            $this->mockNumberLookupClient->inquiry(['mocean-to' => 'testing to']);
-            $this->fail();
-        } catch (\Mocean\Client\Exception\Exception $e) {
-        }
+        $this->interceptRequest(null, function (\Mocean\Client $client) {
+            try {
+                $client->numberLookup()->inquiry(['mocean-to' => 'testing to']);
+                $this->fail();
+            } catch (\Mocean\Client\Exception\Exception $e) {
+            }
+        });
     }
 }

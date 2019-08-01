@@ -9,52 +9,29 @@
 namespace MoceanTest\Account;
 
 use MoceanTest\AbstractTesting;
-use Prophecy\Argument;
-use Psr\Http\Message\RequestInterface;
-use Zend\Diactoros\Response;
 
 class ClientTest extends AbstractTesting
 {
-    /** @var \Mocean\Client $moceanClient */
-    protected $moceanClient;
-
-    protected $mockMoceanClient;
-    /** @var \Mocean\Account\Client $mockAccountClient */
-    protected $mockAccountClient;
-
-    public function setUp()
-    {
-        $this->moceanClient = new \Mocean\Client(new \Mocean\Client\Credentials\Basic($this->apiKey, $this->apiSecret));
-
-        $this->mockMoceanClient = $this->prophesize('Mocean\Client');
-        $this->mockAccountClient = new \Mocean\Account\Client();
-        $this->mockAccountClient->setClient($this->mockMoceanClient->reveal());
-    }
-
     public function testGetBalance()
     {
-        $this->mockMoceanClient->send(Argument::that(function (RequestInterface $request) {
-            $this->assertEquals('GET', $request->getMethod());
-            $this->assertEquals('/account/balance', $request->getUri()->getPath());
+        $this->interceptRequest('balance.xml', function (\Mocean\Client $client, \Http\Mock\Client $httpClient) {
+            $balanceRes = $client->account()->getBalance();
+            $this->assertInstanceOf(\Mocean\Account\Balance::class, $balanceRes);
 
-            return true;
-        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse('balance.xml'));
-
-        $balanceRes = $this->mockAccountClient->getBalance();
-        $this->assertInstanceOf(\Mocean\Account\Balance::class, $balanceRes);
+            $this->assertEquals('GET', $httpClient->getLastRequest()->getMethod());
+            $this->assertEquals($this->getTestUri('/account/balance'), $httpClient->getLastRequest()->getUri()->getPath());
+        });
     }
 
     public function testGetPrice()
     {
-        $this->mockMoceanClient->send(Argument::that(function (RequestInterface $request) {
-            $this->assertEquals('GET', $request->getMethod());
-            $this->assertEquals('/account/pricing', $request->getUri()->getPath());
+        $this->interceptRequest('price.xml', function (\Mocean\Client $client, \Http\Mock\Client $httpClient) {
+            $priceRes = $client->account()->getPricing();
+            $this->assertInstanceOf(\Mocean\Account\Price::class, $priceRes);
 
-            return true;
-        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse('price.xml'));
-
-        $priceRes = $this->mockAccountClient->getPricing();
-        $this->assertInstanceOf(\Mocean\Account\Price::class, $priceRes);
+            $this->assertEquals('GET', $httpClient->getLastRequest()->getMethod());
+            $this->assertEquals($this->getTestUri('/account/pricing'), $httpClient->getLastRequest()->getUri()->getPath());
+        });
     }
 
     /**
@@ -62,7 +39,11 @@ class ClientTest extends AbstractTesting
      */
     public function testGetBalanceParamsNotImplementModelInterfaceAndNotArray()
     {
-        $this->mockAccountClient->getBalance('inputString');
+        $this->interceptRequest(null, function (\Mocean\Client $client, \Http\Mock\Client $httpClient) {
+            $client->account()->getBalance('inputString');
+
+            $this->assertFalse($httpClient->getLastRequest());
+        });
     }
 
     /**
@@ -70,25 +51,27 @@ class ClientTest extends AbstractTesting
      */
     public function testGetPricingParamsNotImplementModelInterfaceAndNotArray()
     {
-        $this->mockAccountClient->getPricing('inputString');
+        $this->interceptRequest(null, function (\Mocean\Client $client, \Http\Mock\Client $httpClient) {
+            $client->account()->getPricing('inputString');
+
+            $this->assertFalse($httpClient->getLastRequest());
+        });
     }
 
     public function testResponseDataIsEmpty()
     {
-        $this->mockMoceanClient->send(Argument::that(function () {
-            return true;
-        }))->shouldBeCalledTimes(2)->willReturn(new Response());
+        $this->interceptRequest(null, function (\Mocean\Client $client) {
+            try {
+                $client->account()->getPricing();
+                $this->fail();
+            } catch (\Mocean\Client\Exception\Exception $e) {
+            }
 
-        try {
-            $this->mockAccountClient->getPricing();
-            $this->fail();
-        } catch (\Mocean\Client\Exception\Exception $e) {
-        }
-
-        try {
-            $this->mockAccountClient->getBalance();
-            $this->fail();
-        } catch (\Mocean\Client\Exception\Exception $e) {
-        }
+            try {
+                $client->account()->getBalance();
+                $this->fail();
+            } catch (\Mocean\Client\Exception\Exception $e) {
+            }
+        });
     }
 }

@@ -11,119 +11,88 @@ namespace MoceanTest\Verify;
 use Mocean\Verify\Channel;
 use Mocean\Verify\SendCode;
 use MoceanTest\AbstractTesting;
-use Prophecy\Argument;
-use Psr\Http\Message\RequestInterface;
-use Zend\Diactoros\Response;
 
 class ClientTest extends AbstractTesting
 {
-    /** @var \Mocean\Client $moceanClient */
-    protected $moceanClient;
-
-    protected $mockMoceanClient;
-    /** @var \Mocean\Verify\Client $mockVerifyClient */
-    protected $mockVerifyClient;
-
-    public function setUp()
-    {
-        $this->moceanClient = new \Mocean\Client(new \Mocean\Client\Credentials\Basic($this->apiKey, $this->apiSecret));
-
-        $this->mockMoceanClient = $this->prophesize('Mocean\Client');
-        $this->mockVerifyClient = new \Mocean\Verify\Client();
-        $this->mockVerifyClient->setClient($this->mockMoceanClient->reveal());
-    }
-
     public function testSendCode()
     {
-        $inputParams = [
-            'mocean-to'    => 'testing to',
-            'mocean-brand' => 'testing brand',
-        ];
+        $this->interceptRequest('send_code.xml', function (\Mocean\Client $client, \Http\Mock\Client $httpClient) {
+            $inputParams = [
+                'mocean-to'    => 'testing to',
+                'mocean-brand' => 'testing brand',
+            ];
 
-        $this->mockMoceanClient->send(Argument::that(function (RequestInterface $request) use ($inputParams) {
-            $this->assertEquals('POST', $request->getMethod());
-            $this->assertEquals('/verify/req', $request->getUri()->getPath());
+            $sendCodeRes = $client->verify()->start($inputParams);
+            $this->assertInstanceOf(\Mocean\Verify\SendCode::class, $sendCodeRes);
 
-            $request->getBody()->rewind();
-            $queryArr = $this->convertArrayFromQueryString($request->getBody()->getContents());
+            $this->assertEquals('POST', $httpClient->getLastRequest()->getMethod());
+            $this->assertEquals($this->getTestUri('/verify/req'), $httpClient->getLastRequest()->getUri()->getPath());
+            $httpClient->getLastRequest()->getBody()->rewind();
+            $queryArr = $this->convertArrayFromQueryString($httpClient->getLastRequest()->getBody()->getContents());
             $this->assertEquals($inputParams['mocean-to'], $queryArr['mocean-to']);
             $this->assertEquals($inputParams['mocean-brand'], $queryArr['mocean-brand']);
-
-            return true;
-        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse('send_code.xml'));
-
-        $sendCodeRes = $this->mockVerifyClient->start($inputParams);
-        $this->assertInstanceOf(\Mocean\Verify\SendCode::class, $sendCodeRes);
+        });
     }
 
     public function testSendCodeAsSmsChannel()
     {
-        $inputParams = [
-            'mocean-to'    => 'testing to',
-            'mocean-brand' => 'testing brand',
-        ];
+        $this->interceptRequest('send_code.xml', function (\Mocean\Client $client, \Http\Mock\Client $httpClient) {
+            $inputParams = [
+                'mocean-to'    => 'testing to',
+                'mocean-brand' => 'testing brand',
+            ];
 
-        $this->mockMoceanClient->send(Argument::that(function (RequestInterface $request) use ($inputParams) {
-            $this->assertEquals('POST', $request->getMethod());
-            $this->assertEquals('/verify/req/sms', $request->getUri()->getPath());
+            $sendCodeRes = $client->verify()->sendAs(Channel::SMS)->start($inputParams);
+            $this->assertInstanceOf(\Mocean\Verify\SendCode::class, $sendCodeRes);
 
-            $request->getBody()->rewind();
-            $queryArr = $this->convertArrayFromQueryString($request->getBody()->getContents());
+            $this->assertEquals('POST', $httpClient->getLastRequest()->getMethod());
+            $this->assertEquals($this->getTestUri('/verify/req/sms'), $httpClient->getLastRequest()->getUri()->getPath());
+            $httpClient->getLastRequest()->getBody()->rewind();
+            $queryArr = $this->convertArrayFromQueryString($httpClient->getLastRequest()->getBody()->getContents());
             $this->assertEquals($inputParams['mocean-to'], $queryArr['mocean-to']);
             $this->assertEquals($inputParams['mocean-brand'], $queryArr['mocean-brand']);
-
-            return true;
-        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse('send_code.xml'));
-
-        $sendCodeRes = $this->mockVerifyClient->sendAs(Channel::SMS)->start($inputParams);
-        $this->assertInstanceOf(\Mocean\Verify\SendCode::class, $sendCodeRes);
+        });
     }
 
     public function testResendCode()
     {
-        $inputParams = [
-            'mocean-reqid' => 'CPASS_restapi_C0000002737000000.0002',
-        ];
+        $this->interceptRequest('resend_code.xml', function (\Mocean\Client $client, \Http\Mock\Client $httpClient) {
+            $inputParams = [
+                'mocean-reqid' => 'CPASS_restapi_C0000002737000000.0002',
+            ];
 
-        $sendCodeRes = SendCode::createFromResponse($this->getResponseString('send_code.xml'), $this->defaultVersion);
-        $sendCodeRes->setClient($this->mockVerifyClient);
+            $sendCodeRes = SendCode::createFromResponse($this->getResponseString('send_code.xml'), $this->defaultVersion);
+            $sendCodeRes->setClient($client->verify());
 
-        $this->mockMoceanClient->send(Argument::that(function (RequestInterface $request) use ($inputParams) {
-            $this->assertEquals('POST', $request->getMethod());
-            $this->assertEquals('/verify/resend/sms', $request->getUri()->getPath());
+            $resendCodeRes = $sendCodeRes->resend();
+            $this->assertInstanceOf(\Mocean\Verify\SendCode::class, $resendCodeRes);
 
-            $request->getBody()->rewind();
-            $queryArr = $this->convertArrayFromQueryString($request->getBody()->getContents());
+            $this->assertEquals('POST', $httpClient->getLastRequest()->getMethod());
+            $this->assertEquals($this->getTestUri('/verify/resend/sms'), $httpClient->getLastRequest()->getUri()->getPath());
+            $httpClient->getLastRequest()->getBody()->rewind();
+            $queryArr = $this->convertArrayFromQueryString($httpClient->getLastRequest()->getBody()->getContents());
             $this->assertEquals($inputParams['mocean-reqid'], $queryArr['mocean-reqid']);
-
-            return true;
-        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse('resend_code.xml'));
-
-        $resendCodeRes = $sendCodeRes->resend();
-        $this->assertInstanceOf(\Mocean\Verify\SendCode::class, $resendCodeRes);
+        });
     }
 
     public function testVerifyCode()
     {
-        $inputParams = [
-            'mocean-reqid' => 'testing reqid',
-            'mocean-code'  => 'testing code',
-        ];
+        $this->interceptRequest('verify_code.xml', function (\Mocean\Client $client, \Http\Mock\Client $httpClient) {
+            $inputParams = [
+                'mocean-reqid' => 'testing reqid',
+                'mocean-code'  => 'testing code',
+            ];
 
-        $this->mockMoceanClient->send(Argument::that(function (RequestInterface $request) use ($inputParams) {
-            $this->assertEquals('POST', $request->getMethod());
-            $this->assertEquals('/verify/check', $request->getUri()->getPath());
+            $verifyCodeRes = $client->verify()->check($inputParams);
+            $this->assertInstanceOf(\Mocean\Verify\VerifyCode::class, $verifyCodeRes);
 
-            $request->getBody()->rewind();
-            $queryArr = $this->convertArrayFromQueryString($request->getBody()->getContents());
+            $this->assertEquals('POST', $httpClient->getLastRequest()->getMethod());
+            $this->assertEquals($this->getTestUri('/verify/check'), $httpClient->getLastRequest()->getUri()->getPath());
+            $httpClient->getLastRequest()->getBody()->rewind();
+            $queryArr = $this->convertArrayFromQueryString($httpClient->getLastRequest()->getBody()->getContents());
             $this->assertEquals($inputParams['mocean-reqid'], $queryArr['mocean-reqid']);
             $this->assertEquals($inputParams['mocean-code'], $queryArr['mocean-code']);
-
-            return true;
-        }))->shouldBeCalledTimes(1)->willReturn($this->getResponse('verify_code.xml'));
-
-        $verifyCodeRes = $this->mockVerifyClient->check($inputParams);
-        $this->assertInstanceOf(\Mocean\Verify\VerifyCode::class, $verifyCodeRes);
+        });
     }
 
     /**
@@ -131,7 +100,11 @@ class ClientTest extends AbstractTesting
      */
     public function testStartParamsNotImplementModelInterfaceAndNotArray()
     {
-        $this->mockVerifyClient->start('inputString');
+        $this->interceptRequest(null, function (\Mocean\Client $client, \Http\Mock\Client $httpClient) {
+            $client->verify()->start('inputString');
+
+            $this->assertFalse($httpClient->getLastRequest());
+        });
     }
 
     /**
@@ -139,7 +112,11 @@ class ClientTest extends AbstractTesting
      */
     public function testCheckParamsNotImplementModelInterfaceAndNotArray()
     {
-        $this->mockVerifyClient->check('inputString');
+        $this->interceptRequest(null, function (\Mocean\Client $client, \Http\Mock\Client $httpClient) {
+            $client->verify()->check('inputString');
+
+            $this->assertFalse($httpClient->getLastRequest());
+        });
     }
 
     /**
@@ -148,7 +125,11 @@ class ClientTest extends AbstractTesting
      */
     public function testStartRequiredRequestParamNotPresent()
     {
-        $this->mockVerifyClient->start([]);
+        $this->interceptRequest(null, function (\Mocean\Client $client, \Http\Mock\Client $httpClient) {
+            $client->verify()->start([]);
+
+            $this->assertFalse($httpClient->getLastRequest());
+        });
     }
 
     /**
@@ -157,31 +138,33 @@ class ClientTest extends AbstractTesting
      */
     public function testCheckRequiredRequestParamNotPresent()
     {
-        $this->mockVerifyClient->check([]);
+        $this->interceptRequest(null, function (\Mocean\Client $client, \Http\Mock\Client $httpClient) {
+            $client->verify()->check([]);
+
+            $this->assertFalse($httpClient->getLastRequest());
+        });
     }
 
     public function testResponseDataIsEmpty()
     {
-        $this->mockMoceanClient->send(Argument::that(function () {
-            return true;
-        }))->shouldBeCalledTimes(2)->willReturn(new Response());
+        $this->interceptRequest(null, function (\Mocean\Client $client) {
+            try {
+                $client->verify()->start([
+                    'mocean-to'    => 'testing to',
+                    'mocean-brand' => 'testing brand',
+                ]);
+                $this->fail();
+            } catch (\Mocean\Client\Exception\Exception $e) {
+            }
 
-        try {
-            $this->mockVerifyClient->start([
-                'mocean-to'    => 'testing to',
-                'mocean-brand' => 'testing brand',
-            ]);
-            $this->fail();
-        } catch (\Mocean\Client\Exception\Exception $e) {
-        }
-
-        try {
-            $this->mockVerifyClient->check([
-                'mocean-reqid' => 'testing reqid',
-                'mocean-code'  => 'testing code',
-            ]);
-            $this->fail();
-        } catch (\Mocean\Client\Exception\Exception $e) {
-        }
+            try {
+                $client->verify()->check([
+                    'mocean-reqid' => 'testing reqid',
+                    'mocean-code'  => 'testing code',
+                ]);
+                $this->fail();
+            } catch (\Mocean\Client\Exception\Exception $e) {
+            }
+        });
     }
 }
