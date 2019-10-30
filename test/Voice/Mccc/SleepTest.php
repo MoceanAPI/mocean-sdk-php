@@ -16,7 +16,6 @@ class SleepTest extends AbstractTesting
     {
         $params = [
             'duration' => 10000,
-            'barge-in' => true,
             'action' => 'sleep'
         ];
         $req = new \Mocean\Voice\Mccc\Sleep($params);
@@ -25,7 +24,6 @@ class SleepTest extends AbstractTesting
 
         $setterReq = new \Mocean\Voice\Mccc\Sleep();
         $setterReq->setDuration(10000);
-        $setterReq->setBargeIn(true);
 
         $this->assertEquals($params, $setterReq->getRequestData());
     }

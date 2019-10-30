@@ -17,6 +17,7 @@ class PlayTest extends AbstractTesting
         $params = [
             'file' => 'testing file',
             'barge-in' => true,
+            'clear-digit-cache' => true,
             'action' => 'play'
         ];
         $req = new \Mocean\Voice\Mccc\Play($params);
@@ -49,6 +50,7 @@ class PlayTest extends AbstractTesting
 
         $setterReq->setFiles('testing file');
         $setterReq->setBargeIn(true);
+        $setterReq->setClearDigitCache(true);
 
         $this->assertEquals($params, $setterReq->getRequestData());
     }

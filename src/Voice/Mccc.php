@@ -9,9 +9,10 @@
 namespace Mocean\Voice;
 
 
-use Mocean\Voice\Mccc\Bridge;
+use Mocean\Voice\Mccc\Dial;
 use Mocean\Voice\Mccc\Collect;
 use Mocean\Voice\Mccc\Play;
+use Mocean\Voice\Mccc\Record;
 use Mocean\Voice\Mccc\Say;
 use Mocean\Voice\Mccc\Sleep;
 
@@ -51,11 +52,11 @@ class Mccc
 
     /**
      * @param string|null $to
-     * @return Bridge
+     * @return Dial
      */
-    public static function bridge($to = null)
+    public static function dial($to = null)
     {
-        $ins = new Bridge();
+        $ins = new Dial();
 
         if ($to) {
             $ins->setTo($to);
@@ -92,5 +93,13 @@ class Mccc
         }
 
         return $ins;
+    }
+
+    /**
+     * @return Record
+     */
+    public static function record()
+    {
+        return new Record();
     }
 }

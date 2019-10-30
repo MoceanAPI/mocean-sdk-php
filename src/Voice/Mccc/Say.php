@@ -37,6 +37,12 @@ class Say extends AbstractMccc
         return $this;
     }
 
+    public function setClearDigitCache($clearDigitCache)
+    {
+        $this->requestData['clear-digit-cache'] = $clearDigitCache;
+        return $this;
+    }
+
     protected function requiredKey()
     {
         return ['text', 'language'];

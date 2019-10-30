@@ -15,7 +15,7 @@ abstract class AbstractMccc implements AsRequest
 {
     protected $requestData;
 
-    protected function __construct($params = null)
+    public function __construct($params = null)
     {
         $this->requestData = [];
 

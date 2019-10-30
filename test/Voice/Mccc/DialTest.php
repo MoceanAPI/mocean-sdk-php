@@ -10,20 +10,24 @@ namespace MoceanTest\Voice\Mccc;
 
 use MoceanTest\AbstractTesting;
 
-class BridgeTest extends AbstractTesting
+class DialTest extends AbstractTesting
 {
     public function testRequestDataParams()
     {
         $params = [
             'to' => 'testing to',
-            'action' => 'dial'
+            'action' => 'dial',
+            'from' => 'callerid',
+            'dial-sequentially' => true
         ];
-        $req = new \Mocean\Voice\Mccc\Bridge($params);
+        $req = new \Mocean\Voice\Mccc\Dial($params);
 
         $this->assertEquals($params, $req->getRequestData());
 
-        $setterReq = new \Mocean\Voice\Mccc\Bridge();
+        $setterReq = new \Mocean\Voice\Mccc\Dial();
         $setterReq->setTo('testing to');
+        $setterReq->setFrom('callerid');
+        $setterReq->setDialSequentially(true);
 
         $this->assertEquals($params, $setterReq->getRequestData());
     }
@@ -33,18 +37,18 @@ class BridgeTest extends AbstractTesting
         $params = [
             'to' => 'testing to'
         ];
-        $req = new \Mocean\Voice\Mccc\Bridge($params);
+        $req = new \Mocean\Voice\Mccc\Dial($params);
 
         $this->assertEquals('dial', $req->getRequestData()['action']);
     }
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage missing expected key `to` from Mocean\Voice\Mccc\Bridge
+     * @expectedExceptionMessage missing expected key `to` from Mocean\Voice\Mccc\Dial
      */
     public function testIfRequiredFieldNotSet()
     {
-        $req = new \Mocean\Voice\Mccc\Bridge();
+        $req = new \Mocean\Voice\Mccc\Dial();
         $req->getRequestData();
     }
 }

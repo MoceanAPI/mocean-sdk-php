@@ -23,13 +23,13 @@ class McccTest extends AbstractTesting
         $this->assertEquals($say->getRequestData()['text'], 'hello world');
     }
 
-    public function testMcccBridge()
+    public function testMcccDial()
     {
-        $bridge = Mccc::bridge();
-        $this->assertInstanceOf(Mccc\Bridge::class, $bridge);
+        $dial = Mccc::dial();
+        $this->assertInstanceOf(Mccc\Dial::class, $dial);
 
-        $bridge = Mccc::bridge('testing to');
-        $this->assertEquals($bridge->getRequestData()['to'], 'testing to');
+        $dial = Mccc::dial('testing to');
+        $this->assertEquals($dial->getRequestData()['to'], 'testing to');
     }
 
     public function testMcccCollect()
@@ -38,6 +38,9 @@ class McccTest extends AbstractTesting
         $this->assertInstanceOf(Mccc\Collect::class, $collect);
 
         $collect = Mccc::collect('testing url');
+        $collect->setMin(1)
+            ->setMax(10)
+            ->setTimeout(500);
         $this->assertEquals($collect->getRequestData()['event-url'], 'testing url');
     }
 
@@ -60,5 +63,11 @@ class McccTest extends AbstractTesting
 
         $sleep = Mccc::sleep(10000);
         $this->assertEquals($sleep->getRequestData()['duration'], 10000);
+    }
+
+    public function testMcccRecord()
+    {
+        $record = Mccc::record();
+        $this->assertInstanceOf(Mccc\Record::class, $record);
     }
 }

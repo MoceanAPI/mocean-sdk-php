@@ -10,20 +10,9 @@ namespace Mocean\Voice\Mccc;
 
 class Sleep extends AbstractMccc
 {
-    public function __construct($params = null)
-    {
-        parent::__construct($params);
-    }
-
     public function setDuration($duration)
     {
         $this->requestData['duration'] = $duration;
-        return $this;
-    }
-
-    public function setBargeIn($bargeIn)
-    {
-        $this->requestData['barge-in'] = $bargeIn;
         return $this;
     }
 

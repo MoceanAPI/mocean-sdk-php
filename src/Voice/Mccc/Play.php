@@ -10,11 +10,6 @@ namespace Mocean\Voice\Mccc;
 
 class Play extends AbstractMccc
 {
-    public function __construct($params = null)
-    {
-        parent::__construct($params);
-    }
-
     public function setFiles($files)
     {
         $this->requestData['file'] = $files;
@@ -41,6 +36,12 @@ class Play extends AbstractMccc
     public function setBargeIn($bargeIn)
     {
         $this->requestData['barge-in'] = $bargeIn;
+        return $this;
+    }
+
+    public function setClearDigitCache($clearDigitCache)
+    {
+        $this->requestData['clear-digit-cache'] = $clearDigitCache;
         return $this;
     }
 

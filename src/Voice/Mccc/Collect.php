@@ -11,27 +11,6 @@ namespace Mocean\Voice\Mccc;
 
 class Collect extends AbstractMccc
 {
-    public function __construct($params = null)
-    {
-        parent::__construct($params);
-
-        if (!isset($this->requestData['min'])) {
-            $this->requestData['min'] = 1;
-        }
-
-        if (!isset($this->requestData['max'])) {
-            $this->requestData['max'] = 10;
-        }
-
-        if (!isset($this->requestData['terminators'])) {
-            $this->requestData['terminators'] = '#';
-        }
-
-        if (!isset($this->requestData['timeout'])) {
-            $this->requestData['timeout'] = 5;
-        }
-    }
-
     public function setEventUrl($eventUrl)
     {
         $this->requestData['event-url'] = $eventUrl;
@@ -64,7 +43,7 @@ class Collect extends AbstractMccc
 
     protected function requiredKey()
     {
-        return ['event-url', 'min', 'max', 'terminators', 'timeout'];
+        return ['event-url', 'min', 'max', 'timeout'];
     }
 
     protected function action()

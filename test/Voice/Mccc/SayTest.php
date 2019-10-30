@@ -18,6 +18,7 @@ class SayTest extends AbstractTesting
             'language' => 'testing language',
             'text' => 'testing text',
             'barge-in' => true,
+            'clear-digit-cache' => true,
             'action' => 'say'
         ];
         $req = new \Mocean\Voice\Mccc\Say($params);
@@ -28,6 +29,7 @@ class SayTest extends AbstractTesting
         $setterReq->setLanguage('testing language');
         $setterReq->setText('testing text');
         $setterReq->setBargeIn(true);
+        $setterReq->setClearDigitCache(true);
 
         $this->assertEquals($params, $setterReq->getRequestData());
     }
