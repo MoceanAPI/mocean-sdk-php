@@ -65,8 +65,8 @@ class VoiceTest extends AbstractTesting
 
     public function testDirectAccessResponseData()
     {
-        $this->objectTesting(\Mocean\Voice\Voice::createFromResponse($this->mockJsonResponseStr, '1'));
-        $this->objectTesting(\Mocean\Voice\Voice::createFromResponse($this->mockXmlResponseStr, '1'));
+        $this->objectTesting(\Mocean\Voice\Voice::createFromResponse($this->mockJsonResponseStr, $this->defaultVersion));
+        $this->objectTesting(\Mocean\Voice\Voice::createFromResponse($this->mockXmlResponseStr, $this->defaultVersion));
 
         $this->objectTesting($this->jsonResponse);
         $this->objectTesting($this->xmlResponse);
@@ -104,12 +104,12 @@ class VoiceTest extends AbstractTesting
 
     private function objectTesting($res)
     {
-        $this->assertEquals($res->status, '0');
-        $this->assertEquals($res->{'session-uuid'}, 'xxx-xxx-xxx-xxx');
-        $this->assertEquals($res->{'call-uuid'}, 'xxx-xxx-xxx-xxx');
+        $this->assertEquals($res->calls[0]->status, '0');
+        $this->assertEquals($res->calls[0]->{'session-uuid'}, 'xxx-xxx-xxx-xxx');
+        $this->assertEquals($res->calls[0]->{'call-uuid'}, 'xxx-xxx-xxx-xxx');
 
-        $this->assertEquals($res['status'], '0');
-        $this->assertEquals($res['session-uuid'], 'xxx-xxx-xxx-xxx');
-        $this->assertEquals($res['call-uuid'], 'xxx-xxx-xxx-xxx');
+        $this->assertEquals($res['calls'][0]['status'], '0');
+        $this->assertEquals($res['calls'][0]['session-uuid'], 'xxx-xxx-xxx-xxx');
+        $this->assertEquals($res['calls'][0]['call-uuid'], 'xxx-xxx-xxx-xxx');
     }
 }

@@ -1,5 +1,10 @@
 {
-  "status": 0,
-  "session-uuid": "xxx-xxx-xxx-xxx",
-  "call-uuid": "xxx-xxx-xxx-xxx"
+  "calls": [
+    {
+      "status": 0,
+      "receiver": "60123456789",
+      "session-uuid": "xxx-xxx-xxx-xxx",
+      "call-uuid": "xxx-xxx-xxx-xxx"
+    }
+  ]
 }

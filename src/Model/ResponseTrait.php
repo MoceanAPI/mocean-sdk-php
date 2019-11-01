@@ -60,6 +60,12 @@ trait ResponseTrait
                 ['<result><messages>', '</messages></result>'],
                 $responseData
             );
+        } elseif (self::class === 'Mocean\Voice\Voice') {
+            $responseData = str_replace(
+                ['<result>', '</result>'],
+                ['<result><calls>', '</calls></result>'],
+                $responseData
+            );
         }
 
         return $responseData;
@@ -74,6 +80,11 @@ trait ResponseTrait
                 $obj['messages']['message'] = [$obj['messages']['message']];
             }
             $obj['messages'] = $obj['messages']['message'];
+        } elseif (self::class === 'Mocean\Voice\Voice' && isset($obj['calls']['call'])) {
+            if (!is_array(json_decode(json_encode($obj['calls']['call'])))) {
+                $obj['calls']['call'] = [$obj['calls']['call']];
+            }
+            $obj['calls'] = $obj['calls']['call'];
         }
 
         return $obj;

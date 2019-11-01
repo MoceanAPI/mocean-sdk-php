@@ -47,15 +47,15 @@ class Voice implements ModelInterface, AsRequest, AsResponse
      */
     public static function createFromResponse($responseData, $version)
     {
-        $sendCode = new self(null, null);
-        $sendCode->setRawResponseData($responseData)
+        $voice = new self(null, null);
+        $voice->setRawResponseData($responseData)
             ->processResponse($version);
 
-        if ($sendCode['status'] !== 0 && $sendCode['status'] !== '0') {
-            throw new Exception($sendCode['err_msg']);
+        if (isset($voice['status']) && $voice['status'] !== 0 && $voice['status'] !== '0') {
+            throw new Exception($voice['err_msg']);
         }
 
-        return $sendCode;
+        return $voice;
     }
 
     public function setTo($to)
