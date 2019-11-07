@@ -27,7 +27,8 @@ class ClientTest extends AbstractTesting
 
             $this->assertEquals('POST', $httpClient->getLastRequest()->getMethod());
             $this->assertEquals($this->getTestUri('/voice/dial'), $httpClient->getLastRequest()->getUri()->getPath());
-            $queryArr = $this->convertArrayFromQueryString($httpClient->getLastRequest()->getUri()->getQuery());
+            $httpClient->getLastRequest()->getBody()->rewind();
+            $queryArr = $this->convertArrayFromQueryString($httpClient->getLastRequest()->getBody()->getContents());
             $this->assertEquals($inputParams['mocean-to'], $queryArr['mocean-to']);
             $this->assertEquals(Mccc::say('hello world')->getRequestData(), json_decode($queryArr['mocean-call-control-commands'], true)[0]);
         });

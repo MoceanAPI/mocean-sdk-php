@@ -44,10 +44,13 @@ class Client implements ClientAwareInterface
         $params = $voice->getRequestData();
 
         $request = new Request(
-            '/voice/dial?' . http_build_query($params),
-            'POST'
+            '/voice/dial',
+            'POST',
+            'php://temp',
+            ['content-type' => 'application/x-www-form-urlencoded']
         );
 
+        $request->getBody()->write(http_build_query($params));
         $response = $this->client->send($request);
 
         $response->getBody()->rewind();
@@ -64,7 +67,9 @@ class Client implements ClientAwareInterface
     {
         $request = new Request(
             '/voice/hangup/' . $callUuid,
-            'POST'
+            'POST',
+            'php://temp',
+            ['content-type' => 'application/x-www-form-urlencoded']
         );
 
         $response = $this->client->send($request);
