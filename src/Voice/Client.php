@@ -32,13 +32,13 @@ class Client implements ClientAwareInterface
             }
 
             $to = $voice['mocean-to'];
-            $mccc = null;
-            if (isset($voice['mocean-call-control-commands'])) {
-                $mccc = $voice['mocean-call-control-commands'];
+            $mc = null;
+            if (isset($voice['mocean-command'])) {
+                $mc = $voice['mocean-command'];
             }
 
-            unset($voice['mocean-to'], $voice['mocean-call-control-commands']);
-            $voice = new Voice($to, $mccc, $voice);
+            unset($voice['mocean-to'], $voice['mocean-command']);
+            $voice = new Voice($to, $mc, $voice);
         }
 
         $params = $voice->getRequestData();

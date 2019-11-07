@@ -6,9 +6,9 @@
  * Time: 5:38 PM.
  */
 
-namespace Mocean\Voice\Mccc;
+namespace Mocean\Voice\Mc;
 
-class Play extends AbstractMccc
+class Play extends AbstractMc
 {
     public function setFiles($files)
     {

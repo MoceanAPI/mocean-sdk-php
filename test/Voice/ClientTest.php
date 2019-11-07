@@ -9,7 +9,7 @@
 namespace MoceanTest\Voice;
 
 
-use Mocean\Voice\Mccc;
+use Mocean\Voice\Mc;
 use MoceanTest\AbstractTesting;
 
 class ClientTest extends AbstractTesting
@@ -19,7 +19,7 @@ class ClientTest extends AbstractTesting
         $this->interceptRequest('send_code.xml', function (\Mocean\Client $client, \Http\Mock\Client $httpClient) {
             $inputParams = [
                 'mocean-to' => 'testing to',
-                'mocean-call-control-commands' => Mccc::say('hello world')
+                'mocean-command' => Mc::say('hello world')
             ];
 
             $voiceRes = $client->voice()->call($inputParams);
@@ -30,7 +30,7 @@ class ClientTest extends AbstractTesting
             $httpClient->getLastRequest()->getBody()->rewind();
             $queryArr = $this->convertArrayFromQueryString($httpClient->getLastRequest()->getBody()->getContents());
             $this->assertEquals($inputParams['mocean-to'], $queryArr['mocean-to']);
-            $this->assertEquals(Mccc::say('hello world')->getRequestData(), json_decode($queryArr['mocean-call-control-commands'], true)[0]);
+            $this->assertEquals(Mc::say('hello world')->getRequestData(), json_decode($queryArr['mocean-command'], true)[0]);
         });
     }
 

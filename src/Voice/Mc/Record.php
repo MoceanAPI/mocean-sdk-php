@@ -6,10 +6,10 @@
  * Time: 4:15 PM.
  */
 
-namespace Mocean\Voice\Mccc;
+namespace Mocean\Voice\Mc;
 
 
-class Record extends AbstractMccc
+class Record extends AbstractMc
 {
     protected function requiredKey()
     {

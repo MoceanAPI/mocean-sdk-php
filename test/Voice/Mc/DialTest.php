@@ -6,7 +6,7 @@
  * Time: 5:37 PM.
  */
 
-namespace MoceanTest\Voice\Mccc;
+namespace MoceanTest\Voice\Mc;
 
 use MoceanTest\AbstractTesting;
 
@@ -20,11 +20,11 @@ class DialTest extends AbstractTesting
             'from' => 'callerid',
             'dial-sequentially' => true
         ];
-        $req = new \Mocean\Voice\Mccc\Dial($params);
+        $req = new \Mocean\Voice\Mc\Dial($params);
 
         $this->assertEquals($params, $req->getRequestData());
 
-        $setterReq = new \Mocean\Voice\Mccc\Dial();
+        $setterReq = new \Mocean\Voice\Mc\Dial();
         $setterReq->setTo('testing to');
         $setterReq->setFrom('callerid');
         $setterReq->setDialSequentially(true);
@@ -37,18 +37,18 @@ class DialTest extends AbstractTesting
         $params = [
             'to' => 'testing to'
         ];
-        $req = new \Mocean\Voice\Mccc\Dial($params);
+        $req = new \Mocean\Voice\Mc\Dial($params);
 
         $this->assertEquals('dial', $req->getRequestData()['action']);
     }
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage missing expected key `to` from Mocean\Voice\Mccc\Dial
+     * @expectedExceptionMessage missing expected key `to` from Mocean\Voice\Mc\Dial
      */
     public function testIfRequiredFieldNotSet()
     {
-        $req = new \Mocean\Voice\Mccc\Dial();
+        $req = new \Mocean\Voice\Mc\Dial();
         $req->getRequestData();
     }
 }

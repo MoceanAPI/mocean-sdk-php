@@ -6,10 +6,10 @@
  * Time: 11:59 AM.
  */
 
-namespace Mocean\Voice\Mccc;
+namespace Mocean\Voice\Mc;
 
 
-class Collect extends AbstractMccc
+class Collect extends AbstractMc
 {
     public function setEventUrl($eventUrl)
     {

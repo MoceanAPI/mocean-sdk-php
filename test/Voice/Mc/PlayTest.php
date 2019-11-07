@@ -6,7 +6,7 @@
  * Time: 5:37 PM.
  */
 
-namespace MoceanTest\Voice\Mccc;
+namespace MoceanTest\Voice\Mc;
 
 use MoceanTest\AbstractTesting;
 
@@ -20,11 +20,11 @@ class PlayTest extends AbstractTesting
             'clear-digit-cache' => true,
             'action' => 'play'
         ];
-        $req = new \Mocean\Voice\Mccc\Play($params);
+        $req = new \Mocean\Voice\Mc\Play($params);
 
         $this->assertEquals($params, $req->getRequestData());
 
-        $setterReq = new \Mocean\Voice\Mccc\Play();
+        $setterReq = new \Mocean\Voice\Mc\Play();
         $setterReq->addFile('first file');
         $setterReq->addFile('second file');
         $this->assertEquals(['first file', 'second file'], $setterReq->getRequestData()['file']);
@@ -62,18 +62,18 @@ class PlayTest extends AbstractTesting
             'text' => 'testing text',
             'barge-in' => true
         ];
-        $req = new \Mocean\Voice\Mccc\Say($params);
+        $req = new \Mocean\Voice\Mc\Say($params);
 
         $this->assertEquals('say', $req->getRequestData()['action']);
     }
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage missing expected key `text` from Mocean\Voice\Mccc\Say
+     * @expectedExceptionMessage missing expected key `text` from Mocean\Voice\Mc\Say
      */
     public function testIfRequiredFieldNotSet()
     {
-        $req = new \Mocean\Voice\Mccc\Say();
+        $req = new \Mocean\Voice\Mc\Say();
         $req->getRequestData();
     }
 }

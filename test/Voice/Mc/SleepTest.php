@@ -6,7 +6,7 @@
  * Time: 5:37 PM.
  */
 
-namespace MoceanTest\Voice\Mccc;
+namespace MoceanTest\Voice\Mc;
 
 use MoceanTest\AbstractTesting;
 
@@ -18,11 +18,11 @@ class SleepTest extends AbstractTesting
             'duration' => 10000,
             'action' => 'sleep'
         ];
-        $req = new \Mocean\Voice\Mccc\Sleep($params);
+        $req = new \Mocean\Voice\Mc\Sleep($params);
 
         $this->assertEquals($params, $req->getRequestData());
 
-        $setterReq = new \Mocean\Voice\Mccc\Sleep();
+        $setterReq = new \Mocean\Voice\Mc\Sleep();
         $setterReq->setDuration(10000);
 
         $this->assertEquals($params, $setterReq->getRequestData());
@@ -31,18 +31,18 @@ class SleepTest extends AbstractTesting
     public function testIfActionAutoDefined()
     {
         $params = ['duration' => 10000];
-        $req = new \Mocean\Voice\Mccc\Sleep($params);
+        $req = new \Mocean\Voice\Mc\Sleep($params);
 
         $this->assertEquals('sleep', $req->getRequestData()['action']);
     }
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage missing expected key `duration` from Mocean\Voice\Mccc\Sleep
+     * @expectedExceptionMessage missing expected key `duration` from Mocean\Voice\Mc\Sleep
      */
     public function testIfRequiredFieldNotSet()
     {
-        $req = new \Mocean\Voice\Mccc\Sleep();
+        $req = new \Mocean\Voice\Mc\Sleep();
         $req->getRequestData();
     }
 }

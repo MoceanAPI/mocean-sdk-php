@@ -6,9 +6,9 @@
  * Time: 5:54 PM.
  */
 
-namespace Mocean\Voice\Mccc;
+namespace Mocean\Voice\Mc;
 
-class Sleep extends AbstractMccc
+class Sleep extends AbstractMc
 {
     public function setDuration($duration)
     {

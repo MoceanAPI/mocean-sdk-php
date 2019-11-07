@@ -6,12 +6,12 @@
  * Time: 5:44 PM.
  */
 
-namespace Mocean\Voice\Mccc;
+namespace Mocean\Voice\Mc;
 
 
 use Mocean\Model\AsRequest;
 
-abstract class AbstractMccc implements AsRequest
+abstract class AbstractMc implements AsRequest
 {
     protected $requestData;
 

@@ -15,7 +15,7 @@ use Mocean\Model\AsResponse;
 use Mocean\Model\ModelInterface;
 use Mocean\Model\ObjectAccessTrait;
 use Mocean\Model\ResponseTrait;
-use Mocean\Voice\Mccc\AbstractMccc;
+use Mocean\Voice\Mc\AbstractMc;
 
 class Voice implements ModelInterface, AsRequest, AsResponse
 {
@@ -27,15 +27,15 @@ class Voice implements ModelInterface, AsRequest, AsResponse
      * Voice constructor.
      *
      * @param $to
-     * @param AbstractMccc|McccBuilder|array|null $mccc
+     * @param AbstractMc|McBuilder|array|null $mc
      * @param array $extra
      */
-    public function __construct($to, $mccc = null, $extra = [])
+    public function __construct($to, $mc = null, $extra = [])
     {
         $this->requestData['mocean-to'] = $to;
         $this->requestData = array_merge($this->requestData, $extra);
-        if ($mccc) {
-            $this->setCallControlCommands($mccc);
+        if ($mc) {
+            $this->setMoceanCommand($mc);
         }
     }
 
@@ -65,23 +65,23 @@ class Voice implements ModelInterface, AsRequest, AsResponse
         return $this;
     }
 
-    public function setCallEventUrl($callEventUrl)
+    public function setEventUrl($eventUrl)
     {
-        $this->requestData['mocean-call-event-url'] = $callEventUrl;
+        $this->requestData['mocean-event-url'] = $eventUrl;
 
         return $this;
     }
 
-    public function setCallControlCommands($callControlCommands)
+    public function setMoceanCommand($moceanCommand)
     {
-        if ($callControlCommands instanceof McccBuilder) {
-            $this->requestData['mocean-call-control-commands'] = json_encode($callControlCommands->build(), JSON_UNESCAPED_UNICODE);
-        } else if ($callControlCommands instanceof AbstractMccc) {
-            $this->requestData['mocean-call-control-commands'] = json_encode([$callControlCommands->getRequestData()], JSON_UNESCAPED_UNICODE);
-        } else if (is_array($callControlCommands)) {
-            $this->requestData['mocean-call-control-commands'] = json_encode($callControlCommands, JSON_UNESCAPED_UNICODE);
+        if ($moceanCommand instanceof McBuilder) {
+            $this->requestData['mocean-command'] = json_encode($moceanCommand->build(), JSON_UNESCAPED_UNICODE);
+        } else if ($moceanCommand instanceof AbstractMc) {
+            $this->requestData['mocean-command'] = json_encode([$moceanCommand->getRequestData()], JSON_UNESCAPED_UNICODE);
+        } else if (is_array($moceanCommand)) {
+            $this->requestData['mocean-command'] = json_encode($moceanCommand, JSON_UNESCAPED_UNICODE);
         } else {
-            $this->requestData['mocean-call-control-commands'] = $callControlCommands;
+            $this->requestData['mocean-command'] = $moceanCommand;
         }
 
         return $this;

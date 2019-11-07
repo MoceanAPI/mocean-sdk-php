@@ -9,33 +9,33 @@
 namespace Mocean\Voice;
 
 
-use Mocean\Voice\Mccc\AbstractMccc;
+use Mocean\Voice\Mc\AbstractMc;
 
-class McccBuilder
+class McBuilder
 {
-    protected $mccc = [];
+    protected $mc = [];
 
     /**
-     * Sugar syntax for McccBuilder constructor
+     * Sugar syntax for McBuilder constructor
      *
-     * @return McccBuilder
+     * @return McBuilder
      */
     public static function create()
     {
         return new self();
     }
 
-    public function add(AbstractMccc $mccc)
+    public function add(AbstractMc $mc)
     {
-        $this->mccc[] = $mccc;
+        $this->mc[] = $mc;
         return $this;
     }
 
     public function build()
     {
         $converted = [];
-        foreach ($this->mccc as $m) {
-            /* @var AbstractMccc $m */
+        foreach ($this->mc as $m) {
+            /* @var AbstractMc $m */
             $converted[] = $m->getRequestData();
         }
         return $converted;

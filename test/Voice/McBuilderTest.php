@@ -8,17 +8,17 @@
 
 namespace MoceanTest\Voice;
 
-use Mocean\Voice\Mccc\Play;
-use Mocean\Voice\McccBuilder;
+use Mocean\Voice\Mc\Play;
+use Mocean\Voice\McBuilder;
 use MoceanTest\AbstractTesting;
 
-class McccBuilderTest extends AbstractTesting
+class McBuilderTest extends AbstractTesting
 {
-    public function testMcccBuilderConstructor()
+    public function testMcBuilderConstructor()
     {
-        $obj = new McccBuilder();
-        $this->assertInstanceOf(McccBuilder::class, $obj);
-        $this->assertInstanceOf(McccBuilder::class, McccBuilder::create());
+        $obj = new McBuilder();
+        $this->assertInstanceOf(McBuilder::class, $obj);
+        $this->assertInstanceOf(McBuilder::class, McBuilder::create());
     }
 
     public function testAdd()
@@ -26,7 +26,7 @@ class McccBuilderTest extends AbstractTesting
         $play = new Play();
         $play->setFiles('testing file');
 
-        $builder = new McccBuilder();
+        $builder = new McBuilder();
         $builder->add($play);
         $this->assertCount(1, $builder->build());
         $this->assertEquals($play->getRequestData(), $builder->build()[0]);

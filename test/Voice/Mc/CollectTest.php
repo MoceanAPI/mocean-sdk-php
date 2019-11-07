@@ -6,7 +6,7 @@
  * Time: 5:37 PM.
  */
 
-namespace MoceanTest\Voice\Mccc;
+namespace MoceanTest\Voice\Mc;
 
 use MoceanTest\AbstractTesting;
 
@@ -22,11 +22,11 @@ class CollectTest extends AbstractTesting
             'timeout' => 10000,
             'action' => 'collect'
         ];
-        $req = new \Mocean\Voice\Mccc\Collect($params);
+        $req = new \Mocean\Voice\Mc\Collect($params);
 
         $this->assertEquals($params, $req->getRequestData());
 
-        $setterReq = new \Mocean\Voice\Mccc\Collect();
+        $setterReq = new \Mocean\Voice\Mc\Collect();
         $setterReq->setEventUrl('testing event url');
         $setterReq->setMin(1);
         $setterReq->setMax(10);
@@ -45,18 +45,18 @@ class CollectTest extends AbstractTesting
             'terminators' => '#',
             'timeout' => 10000
         ];
-        $req = new \Mocean\Voice\Mccc\Collect($params);
+        $req = new \Mocean\Voice\Mc\Collect($params);
 
         $this->assertEquals('collect', $req->getRequestData()['action']);
     }
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage missing expected key `event-url` from Mocean\Voice\Mccc\Collect
+     * @expectedExceptionMessage missing expected key `event-url` from Mocean\Voice\Mc\Collect
      */
     public function testIfRequiredFieldNotSet()
     {
-        $req = new \Mocean\Voice\Mccc\Collect();
+        $req = new \Mocean\Voice\Mc\Collect();
         $req->getRequestData();
     }
 }

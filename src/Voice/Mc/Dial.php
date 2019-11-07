@@ -6,10 +6,10 @@
  * Time: 9:10 AM.
  */
 
-namespace Mocean\Voice\Mccc;
+namespace Mocean\Voice\Mc;
 
 
-class Dial extends AbstractMccc
+class Dial extends AbstractMc
 {
     public function setTo($to)
     {

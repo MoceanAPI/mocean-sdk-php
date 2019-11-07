@@ -9,14 +9,14 @@
 namespace Mocean\Voice;
 
 
-use Mocean\Voice\Mccc\Dial;
-use Mocean\Voice\Mccc\Collect;
-use Mocean\Voice\Mccc\Play;
-use Mocean\Voice\Mccc\Record;
-use Mocean\Voice\Mccc\Say;
-use Mocean\Voice\Mccc\Sleep;
+use Mocean\Voice\Mc\Dial;
+use Mocean\Voice\Mc\Collect;
+use Mocean\Voice\Mc\Play;
+use Mocean\Voice\Mc\Record;
+use Mocean\Voice\Mc\Say;
+use Mocean\Voice\Mc\Sleep;
 
-class Mccc
+class Mc
 {
     /**
      * @param string|null $text

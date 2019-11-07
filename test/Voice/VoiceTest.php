@@ -9,8 +9,8 @@
 namespace MoceanTest\Voice;
 
 
-use Mocean\Voice\Mccc;
-use Mocean\Voice\McccBuilder;
+use Mocean\Voice\Mc;
+use Mocean\Voice\McBuilder;
 use MoceanTest\AbstractTesting;
 
 class VoiceTest extends AbstractTesting
@@ -35,8 +35,8 @@ class VoiceTest extends AbstractTesting
         $params = [
             'mocean-resp-format' => 'json',
             'mocean-to' => 'testing to',
-            'mocean-call-event-url' => 'testing call event url',
-            'mocean-call-control-commands' => 'testing call control commands',
+            'mocean-event-url' => 'testing event url',
+            'mocean-command' => 'testing mocean command',
         ];
         $req = new \Mocean\Voice\Voice('testing to', null, $params);
 
@@ -44,8 +44,8 @@ class VoiceTest extends AbstractTesting
 
         $setterReq = new \Mocean\Voice\Voice('testing to');
         $setterReq->setTo('testing to');
-        $setterReq->setCallEventUrl('testing call event url');
-        $setterReq->setCallControlCommands('testing call control commands');
+        $setterReq->setEventUrl('testing event url');
+        $setterReq->setMoceanCommand('testing mocean command');
         $setterReq->setResponseFormat('json');
 
         $this->assertEquals($params, $setterReq->getRequestData());
@@ -81,25 +81,25 @@ class VoiceTest extends AbstractTesting
         }
     }
 
-    public function testSetMccc()
+    public function testSetMc()
     {
-        $mccc = [
+        $mc = [
             [
                 'file' => ['https://test.com'],
                 'action' => 'play'
             ]
         ];
-        $voice = new \Mocean\Voice\Voice('testing to', $mccc);
-        $this->assertEquals($voice->getRequestData()["mocean-call-control-commands"], json_encode($mccc));
+        $voice = new \Mocean\Voice\Voice('testing to', $mc);
+        $this->assertEquals($voice->getRequestData()["mocean-command"], json_encode($mc));
 
-        $mcccBuilder = new McccBuilder();
-        $mcccBuilder->add(Mccc::play()->setFiles($mccc[0]['file']));
-        $voice->setCallControlCommands($mcccBuilder);
-        $this->assertEquals($voice->getRequestData()["mocean-call-control-commands"], json_encode($mccc));
+        $mcBuilder = new McBuilder();
+        $mcBuilder->add(Mc::play()->setFiles($mc[0]['file']));
+        $voice->setMoceanCommand($mcBuilder);
+        $this->assertEquals($voice->getRequestData()["mocean-command"], json_encode($mc));
 
-        $playMccc = Mccc::play()->setFiles($mccc[0]['file']);
-        $voice->setCallControlCommands($playMccc);
-        $this->assertEquals($voice->getRequestData()["mocean-call-control-commands"], json_encode($mccc));
+        $playMc = Mc::play()->setFiles($mc[0]['file']);
+        $voice->setMoceanCommand($playMc);
+        $this->assertEquals($voice->getRequestData()["mocean-command"], json_encode($mc));
     }
 
     private function objectTesting($res)

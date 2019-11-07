@@ -6,9 +6,9 @@
  * Time: 5:16 PM.
  */
 
-namespace Mocean\Voice\Mccc;
+namespace Mocean\Voice\Mc;
 
-class Say extends AbstractMccc
+class Say extends AbstractMc
 {
     public function __construct($params = null)
     {
