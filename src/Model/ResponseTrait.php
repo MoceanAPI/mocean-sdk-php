@@ -60,12 +60,6 @@ trait ResponseTrait
                 ['<result><messages>', '</messages></result>'],
                 $responseData
             );
-        } elseif (self::class === 'Mocean\Voice\Voice') {
-            $responseData = str_replace(
-                ['<result>', '</result>'],
-                ['<result><calls>', '</calls></result>'],
-                $responseData
-            );
         }
 
         return $responseData;
