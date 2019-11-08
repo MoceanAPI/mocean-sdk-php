@@ -8,11 +8,11 @@
 
 namespace Mocean\Message;
 
+use GuzzleHttp\Psr7\Request;
 use Mocean\Client\ClientAwareInterface;
 use Mocean\Client\ClientAwareTrait;
 use Mocean\Client\Exception;
 use Mocean\Model\ModelInterface;
-use Zend\Diactoros\Request;
 
 /**
  * Class Client.
@@ -20,17 +20,6 @@ use Zend\Diactoros\Request;
 class Client implements ClientAwareInterface
 {
     use ClientAwareTrait;
-
-    /**
-     * @param Message|array $message
-     *
-     * @throws Exception\Exception
-     * @throws Exception\Request
-     * @throws Exception\Server
-     *
-     * @return Message
-     */
-    protected $delivery_status = [1 => 'Success', 2 => 'Failed', 3 => 'Expired'];
 
     public function send($message)
     {
@@ -41,9 +30,8 @@ class Client implements ClientAwareInterface
         $params = $message->getRequestData();
 
         $request = new Request(
-            '/sms',
             'POST',
-            'php://temp',
+            '/sms',
             ['content-type' => 'application/x-www-form-urlencoded']
         );
 
@@ -77,9 +65,8 @@ class Client implements ClientAwareInterface
         $params = $messageStatus->getRequestData();
 
         $request = new Request(
-            '/report/message?'.http_build_query($params),
             'GET',
-            'php://temp'
+            '/report/message?'.http_build_query($params)
         );
 
         $response = $this->client->send($request);

@@ -8,9 +8,9 @@
 
 namespace MoceanTest;
 
+use GuzzleHttp\Psr7\Response;
 use Http\Mock\Client as HttpMockClient;
 use PHPUnit\Framework\TestCase;
-use Zend\Diactoros\Response;
 
 class AbstractTesting extends TestCase
 {
@@ -29,7 +29,7 @@ class AbstractTesting extends TestCase
 
     protected function getResponse($fileName, $status = 200)
     {
-        return new Response(fopen(__DIR__.'/Resources/'.$fileName, 'r'), $status);
+        return new Response($status, [], fopen(__DIR__.'/Resources/'.$fileName, 'r'));
     }
 
     protected function getResponseString($fileName)

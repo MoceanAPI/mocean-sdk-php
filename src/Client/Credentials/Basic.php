@@ -12,7 +12,7 @@ namespace Mocean\Client\Credentials;
  * Class Basic
  * Read-only container for api key and secret.
  */
-class Basic extends AbstractCredentials implements CredentialsInterface
+class Basic extends AbstractCredentials
 {
     /**
      * Create a credential set with an API key and secret.

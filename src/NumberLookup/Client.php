@@ -8,11 +8,11 @@
 
 namespace Mocean\NumberLookup;
 
+use GuzzleHttp\Psr7\Request;
 use Mocean\Client\ClientAwareInterface;
 use Mocean\Client\ClientAwareTrait;
 use Mocean\Client\Exception;
 use Mocean\Model\ModelInterface;
-use Zend\Diactoros\Request;
 
 class Client implements ClientAwareInterface
 {
@@ -39,9 +39,8 @@ class Client implements ClientAwareInterface
         $params = $numberLookup->getRequestData();
 
         $request = new Request(
-             '/nl',
             'POST',
-            'php://temp',
+            '/nl',
             ['content-type' => 'application/x-www-form-urlencoded']
         );
 
