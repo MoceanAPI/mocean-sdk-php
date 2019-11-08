@@ -8,13 +8,13 @@
 
 namespace Mocean;
 
+use GuzzleHttp\Psr7\Uri;
 use Http\Client\HttpClient;
 use Mocean\Client\Credentials\Basic;
 use Mocean\Client\Credentials\CredentialsInterface;
 use Mocean\Client\Factory\FactoryInterface;
 use Mocean\Client\Factory\MapFactory;
 use Psr\Http\Message\RequestInterface;
-use Zend\Diactoros\Uri;
 
 /**
  * Mocean API Client, allows access to the API from PHP.
@@ -56,6 +56,10 @@ class Client
 
     /**
      * Create a new API client using the provided credentials.
+     *
+     * @param CredentialsInterface $credentials
+     * @param array                $options
+     * @param HttpClient|null      $client
      */
     public function __construct(CredentialsInterface $credentials, $options = [], HttpClient $client = null)
     {
@@ -131,7 +135,7 @@ class Client
         return $this;
     }
 
-    public static function authRequest(RequestInterface $request, Basic $credentials)
+    public static function authRequest(RequestInterface $request, CredentialsInterface $credentials)
     {
         switch ($request->getHeaderLine('content-type')) {
             case 'application/json':
@@ -183,7 +187,7 @@ class Client
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function send(\Psr\Http\Message\RequestInterface $request)
+    public function send(RequestInterface $request)
     {
         if ($this->credentials instanceof Basic) {
             $request = self::authRequest($request, $this->credentials);

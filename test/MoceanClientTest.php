@@ -8,7 +8,7 @@
 
 namespace MoceanTest;
 
-use Zend\Diactoros\Request;
+use GuzzleHttp\Psr7\Request;
 
 class MoceanClientTest extends AbstractTesting
 {
@@ -84,9 +84,8 @@ class MoceanClientTest extends AbstractTesting
     public function testXWWWFormUrlAuthRequest()
     {
         $request = new Request(
-            'https://simplyUrl',
             'POST',
-            'php://temp',
+            'https://simplyUrl',
             ['content-type' => 'application/x-www-form-urlencoded']
         );
 
@@ -107,9 +106,8 @@ class MoceanClientTest extends AbstractTesting
     public function testJsonAuthRequest()
     {
         $request = new Request(
-            'https://simplyUrl',
             'POST',
-            'php://temp',
+            'https://simplyUrl',
             ['content-type' => 'application/json']
         );
 
@@ -130,9 +128,8 @@ class MoceanClientTest extends AbstractTesting
     public function testGetQueryAuthRequest()
     {
         $request = new Request(
-            'https://simplyUrl?'.http_build_query(['test' => 'test value']),
             'GET',
-            'php://temp'
+            'https://simplyUrl?'.http_build_query(['test' => 'test value'])
         );
 
         $processedRequest = \Mocean\Client::authRequest($request, new \Mocean\Client\Credentials\Basic($this->apiKey, $this->apiSecret));

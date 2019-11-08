@@ -2,11 +2,11 @@
 
 namespace Mocean\Account;
 
+use GuzzleHttp\Psr7\Request;
 use Mocean\Client\ClientAwareInterface;
 use Mocean\Client\ClientAwareTrait;
 use Mocean\Client\Exception;
 use Mocean\Model\ModelInterface;
-use Zend\Diactoros\Request;
 
 class Client implements ClientAwareInterface
 {
@@ -24,9 +24,8 @@ class Client implements ClientAwareInterface
         $params = $price->getRequestData();
 
         $request = new Request(
-            '/account/pricing?'.http_build_query($params),
             'GET',
-            'php://temp'
+            '/account/pricing?'.http_build_query($params)
         );
 
         $response = $this->client->send($request);
@@ -51,9 +50,8 @@ class Client implements ClientAwareInterface
         $params = $balance->getRequestData();
 
         $request = new Request(
-            '/account/balance?'.http_build_query($params),
             'GET',
-            'php://temp'
+            '/account/balance?'.http_build_query($params)
         );
 
         $response = $this->client->send($request);
