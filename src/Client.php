@@ -58,8 +58,8 @@ class Client
      * Create a new API client using the provided credentials.
      *
      * @param CredentialsInterface $credentials
-     * @param array $options
-     * @param HttpClient|null $client
+     * @param array                $options
+     * @param HttpClient|null      $client
      */
     public function __construct(CredentialsInterface $credentials, $options = [], HttpClient $client = null)
     {
