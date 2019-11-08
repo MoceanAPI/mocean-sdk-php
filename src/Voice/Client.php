@@ -8,13 +8,11 @@
 
 namespace Mocean\Voice;
 
-use GuzzleHttp\TransferStats;
+use GuzzleHttp\Psr7\Request;
 use Mocean\Client\Exception;
 use Mocean\Client\ClientAwareInterface;
 use Mocean\Client\ClientAwareTrait;
 use Mocean\Model\ModelInterface;
-use Psr\Http\Message\ResponseInterface;
-use Zend\Diactoros\Request;
 
 class Client implements ClientAwareInterface
 {
@@ -46,9 +44,8 @@ class Client implements ClientAwareInterface
         $params = $voice->getRequestData();
 
         $request = new Request(
-            '/voice/dial',
             'POST',
-            'php://temp',
+            '/voice/dial',
             ['content-type' => 'application/x-www-form-urlencoded']
         );
 
@@ -68,9 +65,8 @@ class Client implements ClientAwareInterface
     public function hangup($callUuid)
     {
         $request = new Request(
-            '/voice/hangup/' . $callUuid,
             'POST',
-            'php://temp',
+            '/voice/hangup/' . $callUuid,
             ['content-type' => 'application/x-www-form-urlencoded']
         );
 
@@ -86,7 +82,7 @@ class Client implements ClientAwareInterface
 
     public function recording($callUuid)
     {
-        $request = new \GuzzleHttp\Psr7\Request(
+        $request = new Request(
             'GET',
             '/voice/rec?' . http_build_query(['mocean-call-uuid' => $callUuid])
         );
