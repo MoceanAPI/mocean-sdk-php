@@ -8,6 +8,7 @@
 
 namespace Mocean;
 
+use GuzzleHttp\Client as GuzzleClient;
 use Http\Client\HttpClient;
 use Mocean\Client\Credentials\Basic;
 use Mocean\Client\Credentials\CredentialsInterface;
@@ -61,7 +62,7 @@ class Client
     public function __construct(CredentialsInterface $credentials, $options = [], HttpClient $client = null)
     {
         if ($client === null) {
-            $client = new \Http\Adapter\Guzzle6\Client();
+            $client = new \Http\Adapter\Guzzle6\Client(new GuzzleClient());
         }
 
         $this->setHttpClient($client);

@@ -47,6 +47,21 @@ class ClientTest extends AbstractTesting
         });
     }
 
+    public function testRecording()
+    {
+        $this->interceptRequest('recording.json', function (\Mocean\Client $client, \Http\Mock\Client $httpClient) {
+            $callUuid = 'xxx-xxx-xxx-xxx';
+
+            $recordingRes = $client->voice()->recording($callUuid);
+            $this->assertInstanceOf(\Mocean\Voice\Recording::class, $recordingRes);
+
+            $this->assertEquals('GET', $httpClient->getLastRequest()->getMethod());
+            $this->assertEquals($this->getTestUri('/voice/rec'), $httpClient->getLastRequest()->getUri()->getPath());
+            $queryArr = $this->convertArrayFromQueryString($httpClient->getLastRequest()->getUri()->getQuery());
+            $this->assertEquals($callUuid, $queryArr['mocean-call-uuid']);
+        });
+    }
+
     /**
      * @expectedException \RuntimeException
      */

@@ -8,10 +8,12 @@
 
 namespace Mocean\Voice;
 
+use GuzzleHttp\TransferStats;
 use Mocean\Client\Exception;
 use Mocean\Client\ClientAwareInterface;
 use Mocean\Client\ClientAwareTrait;
 use Mocean\Model\ModelInterface;
+use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\Request;
 
 class Client implements ClientAwareInterface
@@ -80,5 +82,29 @@ class Client implements ClientAwareInterface
         }
 
         return Voice::createFromResponse($data, $this->client->version);
+    }
+
+    public function recording($callUuid)
+    {
+        $request = new \GuzzleHttp\Psr7\Request(
+            'GET',
+            '/voice/rec?' . http_build_query(['mocean-call-uuid' => $callUuid])
+        );
+
+        $response = $this->client->send($request);
+
+        $response->getBody()->rewind();
+        $data = $response->getBody()->getContents();
+
+        //return as stream
+        if (in_array('audio/mpeg', $response->getHeader('Content-Type'))) {
+            return new Recording($data, $callUuid . '.mp3');
+        }
+
+        if (!isset($data) || $data === '') {
+            throw new Exception\Exception('unexpected response from API');
+        }
+
+        return Recording::createFromResponse($data, $this->client->version);
     }
 }
