@@ -48,64 +48,13 @@ class Recording implements ModelInterface, AsResponse
         return $recording;
     }
 
-    /**
-     * Save recording to a directory
-     *
-     * @param null|string $path path to save recording, default to user directory
-     * @param null|string $filename default to call-uuid
-     * @return false|int
-     */
-    public function saveTo($path = null, $filename = null)
-    {
-        if (!$path) {
-            $path = $this->getHomeDir();
-        }
-
-        if (!$filename) {
-            $filename = $this->filename;
-        }
-
-        return file_put_contents($path . '/' . $filename, $this->recordingStream);
-    }
-
-    /**
-     * Send the recording as response
-     *
-     * @param null|string $filename default to call-uuid
-     */
-    public function sendAsResponse($filename = null)
-    {
-        if (!$filename) {
-            $filename = $this->filename;
-        }
-
-        header('Content-type: application/x-file-to-save');
-        header('Content-Disposition: attachment; filename=' . $filename);
-        echo $this->recordingStream;
-        exit;
-    }
-
     public function getRecordingStream()
     {
         return $this->recordingStream;
     }
 
-    protected function getHomeDir()
+    public function getFilename()
     {
-        if (isset($_SERVER['HOME'])) {
-            $result = $_SERVER['HOME'];
-        } else {
-            $result = getenv('HOME');
-        }
-
-        if (empty($result) && function_exists('exec')) {
-            if (strncasecmp(PHP_OS, 'WIN', 3) === 0) {
-                $result = exec('echo %userprofile%');
-            } else {
-                $result = exec('echo ~');
-            }
-        }
-
-        return $result;
+        return $this->filename;
     }
 }
