@@ -20,12 +20,12 @@ class Recording implements ModelInterface, AsResponse
 {
     use ObjectAccessTrait, ResponseTrait, ArrayAccessTrait;
 
-    protected $recordingStream;
+    protected $recordingBuffer;
     protected $filename;
 
-    public function __construct($recordingStream = null, $filename = null)
+    public function __construct($recordingBuffer = null, $filename = null)
     {
-        $this->recordingStream = $recordingStream;
+        $this->recordingBuffer = $recordingBuffer;
         $this->filename = $filename;
     }
 
@@ -48,9 +48,9 @@ class Recording implements ModelInterface, AsResponse
         return $recording;
     }
 
-    public function getRecordingStream()
+    public function getRecordingBuffer()
     {
-        return $this->recordingStream;
+        return $this->recordingBuffer;
     }
 
     public function getFilename()

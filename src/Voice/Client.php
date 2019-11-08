@@ -92,7 +92,7 @@ class Client implements ClientAwareInterface
         $response->getBody()->rewind();
         $data = $response->getBody()->getContents();
 
-        //return as stream
+        //return as buffer
         if (in_array('audio/mpeg', $response->getHeader('Content-Type'))) {
             return new Recording($data, $callUuid . '.mp3');
         }
