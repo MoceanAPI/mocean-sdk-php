@@ -8,11 +8,11 @@
 
 namespace Mocean\Verify;
 
+use GuzzleHttp\Psr7\Request;
 use Mocean\Client\ClientAwareInterface;
 use Mocean\Client\ClientAwareTrait;
 use Mocean\Client\Exception;
 use Mocean\Model\ModelInterface;
-use Zend\Diactoros\Request;
 
 class Client implements ClientAwareInterface
 {
@@ -66,9 +66,8 @@ class Client implements ClientAwareInterface
         }
 
         $request = new Request(
-            $verifyRequestUrl,
             'POST',
-            'php://temp',
+            $verifyRequestUrl,
             ['content-type' => 'application/x-www-form-urlencoded']
         );
 
@@ -109,9 +108,8 @@ class Client implements ClientAwareInterface
         $params = $verification->getRequestData();
 
         $request = new Request(
-            '/verify/check',
             'POST',
-            'php://temp',
+            '/verify/check',
             ['content-type' => 'application/x-www-form-urlencoded']
         );
 
