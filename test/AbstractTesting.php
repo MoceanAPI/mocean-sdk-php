@@ -44,10 +44,12 @@ class AbstractTesting extends TestCase
         return $output;
     }
 
-    protected function interceptRequest($fileName = null, $callback = null)
+    protected function interceptRequest($fileName = null, $callback = null, $response = null)
     {
         $mockClient = new HttpMockClient();
-        if ($fileName === null) {
+        if ($response !== null) {
+            $mockClient->addResponse($response);
+        } else if ($fileName === null) {
             $mockClient->addResponse(new Response());
         } else {
             $mockClient->addResponse($this->getResponse($fileName));

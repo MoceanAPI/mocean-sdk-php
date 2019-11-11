@@ -15,12 +15,12 @@ class RecordingTest extends AbstractTesting
 {
     public function testGetter()
     {
-        $streamData = 'data';
+        $bufferData = 'data';
         $filename = 'abc.mp3';
 
-        $recording = new Recording($streamData, $filename);
+        $recording = new Recording($bufferData, $filename);
 
-        $this->assertEquals($recording->getRecordingStream(), $streamData);
+        $this->assertEquals($recording->getRecordingBuffer(), $bufferData);
         $this->assertEquals($recording->getFilename(), $filename);
     }
 

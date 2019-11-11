@@ -9,6 +9,7 @@
 namespace MoceanTest\Voice;
 
 
+use GuzzleHttp\Psr7\Response;
 use Mocean\Voice\Mc;
 use MoceanTest\AbstractTesting;
 
@@ -49,7 +50,7 @@ class ClientTest extends AbstractTesting
 
     public function testRecording()
     {
-        $this->interceptRequest('recording.json', function (\Mocean\Client $client, \Http\Mock\Client $httpClient) {
+        $this->interceptRequest(null, function (\Mocean\Client $client, \Http\Mock\Client $httpClient) {
             $callUuid = 'xxx-xxx-xxx-xxx';
 
             $recordingRes = $client->voice()->recording($callUuid);
@@ -59,6 +60,26 @@ class ClientTest extends AbstractTesting
             $this->assertEquals($this->getTestUri('/voice/rec'), $httpClient->getLastRequest()->getUri()->getPath());
             $queryArr = $this->convertArrayFromQueryString($httpClient->getLastRequest()->getUri()->getQuery());
             $this->assertEquals($callUuid, $queryArr['mocean-call-uuid']);
+        }, new Response(200, ['Content-Type' => 'audio/mpeg'], null));
+    }
+
+    /**
+     * @expectedException \Mocean\Client\Exception\Exception
+     */
+    public function testRecordingWithEmptyBody()
+    {
+        $this->interceptRequest(null, function (\Mocean\Client $client, \Http\Mock\Client $httpClient) {
+            $client->voice()->recording('xxx-xxx-xxx-xxx');
+        });
+    }
+
+    /**
+     * @expectedException \Mocean\Client\Exception\Exception
+     */
+    public function testRecordingWithErrorResponse()
+    {
+        $this->interceptRequest('error_response.json', function (\Mocean\Client $client, \Http\Mock\Client $httpClient) {
+            $client->voice()->recording('xxx-xxx-xxx-xxx');
         });
     }
 
