@@ -32,4 +32,12 @@ class RecordingTest extends AbstractTesting
         } catch (\Mocean\Client\Exception\Exception $e) {
         }
     }
+
+    public function testObjectCreateFromResponse()
+    {
+        $this->assertInstanceOf(
+            \Mocean\Voice\Recording::class,
+            \Mocean\Voice\Recording::createFromResponse($this->getResponseString('recording.json'), $this->defaultVersion)
+        );
+    }
 }
