@@ -31,7 +31,7 @@ class Client
     public $version = '2';
     public $baseUrl = 'https://rest.moceanapi.com';
     const PL = 'PHP-SDK';
-    const SDK_VERSION = '2.0.0';
+    const SDK_VERSION = '2.1.0';
     /**
      * API Credentials.
      *
