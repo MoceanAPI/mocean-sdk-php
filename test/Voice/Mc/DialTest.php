@@ -15,10 +15,10 @@ class DialTest extends AbstractTesting
     public function testRequestDataParams()
     {
         $params = [
-            'to' => 'testing to',
-            'action' => 'dial',
-            'from' => 'callerid',
-            'dial-sequentially' => true
+            'to'                => 'testing to',
+            'action'            => 'dial',
+            'from'              => 'callerid',
+            'dial-sequentially' => true,
         ];
         $req = new \Mocean\Voice\Mc\Dial($params);
 
@@ -35,7 +35,7 @@ class DialTest extends AbstractTesting
     public function testIfActionAutoDefined()
     {
         $params = [
-            'to' => 'testing to'
+            'to' => 'testing to',
         ];
         $req = new \Mocean\Voice\Mc\Dial($params);
 

@@ -15,11 +15,11 @@ class SayTest extends AbstractTesting
     public function testRequestDataParams()
     {
         $params = [
-            'language' => 'testing language',
-            'text' => 'testing text',
-            'barge-in' => true,
+            'language'          => 'testing language',
+            'text'              => 'testing text',
+            'barge-in'          => true,
             'clear-digit-cache' => true,
-            'action' => 'say'
+            'action'            => 'say',
         ];
         $req = new \Mocean\Voice\Mc\Say($params);
 
@@ -38,8 +38,8 @@ class SayTest extends AbstractTesting
     {
         $params = [
             'language' => 'testing language',
-            'text' => 'testing text',
-            'barge-in' => true
+            'text'     => 'testing text',
+            'barge-in' => true,
         ];
         $req = new \Mocean\Voice\Mc\Say($params);
 

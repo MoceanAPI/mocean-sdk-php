@@ -8,7 +8,6 @@
 
 namespace Mocean\Voice;
 
-
 use Mocean\Voice\Mc\AbstractMc;
 
 class McBuilder
@@ -16,7 +15,7 @@ class McBuilder
     protected $mc = [];
 
     /**
-     * Sugar syntax for McBuilder constructor
+     * Sugar syntax for McBuilder constructor.
      *
      * @return McBuilder
      */
@@ -28,6 +27,7 @@ class McBuilder
     public function add(AbstractMc $mc)
     {
         $this->mc[] = $mc;
+
         return $this;
     }
 
@@ -38,6 +38,7 @@ class McBuilder
             /* @var AbstractMc $m */
             $converted[] = $m->getRequestData();
         }
+
         return $converted;
     }
 }

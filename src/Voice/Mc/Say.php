@@ -22,24 +22,28 @@ class Say extends AbstractMc
     public function setLanguage($language)
     {
         $this->requestData['language'] = $language;
+
         return $this;
     }
 
     public function setText($text)
     {
         $this->requestData['text'] = $text;
+
         return $this;
     }
 
     public function setBargeIn($bargeIn)
     {
         $this->requestData['barge-in'] = $bargeIn;
+
         return $this;
     }
 
     public function setClearDigitCache($clearDigitCache)
     {
         $this->requestData['clear-digit-cache'] = $clearDigitCache;
+
         return $this;
     }
 

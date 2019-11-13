@@ -8,7 +8,6 @@
 
 namespace Mocean\Voice\Mc;
 
-
 use Mocean\Model\AsRequest;
 
 abstract class AbstractMc implements AsRequest
@@ -28,11 +27,12 @@ abstract class AbstractMc implements AsRequest
     {
         foreach ($this->requiredKey() as $param) {
             if (!isset($this->requestData[$param])) {
-                throw new \InvalidArgumentException('missing expected key `' . $param . '` from ' . static::class);
+                throw new \InvalidArgumentException('missing expected key `'.$param.'` from '.static::class);
             }
         }
+
         return array_merge($this->requestData, [
-            'action' => $this->action()
+            'action' => $this->action(),
         ]);
     }
 

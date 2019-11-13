@@ -8,9 +8,8 @@
 
 namespace Mocean\Voice;
 
-
-use Mocean\Voice\Mc\Dial;
 use Mocean\Voice\Mc\Collect;
+use Mocean\Voice\Mc\Dial;
 use Mocean\Voice\Mc\Play;
 use Mocean\Voice\Mc\Record;
 use Mocean\Voice\Mc\Say;
@@ -20,6 +19,7 @@ class Mc
 {
     /**
      * @param string|null $text
+     *
      * @return Say
      */
     public static function say($text = null)
@@ -35,6 +35,7 @@ class Mc
 
     /**
      * @param array|string|null $file
+     *
      * @return Play
      */
     public static function play($file = null)
@@ -52,6 +53,7 @@ class Mc
 
     /**
      * @param string|null $to
+     *
      * @return Dial
      */
     public static function dial($to = null)
@@ -67,6 +69,7 @@ class Mc
 
     /**
      * @param string|null $eventUrl
+     *
      * @return Collect
      */
     public static function collect($eventUrl = null)
@@ -82,6 +85,7 @@ class Mc
 
     /**
      * @param string|null $duration duration in ms
+     *
      * @return Sleep
      */
     public static function sleep($duration = null)

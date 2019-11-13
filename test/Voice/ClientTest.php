@@ -8,7 +8,6 @@
 
 namespace MoceanTest\Voice;
 
-
 use GuzzleHttp\Psr7\Response;
 use Mocean\Voice\Mc;
 use MoceanTest\AbstractTesting;
@@ -19,8 +18,8 @@ class ClientTest extends AbstractTesting
     public function testMakeCall()
     {
         $inputParams = [
-            'mocean-to' => 'testing to',
-            'mocean-command' => Mc::say('hello world')
+            'mocean-to'      => 'testing to',
+            'mocean-command' => Mc::say('hello world'),
         ];
 
         $mockHttp = $this->makeMockHttpClient(function (RequestInterface $request) use ($inputParams) {

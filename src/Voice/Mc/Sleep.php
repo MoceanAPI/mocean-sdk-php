@@ -13,6 +13,7 @@ class Sleep extends AbstractMc
     public function setDuration($duration)
     {
         $this->requestData['duration'] = $duration;
+
         return $this;
     }
 

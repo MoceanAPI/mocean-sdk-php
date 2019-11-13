@@ -15,12 +15,12 @@ class CollectTest extends AbstractTesting
     public function testRequestDataParams()
     {
         $params = [
-            'event-url' => 'testing event url',
-            'min' => 1,
-            'max' => 10,
+            'event-url'   => 'testing event url',
+            'min'         => 1,
+            'max'         => 10,
             'terminators' => '#',
-            'timeout' => 10000,
-            'action' => 'collect'
+            'timeout'     => 10000,
+            'action'      => 'collect',
         ];
         $req = new \Mocean\Voice\Mc\Collect($params);
 
@@ -39,11 +39,11 @@ class CollectTest extends AbstractTesting
     public function testIfActionAutoDefined()
     {
         $params = [
-            'event-url' => 'testing event url',
-            'min' => 1,
-            'max' => 10,
+            'event-url'   => 'testing event url',
+            'min'         => 1,
+            'max'         => 10,
             'terminators' => '#',
-            'timeout' => 10000
+            'timeout'     => 10000,
         ];
         $req = new \Mocean\Voice\Mc\Collect($params);
 
