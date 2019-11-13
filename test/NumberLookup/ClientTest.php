@@ -9,25 +9,29 @@
 namespace MoceanTest\NumberLookup;
 
 use MoceanTest\AbstractTesting;
+use Psr\Http\Message\RequestInterface;
 
 class ClientTest extends AbstractTesting
 {
     public function testNumberLookup()
     {
-        $this->interceptRequest('number_lookup.xml', function (\Mocean\Client $client, \Http\Mock\Client $httpClient) {
-            $inputParams = [
-                'mocean-to' => 'testing to',
-            ];
+        $inputParams = [
+            'mocean-to' => 'testing to',
+        ];
 
-            $numberLookupRes = $client->numberLookup()->inquiry($inputParams);
-            $this->assertInstanceOf(\Mocean\NumberLookup\NumberLookup::class, $numberLookupRes);
+        $mockHttp = $this->makeMockHttpClient(function (RequestInterface $request) use ($inputParams) {
+            $this->assertEquals('POST', $request->getMethod());
+            $this->assertEquals($this->getTestUri('/nl'), $request->getUri()->getPath());
+            $body = $this->getContentFromRequest($request);
+            $this->assertEquals($inputParams['mocean-to'], $body['mocean-to']);
 
-            $this->assertEquals('POST', $httpClient->getLastRequest()->getMethod());
-            $this->assertEquals($this->getTestUri('/nl'), $httpClient->getLastRequest()->getUri()->getPath());
-            $httpClient->getLastRequest()->getBody()->rewind();
-            $queryArr = $this->convertArrayFromQueryString($httpClient->getLastRequest()->getBody()->getContents());
-            $this->assertEquals($inputParams['mocean-to'], $queryArr['mocean-to']);
+            return $this->getResponse('number_lookup.xml');
         });
+
+        $client = $this->makeMoceanClientWithMockHttpClient($mockHttp);
+
+        $numberLookupRes = $client->numberLookup()->inquiry($inputParams);
+        $this->assertInstanceOf(\Mocean\NumberLookup\NumberLookup::class, $numberLookupRes);
     }
 
     /**
@@ -35,11 +39,9 @@ class ClientTest extends AbstractTesting
      */
     public function testSendParamsNotImplementModelInterfaceAndNotArray()
     {
-        $this->interceptRequest(null, function (\Mocean\Client $client, \Http\Mock\Client $httpClient) {
-            $client->numberLookup()->inquiry('inputString');
+        $client = $this->makeMoceanClientWithEmptyResponse();
 
-            $this->assertFalse($httpClient->getLastRequest());
-        });
+        $client->numberLookup()->inquiry('inputString');
     }
 
     /**
@@ -48,21 +50,19 @@ class ClientTest extends AbstractTesting
      */
     public function testSendRequiredRequestParamNotPresent()
     {
-        $this->interceptRequest(null, function (\Mocean\Client $client, \Http\Mock\Client $httpClient) {
-            $client->numberLookup()->inquiry([]);
+        $client = $this->makeMoceanClientWithEmptyResponse();
 
-            $this->assertFalse($httpClient->getLastRequest());
-        });
+        $client->numberLookup()->inquiry([]);
     }
 
     public function testResponseDataIsEmpty()
     {
-        $this->interceptRequest(null, function (\Mocean\Client $client) {
-            try {
-                $client->numberLookup()->inquiry(['mocean-to' => 'testing to']);
-                $this->fail();
-            } catch (\Mocean\Client\Exception\Exception $e) {
-            }
-        });
+        $client = $this->makeMoceanClientWithEmptyResponse();
+
+        try {
+            $client->numberLookup()->inquiry(['mocean-to' => 'testing to']);
+            $this->fail();
+        } catch (\Mocean\Client\Exception\Exception $e) {
+        }
     }
 }

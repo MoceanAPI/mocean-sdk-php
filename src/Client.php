@@ -8,6 +8,7 @@
 
 namespace Mocean;
 
+use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Psr7\Uri;
 use Http\Client\HttpClient;
 use Mocean\Client\Credentials\Basic;
@@ -23,6 +24,7 @@ use Psr\Http\Message\RequestInterface;
  * @method \Mocean\Account\Client account()
  * @method \Mocean\Verify\Client verify()
  * @method \Mocean\NumberLookup\Client numberLookup()
+ * @method \Mocean\Voice\Client voice()
  */
 class Client
 {
@@ -64,7 +66,7 @@ class Client
     public function __construct(CredentialsInterface $credentials, $options = [], HttpClient $client = null)
     {
         if ($client === null) {
-            $client = new \Http\Adapter\Guzzle6\Client();
+            $client = new \Http\Adapter\Guzzle6\Client(new GuzzleClient());
         }
 
         $this->setHttpClient($client);
@@ -91,6 +93,7 @@ class Client
             'message'      => 'Mocean\Message\Client',
             'verify'       => 'Mocean\Verify\Client',
             'numberLookup' => 'Mocean\NumberLookup\Client',
+            'voice'        => 'Mocean\Voice\Client',
         ], $this));
     }
 

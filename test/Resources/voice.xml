@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<result>
+    <calls>
+        <call>
+            <status>0</status>
+            <receiver>60123456789</receiver>
+            <session-uuid>xxx-xxx-xxx-xxx</session-uuid>
+            <call-uuid>xxx-xxx-xxx-xxx</call-uuid>
+        </call>
+    </calls>
+</result>

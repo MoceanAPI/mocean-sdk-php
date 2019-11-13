@@ -9,8 +9,10 @@
 namespace MoceanTest;
 
 use GuzzleHttp\Psr7\Response;
+use Http\Message\RequestMatcher\RequestMatcher;
 use Http\Mock\Client as HttpMockClient;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\RequestInterface;
 
 class AbstractTesting extends TestCase
 {
@@ -37,27 +39,36 @@ class AbstractTesting extends TestCase
         return file_get_contents(__DIR__.'/Resources/'.$fileName);
     }
 
-    protected function convertArrayFromQueryString($queryStr)
-    {
-        parse_str($queryStr, $output);
-
-        return $output;
-    }
-
-    protected function interceptRequest($fileName = null, $callback = null)
+    protected function makeMockHttpClient($callback)
     {
         $mockClient = new HttpMockClient();
-        if ($fileName === null) {
-            $mockClient->addResponse(new Response());
+        $mockClient->on(new RequestMatcher(), $callback);
+
+        return $mockClient;
+    }
+
+    protected function makeMoceanClientWithMockHttpClient(HttpMockClient $mockHttpClient)
+    {
+        return new \Mocean\Client(new \Mocean\Client\Credentials\Basic($this->apiKey, $this->apiSecret), [], $mockHttpClient);
+    }
+
+    protected function makeMoceanClientWithEmptyResponse()
+    {
+        return new \Mocean\Client(new \Mocean\Client\Credentials\Basic($this->apiKey, $this->apiSecret), [], $this->makeMockHttpClient(new Response()));
+    }
+
+    protected function getContentFromRequest(RequestInterface $request)
+    {
+        if ($request->getMethod() === 'GET') {
+            $body = $request->getUri()->getQuery();
         } else {
-            $mockClient->addResponse($this->getResponse($fileName));
-        }
-        $client = new \Mocean\Client(new \Mocean\Client\Credentials\Basic($this->apiKey, $this->apiSecret), [], $mockClient);
-        if (is_callable($callback)) {
-            $callback($client, $mockClient);
+            $request->getBody()->rewind();
+            $body = $request->getBody()->getContents();
         }
 
-        return $client;
+        parse_str($body, $output);
+
+        return $output;
     }
 
     protected function getTestUri($uri, $version = '2')
