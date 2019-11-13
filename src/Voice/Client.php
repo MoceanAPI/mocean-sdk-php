@@ -9,9 +9,9 @@
 namespace Mocean\Voice;
 
 use GuzzleHttp\Psr7\Request;
-use Mocean\Client\Exception;
 use Mocean\Client\ClientAwareInterface;
 use Mocean\Client\ClientAwareTrait;
+use Mocean\Client\Exception;
 use Mocean\Model\ModelInterface;
 
 class Client implements ClientAwareInterface
@@ -22,12 +22,12 @@ class Client implements ClientAwareInterface
     {
         if (!($voice instanceof ModelInterface)) {
             if (!\is_array($voice)) {
-                throw new \RuntimeException('voice must implement `' . ModelInterface::class . '` or be an array`');
+                throw new \RuntimeException('voice must implement `'.ModelInterface::class.'` or be an array`');
             }
 
             foreach (['mocean-to'] as $param) {
                 if (!isset($voice[$param])) {
-                    throw new \InvalidArgumentException('missing expected key `' . $param . '`');
+                    throw new \InvalidArgumentException('missing expected key `'.$param.'`');
                 }
             }
 
@@ -87,7 +87,7 @@ class Client implements ClientAwareInterface
     {
         $request = new Request(
             'GET',
-            '/voice/rec?' . http_build_query(['mocean-call-uuid' => $callUuid])
+            '/voice/rec?'.http_build_query(['mocean-call-uuid' => $callUuid])
         );
 
         $response = $this->client->send($request);
@@ -97,7 +97,7 @@ class Client implements ClientAwareInterface
 
         //return as buffer
         if (in_array('audio/mpeg', $response->getHeader('Content-Type'))) {
-            return new Recording($data, $callUuid . '.mp3');
+            return new Recording($data, $callUuid.'.mp3');
         }
 
         if (!isset($data) || $data === '') {

@@ -8,7 +8,6 @@
 
 namespace Mocean\Voice;
 
-
 use Mocean\Client\Exception\Exception;
 use Mocean\Model\ArrayAccessTrait;
 use Mocean\Model\AsResponse;
@@ -32,8 +31,10 @@ class Recording implements ModelInterface, AsResponse
     /**
      * @param $responseData
      * @param $version
-     * @return Recording
+     *
      * @throws Exception
+     *
+     * @return Recording
      */
     public static function createFromResponse($responseData, $version)
     {

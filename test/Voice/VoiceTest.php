@@ -8,7 +8,6 @@
 
 namespace MoceanTest\Voice;
 
-
 use Mocean\Voice\Mc;
 use Mocean\Voice\McBuilder;
 use MoceanTest\AbstractTesting;
@@ -34,9 +33,9 @@ class VoiceTest extends AbstractTesting
     {
         $params = [
             'mocean-resp-format' => 'json',
-            'mocean-to' => 'testing to',
-            'mocean-event-url' => 'testing event url',
-            'mocean-command' => 'testing mocean command',
+            'mocean-to'          => 'testing to',
+            'mocean-event-url'   => 'testing event url',
+            'mocean-command'     => 'testing mocean command',
         ];
         $req = new \Mocean\Voice\Voice('testing to', null, $params);
 
@@ -85,21 +84,21 @@ class VoiceTest extends AbstractTesting
     {
         $mc = [
             [
-                'file' => ['https://test.com'],
-                'action' => 'play'
-            ]
+                'file'   => ['https://test.com'],
+                'action' => 'play',
+            ],
         ];
         $voice = new \Mocean\Voice\Voice('testing to', $mc);
-        $this->assertEquals($voice->getRequestData()["mocean-command"], json_encode($mc));
+        $this->assertEquals($voice->getRequestData()['mocean-command'], json_encode($mc));
 
         $mcBuilder = new McBuilder();
         $mcBuilder->add(Mc::play()->setFiles($mc[0]['file']));
         $voice->setMoceanCommand($mcBuilder);
-        $this->assertEquals($voice->getRequestData()["mocean-command"], json_encode($mc));
+        $this->assertEquals($voice->getRequestData()['mocean-command'], json_encode($mc));
 
         $playMc = Mc::play()->setFiles($mc[0]['file']);
         $voice->setMoceanCommand($playMc);
-        $this->assertEquals($voice->getRequestData()["mocean-command"], json_encode($mc));
+        $this->assertEquals($voice->getRequestData()['mocean-command'], json_encode($mc));
     }
 
     private function objectTesting($res)

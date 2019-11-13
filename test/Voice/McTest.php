@@ -8,7 +8,6 @@
 
 namespace MoceanTest\Voice;
 
-
 use Mocean\Voice\Mc;
 use MoceanTest\AbstractTesting;
 

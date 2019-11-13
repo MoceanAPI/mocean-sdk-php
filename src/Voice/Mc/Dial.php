@@ -8,24 +8,26 @@
 
 namespace Mocean\Voice\Mc;
 
-
 class Dial extends AbstractMc
 {
     public function setTo($to)
     {
         $this->requestData['to'] = $to;
+
         return $this;
     }
 
     public function setFrom($from)
     {
         $this->requestData['from'] = $from;
+
         return $this;
     }
 
     public function setDialSequentially($dialSequentially)
     {
         $this->requestData['dial-sequentially'] = $dialSequentially;
+
         return $this;
     }
 

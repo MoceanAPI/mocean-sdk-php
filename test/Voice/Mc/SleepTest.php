@@ -16,7 +16,7 @@ class SleepTest extends AbstractTesting
     {
         $params = [
             'duration' => 10000,
-            'action' => 'sleep'
+            'action'   => 'sleep',
         ];
         $req = new \Mocean\Voice\Mc\Sleep($params);
 

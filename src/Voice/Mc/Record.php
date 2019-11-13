@@ -8,7 +8,6 @@
 
 namespace Mocean\Voice\Mc;
 
-
 class Record extends AbstractMc
 {
     protected function requiredKey()

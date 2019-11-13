@@ -8,36 +8,40 @@
 
 namespace Mocean\Voice\Mc;
 
-
 class Collect extends AbstractMc
 {
     public function setEventUrl($eventUrl)
     {
         $this->requestData['event-url'] = $eventUrl;
+
         return $this;
     }
 
     public function setMin($min)
     {
         $this->requestData['min'] = $min;
+
         return $this;
     }
 
     public function setMax($max)
     {
         $this->requestData['max'] = $max;
+
         return $this;
     }
 
     public function setTerminators($terminators)
     {
         $this->requestData['terminators'] = $terminators;
+
         return $this;
     }
 
     public function setTimeout($timeout)
     {
         $this->requestData['timeout'] = $timeout;
+
         return $this;
     }
 

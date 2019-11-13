@@ -15,10 +15,10 @@ class PlayTest extends AbstractTesting
     public function testRequestDataParams()
     {
         $params = [
-            'file' => 'testing file',
-            'barge-in' => true,
+            'file'              => 'testing file',
+            'barge-in'          => true,
             'clear-digit-cache' => true,
-            'action' => 'play'
+            'action'            => 'play',
         ];
         $req = new \Mocean\Voice\Mc\Play($params);
 
@@ -30,6 +30,7 @@ class PlayTest extends AbstractTesting
         $this->assertEquals(['first file', 'second file'], $setterReq->getRequestData()['file']);
 
         $setterReq->setFiles(null);
+
         try {
             $setterReq->getRequestData();
             self::fail('object can be use without required field filled');
@@ -40,6 +41,7 @@ class PlayTest extends AbstractTesting
         $this->assertEquals(['first file', 'second file', 'third file'], $setterReq->getRequestData()['file']);
 
         $setterReq->setFiles(null);
+
         try {
             $setterReq->getRequestData();
             self::fail('object can be use without required field filled');
@@ -59,8 +61,8 @@ class PlayTest extends AbstractTesting
     {
         $params = [
             'language' => 'testing language',
-            'text' => 'testing text',
-            'barge-in' => true
+            'text'     => 'testing text',
+            'barge-in' => true,
         ];
         $req = new \Mocean\Voice\Mc\Say($params);
 

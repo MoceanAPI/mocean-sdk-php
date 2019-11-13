@@ -28,7 +28,7 @@ class Voice implements ModelInterface, AsRequest, AsResponse
      *
      * @param $to
      * @param AbstractMc|McBuilder|array|null $mc
-     * @param array $extra
+     * @param array                           $extra
      */
     public function __construct($to, $mc = null, $extra = [])
     {
@@ -42,8 +42,10 @@ class Voice implements ModelInterface, AsRequest, AsResponse
     /**
      * @param $responseData
      * @param $version
-     * @return Voice
+     *
      * @throws Exception
+     *
+     * @return Voice
      */
     public static function createFromResponse($responseData, $version)
     {
@@ -76,9 +78,9 @@ class Voice implements ModelInterface, AsRequest, AsResponse
     {
         if ($moceanCommand instanceof McBuilder) {
             $this->requestData['mocean-command'] = json_encode($moceanCommand->build(), JSON_UNESCAPED_UNICODE);
-        } else if ($moceanCommand instanceof AbstractMc) {
+        } elseif ($moceanCommand instanceof AbstractMc) {
             $this->requestData['mocean-command'] = json_encode([$moceanCommand->getRequestData()], JSON_UNESCAPED_UNICODE);
-        } else if (is_array($moceanCommand)) {
+        } elseif (is_array($moceanCommand)) {
             $this->requestData['mocean-command'] = json_encode($moceanCommand, JSON_UNESCAPED_UNICODE);
         } else {
             $this->requestData['mocean-command'] = $moceanCommand;
