@@ -12,58 +12,69 @@ namespace MoceanTest\Voice;
 use GuzzleHttp\Psr7\Response;
 use Mocean\Voice\Mc;
 use MoceanTest\AbstractTesting;
+use Psr\Http\Message\RequestInterface;
 
 class ClientTest extends AbstractTesting
 {
     public function testMakeCall()
     {
-        $this->interceptRequest('send_code.xml', function (\Mocean\Client $client, \Http\Mock\Client $httpClient) {
-            $inputParams = [
-                'mocean-to' => 'testing to',
-                'mocean-command' => Mc::say('hello world')
-            ];
+        $inputParams = [
+            'mocean-to' => 'testing to',
+            'mocean-command' => Mc::say('hello world')
+        ];
 
-            $voiceRes = $client->voice()->call($inputParams);
-            $this->assertInstanceOf(\Mocean\Voice\Voice::class, $voiceRes);
+        $mockHttp = $this->makeMockHttpClient(function (RequestInterface $request) use ($inputParams) {
+            $this->assertEquals('POST', $request->getMethod());
+            $this->assertEquals($this->getTestUri('/voice/dial'), $request->getUri()->getPath());
+            $body = $this->getContentFromRequest($request);
+            $this->assertEquals($inputParams['mocean-to'], $body['mocean-to']);
+            $this->assertEquals(Mc::say('hello world')->getRequestData(), json_decode($body['mocean-command'], true)[0]);
 
-            $this->assertEquals('POST', $httpClient->getLastRequest()->getMethod());
-            $this->assertEquals($this->getTestUri('/voice/dial'), $httpClient->getLastRequest()->getUri()->getPath());
-            $httpClient->getLastRequest()->getBody()->rewind();
-            $queryArr = $this->convertArrayFromQueryString($httpClient->getLastRequest()->getBody()->getContents());
-            $this->assertEquals($inputParams['mocean-to'], $queryArr['mocean-to']);
-            $this->assertEquals(Mc::say('hello world')->getRequestData(), json_decode($queryArr['mocean-command'], true)[0]);
+            return $this->getResponse('voice.xml');
         });
+
+        $client = $this->makeMoceanClientWithMockHttpClient($mockHttp);
+
+        $voiceRes = $client->voice()->call($inputParams);
+        $this->assertInstanceOf(\Mocean\Voice\Voice::class, $voiceRes);
     }
 
     public function testHangUp()
     {
-        $this->interceptRequest('send_code.xml', function (\Mocean\Client $client, \Http\Mock\Client $httpClient) {
-            $callUuid = 'xxx-xxx-xxx-xxx';
+        $callUuid = 'xxx-xxx-xxx-xxx';
 
-            $voiceRes = $client->voice()->hangup($callUuid);
-            $this->assertInstanceOf(\Mocean\Voice\Voice::class, $voiceRes);
+        $mockHttp = $this->makeMockHttpClient(function (RequestInterface $request) use ($callUuid) {
+            $this->assertEquals('POST', $request->getMethod());
+            $this->assertEquals($this->getTestUri('/voice/hangup'), $request->getUri()->getPath());
+            $body = $this->getContentFromRequest($request);
+            $this->assertEquals($callUuid, $body['mocean-call-uuid']);
 
-            $this->assertEquals('POST', $httpClient->getLastRequest()->getMethod());
-            $httpClient->getLastRequest()->getBody()->rewind();
-            $queryArr = $this->convertArrayFromQueryString($httpClient->getLastRequest()->getBody()->getContents());
-            $this->assertEquals($callUuid, $queryArr['mocean-call-uuid']);
-            $this->assertEquals($this->getTestUri('/voice/hangup'), $httpClient->getLastRequest()->getUri()->getPath());
+            return $this->getResponse('hangup.xml');
         });
+
+        $client = $this->makeMoceanClientWithMockHttpClient($mockHttp);
+
+        $hangupRes = $client->voice()->hangup($callUuid);
+        $this->assertInstanceOf(\Mocean\Voice\Voice::class, $hangupRes);
     }
 
     public function testRecording()
     {
-        $this->interceptRequest(null, function (\Mocean\Client $client, \Http\Mock\Client $httpClient) {
-            $callUuid = 'xxx-xxx-xxx-xxx';
+        $callUuid = 'xxx-xxx-xxx-xxx';
 
-            $recordingRes = $client->voice()->recording($callUuid);
-            $this->assertInstanceOf(\Mocean\Voice\Recording::class, $recordingRes);
+        $mockHttp = $this->makeMockHttpClient(function (RequestInterface $request) use ($callUuid) {
+            $this->assertEquals('GET', $request->getMethod());
+            $this->assertEquals($this->getTestUri('/voice/rec'), $request->getUri()->getPath());
+            $body = $this->getContentFromRequest($request);
+            $this->assertEquals($callUuid, $body['mocean-call-uuid']);
 
-            $this->assertEquals('GET', $httpClient->getLastRequest()->getMethod());
-            $this->assertEquals($this->getTestUri('/voice/rec'), $httpClient->getLastRequest()->getUri()->getPath());
-            $queryArr = $this->convertArrayFromQueryString($httpClient->getLastRequest()->getUri()->getQuery());
-            $this->assertEquals($callUuid, $queryArr['mocean-call-uuid']);
-        }, new Response(200, ['Content-Type' => 'audio/mpeg'], null));
+            return new Response(200, ['Content-Type' => 'audio/mpeg'], null);
+        });
+
+        $client = $this->makeMoceanClientWithMockHttpClient($mockHttp);
+
+        $recordingRes = $client->voice()->recording($callUuid);
+        $this->assertInstanceOf(\Mocean\Voice\Recording::class, $recordingRes);
     }
 
     /**
@@ -71,9 +82,9 @@ class ClientTest extends AbstractTesting
      */
     public function testRecordingWithEmptyBody()
     {
-        $this->interceptRequest(null, function (\Mocean\Client $client) {
-            $client->voice()->recording('xxx-xxx-xxx-xxx');
-        });
+        $client = $this->makeMoceanClientWithEmptyResponse();
+
+        $client->voice()->recording('xxx-xxx-xxx-xxx');
     }
 
     /**
@@ -81,9 +92,11 @@ class ClientTest extends AbstractTesting
      */
     public function testRecordingWithErrorResponse()
     {
-        $this->interceptRequest('error_response.json', function (\Mocean\Client $client) {
-            $client->voice()->recording('xxx-xxx-xxx-xxx');
-        });
+        $mockHttp = $this->makeMockHttpClient($this->getResponse('error_response.json'));
+
+        $client = $this->makeMoceanClientWithMockHttpClient($mockHttp);
+
+        $client->voice()->recording('xxx-xxx-xxx-xxx');
     }
 
     /**
@@ -91,11 +104,9 @@ class ClientTest extends AbstractTesting
      */
     public function testCallParamsNotImplementModelInterfaceAndNotArray()
     {
-        $this->interceptRequest(null, function (\Mocean\Client $client, \Http\Mock\Client $httpClient) {
-            $client->voice()->call('inputString');
+        $client = $this->makeMoceanClientWithEmptyResponse();
 
-            $this->assertFalse($httpClient->getLastRequest());
-        });
+        $client->voice()->call('inputString');
     }
 
     /**
@@ -104,27 +115,31 @@ class ClientTest extends AbstractTesting
      */
     public function testCallRequiredRequestParamNotPresent()
     {
-        $this->interceptRequest(null, function (\Mocean\Client $client, \Http\Mock\Client $httpClient) {
-            $client->voice()->call([]);
+        $client = $this->makeMoceanClientWithEmptyResponse();
 
-            $this->assertFalse($httpClient->getLastRequest());
-        });
+        $client->voice()->call([]);
     }
 
     public function testResponseDataIsEmpty()
     {
-        $this->interceptRequest(null, function (\Mocean\Client $client) {
-            try {
-                $client->voice()->call(['mocean-to' => 'testing to']);
-                $this->fail();
-            } catch (\Mocean\Client\Exception\Exception $e) {
-            }
+        $client = $this->makeMoceanClientWithEmptyResponse();
 
-            try {
-                $client->voice()->hangup('xxx-xxx-xxx-xxx');
-                $this->fail();
-            } catch (\Mocean\Client\Exception\Exception $e) {
-            }
-        });
+        try {
+            $client->voice()->call(['mocean-to' => 'testing to']);
+            $this->fail();
+        } catch (\Mocean\Client\Exception\Exception $e) {
+        }
+
+        try {
+            $client->voice()->hangup('xxx-xxx-xxx-xxx');
+            $this->fail();
+        } catch (\Mocean\Client\Exception\Exception $e) {
+        }
+
+        try {
+            $client->voice()->recording('xxx-xxx-xxx-xxx');
+            $this->fail();
+        } catch (\Mocean\Client\Exception\Exception $e) {
+        }
     }
 }
