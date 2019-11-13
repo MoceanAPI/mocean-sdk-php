@@ -71,7 +71,7 @@ class ClientTest extends AbstractTesting
      */
     public function testRecordingWithEmptyBody()
     {
-        $this->interceptRequest(null, function (\Mocean\Client $client, \Http\Mock\Client $httpClient) {
+        $this->interceptRequest(null, function (\Mocean\Client $client) {
             $client->voice()->recording('xxx-xxx-xxx-xxx');
         });
     }
@@ -81,7 +81,7 @@ class ClientTest extends AbstractTesting
      */
     public function testRecordingWithErrorResponse()
     {
-        $this->interceptRequest('error_response.json', function (\Mocean\Client $client, \Http\Mock\Client $httpClient) {
+        $this->interceptRequest('error_response.json', function (\Mocean\Client $client) {
             $client->voice()->recording('xxx-xxx-xxx-xxx');
         });
     }
