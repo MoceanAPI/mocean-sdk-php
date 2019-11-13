@@ -66,11 +66,14 @@ class Client implements ClientAwareInterface
     {
         $request = new Request(
             'POST',
-            '/voice/hangup/' . $callUuid,
+            '/voice/hangup',
             ['content-type' => 'application/x-www-form-urlencoded']
         );
 
+        $request->getBody()->write(http_build_query(['mocean-call-uuid' => $callUuid]));
         $response = $this->client->send($request);
+
+        $response->getBody()->rewind();
         $data = $response->getBody()->getContents();
 
         if (!isset($data) || $data === '') {

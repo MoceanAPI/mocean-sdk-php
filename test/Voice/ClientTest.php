@@ -44,7 +44,10 @@ class ClientTest extends AbstractTesting
             $this->assertInstanceOf(\Mocean\Voice\Voice::class, $voiceRes);
 
             $this->assertEquals('POST', $httpClient->getLastRequest()->getMethod());
-            $this->assertEquals($this->getTestUri('/voice/hangup/'. $callUuid), $httpClient->getLastRequest()->getUri()->getPath());
+            $httpClient->getLastRequest()->getBody()->rewind();
+            $queryArr = $this->convertArrayFromQueryString($httpClient->getLastRequest()->getBody()->getContents());
+            $this->assertEquals($callUuid, $queryArr['mocean-call-uuid']);
+            $this->assertEquals($this->getTestUri('/voice/hangup'), $httpClient->getLastRequest()->getUri()->getPath());
         });
     }
 
