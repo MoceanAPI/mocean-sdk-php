@@ -78,7 +78,7 @@ Kindly visit [MoceanApi Docs][doc_main] for more usage
 
 This library is released under the [MIT License][license]
 
-[signup]: https://dashboard.moceanapi.com/register?medium=github&campaign=sdk-php
+[signup]: https://dashboard.moceanapi.com/register?medium=github&campaign=php-sdk
 [doc_main]: https://moceanapi.com/docs/?php
 [doc_sms]: https://moceanapi.com/docs/?php#send-sms
 [license]: LICENSE
