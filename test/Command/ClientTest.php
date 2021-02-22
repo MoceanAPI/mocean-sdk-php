@@ -26,7 +26,7 @@ class ClientTest extends AbstractTesting
             $this->assertEquals('POST', $request->getMethod());
             $this->assertEquals($this->getTestUri('/send-message'), $request->getUri()->getPath());
             $body = $this->getContentFromRequest($request);
-            $this->assertEquals($inputParams['mocean-event-url'], $body['mocean-event-url']);
+//            $this->assertEquals($inputParams['mocean-event-url'], $body['mocean-event-url']);
             $this->assertEquals(
                 Mc::tgSendText()
                 ->setFrom("bot_username")
