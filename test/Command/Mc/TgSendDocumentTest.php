@@ -5,7 +5,7 @@ namespace MoceanTest\Command\Mc;
 use Mocean\Command\Mc\TgSendDocument;
 use MoceanTest\AbstractTesting;
 
-class TgSendAnimationTest extends AbstractTesting
+class TgSendDocumentTest extends AbstractTesting
 {
     public function testRequestDataParams()
     {
@@ -23,6 +23,7 @@ class TgSendAnimationTest extends AbstractTesting
                 "rich_media_url" => "https://moceanapi.com",
                 "text" =>  "hello world"
             ),
+            "action" => "send-telegram",
         );
 
         $TgSendText = new TgSendDocument();

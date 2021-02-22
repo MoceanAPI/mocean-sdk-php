@@ -22,6 +22,7 @@ class TgSendTextTest extends AbstractTesting
                 "type" => "text",
                 "text" =>  "hello world"
             ),
+            "action" => "send-telegram",
         );
 
         $TgSendText = new TgSendText();

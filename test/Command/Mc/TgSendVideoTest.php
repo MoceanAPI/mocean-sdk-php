@@ -23,6 +23,7 @@ class TgSendVideoTest extends AbstractTesting
                 "rich_media_url" => "https://moceanapi.com",
                 "text" =>  "hello world"
             ),
+            "action" => "send-telegram",
         );
 
         $TgSendText = new TgSendAnimation();

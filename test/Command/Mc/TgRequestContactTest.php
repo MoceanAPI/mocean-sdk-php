@@ -26,6 +26,7 @@ class TgRequestContactTest extends AbstractTesting
                 "type" => "text",
                 "text" =>  "hello world"
             ),
+            "action" => "send-telegram",
         );
 
         $req = new TgRequestContact();
