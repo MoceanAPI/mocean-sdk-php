@@ -35,7 +35,7 @@ class TgSendVideoTest extends AbstractTesting
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage missing expected key `event-url` from Mocean\Voice\Mc\Collect
+     * @expectedExceptionMessage missing expected key `to` from Mocean\Command\Mc\TgSendVideo
      */
     public function testRequiredField()
     {

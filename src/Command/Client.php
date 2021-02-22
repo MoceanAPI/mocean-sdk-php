@@ -42,7 +42,7 @@ class Client implements ClientAwareInterface
 			$this->setEventUrl($params["mocean-event-url"]);
 		}
         if (isset($params["mocean-resp-format"])) {
-            $this->setEventUrl($params["mocean-resp-format"]);
+            $this->setResponseFormat($params["mocean-resp-format"]);
         }
 
         $command = $params["mocean-command"]->build();
@@ -77,6 +77,11 @@ class Client implements ClientAwareInterface
     public function setEventUrl($url)
     {
         $this->commander->setEventUrl($url);
+        return $this;
+    }
+    public function setResponseFormat($type)
+    {
+        $this->commander->setRespoFormat($type);
         return $this;
     }
 }

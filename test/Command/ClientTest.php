@@ -20,9 +20,9 @@ class ClientTest extends AbstractTesting
                                                     ->setTo("123456789")
                                                     ->setContent("Hello world")
                                             )
-            ];
+        ];
 
-            $mockHttp = $this->makeMockHttpClient(function (RequestInterface $request) use ($inputParams) {
+        $mockHttp = $this->makeMockHttpClient(function (RequestInterface $request) use ($inputParams) {
             $this->assertEquals('POST', $request->getMethod());
             $this->assertEquals($this->getTestUri('/send-message'), $request->getUri()->getPath());
             $body = $this->getContentFromRequest($request);

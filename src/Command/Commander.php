@@ -29,7 +29,7 @@ class Commander implements ModelInterface, AsRequest, AsResponse
         return $this;
     }
 
-    public function setRespFormat($format)
+    public function setRespoFormat($format)
     {
         $this->requestData['mocean-resp-format'] = $format;
     }
