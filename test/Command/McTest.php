@@ -36,7 +36,7 @@ class McTest extends AbstractTesting
 
     public function testTgSendVideo()
     {
-        $this->assertInstanceOf(TgSendVideo::class, Mc::tgSendDocument());
+        $this->assertInstanceOf(TgSendVideo::class, Mc::tgSendVideo());
     }
 
     public function testTgRequestContact()

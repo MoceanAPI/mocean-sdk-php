@@ -30,7 +30,7 @@ class TgRequestContact extends AbstractMc
 
     public function setContent($text = "") {
         $this->requestData["content"] = array(
-            "type" => "contact",
+            "type" => "text",
             "text" => $text,
         );
         return $this;

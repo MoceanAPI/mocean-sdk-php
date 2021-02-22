@@ -11,11 +11,11 @@ class SendSMSTest extends AbstractTesting
     {
         $params = array(
             "from" => array(
-                "type" => "bot_username",
+                "type" => "phone_num",
                 "id" => "testbot"
             ),
             "to" => array(
-                "type" => "chat_id",
+                "type" => "phone_num",
                 "id" => "123456789"
             ),
             "content" => array(

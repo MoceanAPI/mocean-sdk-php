@@ -35,7 +35,7 @@ class TgSendDocumentTest extends AbstractTesting
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage missing expected key `to` from MMocean\Command\Mc\TgSendDocument
+     * @expectedExceptionMessage missing expected key `to` from Mocean\Command\Mc\TgSendDocument
      */
     public function testRequiredField()
     {
