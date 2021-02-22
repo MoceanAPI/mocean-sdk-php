@@ -30,8 +30,7 @@ use Psr\Http\Message\RequestInterface;
 class Client
 {
     public $version = '2';
-//    public $baseUrl = 'https://rest.moceanapi.com';
-    public $baseUrl = 'https://rest-api-staging.moceansms.com';
+	public $baseUrl = 'https://rest.moceanapi.com';
     const PL = 'PHP-SDK';
     const SDK_VERSION = '2.2.0';
     /**
