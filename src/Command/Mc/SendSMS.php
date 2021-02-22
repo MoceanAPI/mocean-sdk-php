@@ -26,7 +26,7 @@ class SendSMS extends AbstractMc
 
     public function setContent($text = "") {
         $this->requestData["content"] = array(
-            "type" => "type",
+            "type" => "text",
             "text" => $text,
         );
         return $this;
