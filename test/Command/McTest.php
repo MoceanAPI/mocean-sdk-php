@@ -3,6 +3,7 @@
 namespace MoceanTest\Command;
 
 use Mocean\Command\CommandMc;
+use Mocean\Command\Mc;
 use Mocean\Command\Mc\TgRequestContact;
 use Mocean\Command\Mc\TgSendAnimation;
 use Mocean\Command\Mc\TgSendAudio;
