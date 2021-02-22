@@ -2,7 +2,7 @@
 
 namespace MoceanTest\Command;
 
-use Mocean\Command\CommandMc;
+use Mocean\Command\Mc;
 use Mocean\Command\McBuilder;
 use MoceanTest\AbstractTesting;
 
@@ -16,7 +16,7 @@ class McBuilderTest extends AbstractTesting
 
     public function testAdd()
     {
-        $tgSendText = CommandMc::tgSendText()
+        $tgSendText = Mc::tgSendText()
                             ->setFrom("botusername")
                             ->setTo("123456789")
                             ->setContent("Hello world");
