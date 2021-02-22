@@ -34,7 +34,7 @@ class TgRequestContactTest extends AbstractTesting
         $req->setTo("123456789");
         $req->setContent("hello world");
         $req->setButtonText("Share contact");
-        $this->assertEquals($params, $TgSendText->getRequestData());
+        $this->assertEquals($params, $req->getRequestData());
     }
 
     /**

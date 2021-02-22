@@ -26,11 +26,11 @@ class TgSendAnimationTest extends AbstractTesting
             "action" => "send-telegram",
         );
 
-        $TgSendText = new TgSendAnimation();
-        $TgSendText->setFrom("testbot");
-        $TgSendText->setTo("123456789");
-        $TgSendText->setContent("https://moceanapi.com","hello world");
-        $this->assertEquals($params, $TgSendText->getRequestData());
+        $req = new TgSendAnimation();
+        $req->setFrom("testbot");
+        $req->setTo("123456789");
+        $req->setContent("https://moceanapi.com","hello world");
+        $this->assertEquals($params, $req->getRequestData());
     }
 
     /**

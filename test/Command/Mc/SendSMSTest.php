@@ -25,11 +25,11 @@ class SendSMSTest extends AbstractTesting
             "action" => "send-sms",
         );
 
-        $TgSendText = new TgSendText();
-        $TgSendText->setFrom("testbot");
-        $TgSendText->setTo("123456789");
-        $TgSendText->setContent("hello world");
-        $this->assertEquals($params, $TgSendText->getRequestData());
+        $req = new SendSMS();
+        $req->setFrom("testbot");
+        $req->setTo("123456789");
+        $req->setContent("hello world");
+        $this->assertEquals($params, $req->getRequestData());
     }
 
     /**
