@@ -19,7 +19,7 @@ class CommanderTest extends AbstractTesting
         $setterReq = new Commander();
         $setterReq->setEventUrl('testing event url');
         $setterReq->setCommand('testing mocean command');
-        $setterReq->setRespoFormat('json');
+        $setterReq->setResponseFormat('json');
 
         $this->assertEquals($params, $setterReq->getRequestData());
     }
