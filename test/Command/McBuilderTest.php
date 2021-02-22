@@ -27,7 +27,7 @@ class McBuilderTest extends AbstractTesting
 
     public function testBuild()
     {
-        $tgSendText = CommandMc::tgSendText()
+        $tgSendText = Mc::tgSendText()
             ->setFrom("botusername")
             ->setTo("123456789")
             ->setContent("Hello world");
