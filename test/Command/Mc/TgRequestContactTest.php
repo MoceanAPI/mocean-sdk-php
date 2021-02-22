@@ -43,7 +43,7 @@ class TgRequestContactTest extends AbstractTesting
      */
     public function testRequiredField()
     {
-        $req = new TgSendAnimation();
+        $req = new TgRequestContact();
         $req->getRequestData();
     }
 }
