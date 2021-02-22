@@ -81,7 +81,7 @@ class Client implements ClientAwareInterface
     }
     public function setResponseFormat($type)
     {
-        $this->commander->setRespoFormat($type);
+        $this->commander->setResponseFormat($type);
         return $this;
     }
 }
