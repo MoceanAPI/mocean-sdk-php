@@ -31,7 +31,8 @@ class ClientTest extends AbstractTesting
                 Mc::tgSendText()
                 ->setFrom("bot_username")
                 ->setTo("123456789")
-                ->setContent("Hello world"),
+                ->setContent("Hello world")
+                ->getRequestData(),
 
                 json_decode($body['mocean-command'], true)[0]
             );
