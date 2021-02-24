@@ -62,10 +62,10 @@ class Client implements ClientAwareInterface
         $request = new Request(
             'POST',
             $uri,
-            ['content-type' => 'application/json']
+            ['content-type' => 'application/x-www-form-urlencoded']
         );
 
-        $request->getBody()->write(json_encode($params));
+        $request->getBody()->write(http_build_query($params));
         $response = $this->client->send($request);
 
         $response->getBody()->rewind();

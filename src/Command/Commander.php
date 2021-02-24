@@ -25,7 +25,7 @@ class Commander implements ModelInterface, AsRequest, AsResponse
 
     public function setCommand($command)
     {
-        $this->requestData['mocean-command'] = $command;
+        $this->requestData['mocean-command'] = json_encode($command);
         return $this;
     }
 
