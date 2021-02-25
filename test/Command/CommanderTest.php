@@ -11,7 +11,7 @@ class CommanderTest extends AbstractTesting
     {
         $params = [
             'mocean-event-url'   => 'testing event url',
-            'mocean-command'     => 'testing mocean command',
+            'mocean-command'     => '"testing mocean command"',
             'mocean-resp-format'     => 'json',
         ];
 

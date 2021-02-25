@@ -19,7 +19,8 @@ class ClientTest extends AbstractTesting
                                                     ->setFrom("bot_username")
                                                     ->setTo("123456789")
                                                     ->setContent("Hello world")
-                                            )
+                                            ),
+            'mocean-resp-format' => 'json'
         ];
 
         $mockHttp = $this->makeMockHttpClient(function (RequestInterface $request) use ($inputParams) {
