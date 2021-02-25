@@ -1,0 +1,14 @@
+{
+  "status": 0,
+  "session_uuid": "xxxxxx",
+  "messages": [
+    {
+      "action": "xxxxxx",
+      "message_ids": [
+        "xxxxxx"
+      ],
+      "mc_position": 0,
+      "total_message_segments": 1
+    }
+  ]
+}

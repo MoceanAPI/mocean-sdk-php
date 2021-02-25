@@ -57,6 +57,8 @@ class Client implements ClientAwareInterface
             $uri = "/send-message";
         }
 
+        $this->setResponseFormat("json");
+
         $params = $this->commander->getRequestData();
 
         $request = new Request(
