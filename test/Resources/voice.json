@@ -3,8 +3,8 @@
     {
       "status": 0,
       "receiver": "60123456789",
-      "session-uuid": "xxx-xxx-xxx-xxx",
-      "call-uuid": "xxx-xxx-xxx-xxx"
+      "session_uuid": "xxx-xxx-xxx-xxx",
+      "call_uuid": "xxx-xxx-xxx-xxx"
     }
   ]
 }

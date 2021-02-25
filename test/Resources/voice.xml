@@ -4,8 +4,8 @@
         <call>
             <status>0</status>
             <receiver>60123456789</receiver>
-            <session-uuid>xxx-xxx-xxx-xxx</session-uuid>
-            <call-uuid>xxx-xxx-xxx-xxx</call-uuid>
+            <session_uuid>xxx-xxx-xxx-xxx</session_uuid>
+            <call_uuid>xxx-xxx-xxx-xxx</call_uuid>
         </call>
     </calls>
 </result>
