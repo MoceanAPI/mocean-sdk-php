@@ -104,11 +104,11 @@ class VoiceTest extends AbstractTesting
     private function objectTesting($res)
     {
         $this->assertEquals($res->calls[0]->status, '0');
-        $this->assertEquals($res->calls[0]->{'session-uuid'}, 'xxx-xxx-xxx-xxx');
-        $this->assertEquals($res->calls[0]->{'call-uuid'}, 'xxx-xxx-xxx-xxx');
+        $this->assertEquals($res->calls[0]->{'session_uuid'}, 'xxx-xxx-xxx-xxx');
+        $this->assertEquals($res->calls[0]->{'call_uuid'}, 'xxx-xxx-xxx-xxx');
 
         $this->assertEquals($res['calls'][0]['status'], '0');
-        $this->assertEquals($res['calls'][0]['session-uuid'], 'xxx-xxx-xxx-xxx');
-        $this->assertEquals($res['calls'][0]['call-uuid'], 'xxx-xxx-xxx-xxx');
+        $this->assertEquals($res['calls'][0]['session_uuid'], 'xxx-xxx-xxx-xxx');
+        $this->assertEquals($res['calls'][0]['call_uuid'], 'xxx-xxx-xxx-xxx');
     }
 }
