@@ -12,4 +12,5 @@ class Channel
 {
     const AUTO = 0;
     const SMS = 1;
+    const TELEGRAM = 2;
 }

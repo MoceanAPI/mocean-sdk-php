@@ -25,13 +25,14 @@ use Psr\Http\Message\RequestInterface;
  * @method \Mocean\Verify\Client verify()
  * @method \Mocean\NumberLookup\Client numberLookup()
  * @method \Mocean\Voice\Client voice()
+ * @method \Mocean\Command\Client command()
  */
 class Client
 {
     public $version = '2';
-    public $baseUrl = 'https://rest.moceanapi.com';
+	public $baseUrl = 'https://rest.moceanapi.com';
     const PL = 'PHP-SDK';
-    const SDK_VERSION = '2.1.0';
+    const SDK_VERSION = '2.2.0';
     /**
      * API Credentials.
      *
@@ -94,6 +95,7 @@ class Client
             'verify'       => 'Mocean\Verify\Client',
             'numberLookup' => 'Mocean\NumberLookup\Client',
             'voice'        => 'Mocean\Voice\Client',
+            'command'      => 'Mocean\Command\Client',
         ], $this));
     }
 
@@ -210,7 +212,7 @@ class Client
         }
 
         $collection = $this->factory->getApi($name);
-
+    
         if (empty($args)) {
             return $collection;
         }

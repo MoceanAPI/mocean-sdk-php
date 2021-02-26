@@ -8,6 +8,7 @@
 
 namespace Mocean\Client\Factory;
 
+use Composer\Autoload\ClassLoader;
 use Mocean\Client;
 
 class MapFactory implements FactoryInterface
@@ -56,9 +57,9 @@ class MapFactory implements FactoryInterface
                 $api
             ));
         }
-
+      
         $class = $this->map[$api];
-
+ 
         $instance = new $class();
         if ($instance instanceof Client\ClientAwareInterface) {
             $instance->setClient($this->client);
