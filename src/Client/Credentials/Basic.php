@@ -14,15 +14,10 @@ namespace Mocean\Client\Credentials;
  */
 class Basic extends AbstractCredentials
 {
-    /**
-     * Create a credential set with an API key and secret.
-     *
-     * @param string $key
-     * @param string $secret
-     */
-    public function __construct($key, $secret)
+    public function __construct($params=[])
     {
-        $this->credentials['mocean-api-key'] = $key;
-        $this->credentials['mocean-api-secret'] = $secret;
+        $this->credentials['mocean-api-key'] = isset($params['apiKey']) ? $params['apiKey'] : "";
+        $this->credentials['mocean-api-secret'] = isset($params['apiSecret']) ? $params['apiSecret'] : "";
+        $this->credentials['mocean-api-token'] = isset($params['apiToken']) ? $params['apiToken'] : "";
     }
 }

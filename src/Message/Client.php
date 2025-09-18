@@ -39,6 +39,7 @@ class Client implements ClientAwareInterface
         $response = $this->client->send($request);
         $response->getBody()->rewind();
         $data = $response->getBody()->getContents();
+        $response->getBody()->close();
 
         if (!isset($data) || $data === '') {
             throw new Exception\Exception('unexpected response from API');

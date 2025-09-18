@@ -198,6 +198,8 @@ class Client
             $request = self::authRequest($request, $this->credentials);
         }
 
+        $request = $request->withHeader('Authorization', 'Bearer '.$this->credentials["mocean-api-token"]);
+
         $uri = (string) $request->getUri();
 
         return $this->client->sendRequest(
