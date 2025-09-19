@@ -35,13 +35,13 @@ If you're using composer, make sure the autoloader is included in your project's
 require_once "vendor/autoload.php";
 ```
     
-Create a client with your API key and secret:
+Create a client with your API token:
 
 ```php
 use Mocean\Client;
 use Mocean\Client\Credentials\Basic;
 
-$mocean = new Client(new Basic('API_KEY_HERE','API_SECRET_HERE'));
+$mocean = new Client(new Basic(['apiToken' => 'API_TOKEN_HERE']));
 ```
 
 ## Example
