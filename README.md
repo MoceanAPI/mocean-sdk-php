@@ -28,14 +28,14 @@ composer require mocean/client
 ```
 
 ## Usage
-
 If you're using composer, make sure the autoloader is included in your project's bootstrap file:
 
 ```php
 require_once "vendor/autoload.php";
 ```
+### For version >=2.2.0
 There are 2 ways to connect to MoceanAPI    
-Option 1: Create a client with your API token:
+Option 1: Create a client with your API token
 
 ```php
 use Mocean\Client;
@@ -44,13 +44,23 @@ use Mocean\Client\Credentials\Basic;
 $mocean = new Client(new Basic(['apiToken' => 'API_TOKEN_HERE']));
 ```
 
-Option 2 (legacy): Create a client with your API key and secret:
+Option 2 (legacy): Create a client with your API key and secret
 
 ```php
 use Mocean\Client;
 use Mocean\Client\Credentials\Basic;
 
 $mocean = new Client(new Basic(['apiKey' => 'API_KEY_HERE', 'apiSecret' => 'API_SECRET_HERE']));
+```
+
+### For version <2.2.0
+Create a client with your API key and secret:
+
+```php
+use Mocean\Client;
+use Mocean\Client\Credentials\Basic;
+
+$mocean = new Client(new Basic('API_KEY_HERE', 'API_SECRET_HERE'));
 ```
 
 ## Example
