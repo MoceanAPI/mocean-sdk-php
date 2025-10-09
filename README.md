@@ -50,7 +50,7 @@ Option 2 (legacy): Create a client with your API key and secret:
 use Mocean\Client;
 use Mocean\Client\Credentials\Basic;
 
-$mocean = new Client(new Basic(['apiKey' => 'API_KEY_HERE', 'apiSecret' => "API_SECRET_HERE']));
+$mocean = new Client(new Basic(['apiKey' => 'API_KEY_HERE', 'apiSecret' => 'API_SECRET_HERE']));
 ```
 
 ## Example
