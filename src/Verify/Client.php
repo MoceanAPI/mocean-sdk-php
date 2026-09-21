@@ -131,6 +131,8 @@ class Client implements ClientAwareInterface
             return $url.'/sms';
         } else if ($this->channel === Channel::TELEGRAM) {
             return $url.'/telegram';
+        } else if ($this->channel === Channel::EMAIL) {
+            return $url.'/email';
         }
 
         return $url;
